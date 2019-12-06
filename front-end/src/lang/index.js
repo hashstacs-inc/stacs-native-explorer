@@ -1,4 +1,6 @@
 import common from './common'; //全局国际化文件
+import home from './home'; //首页国际化文件
+import address from './address'; //首页国际化文件
 
 function merge(...modules) {
 	let result = {}
@@ -12,4 +14,4 @@ function merge(...modules) {
 	return result
 }
 
-export default merge(common);
+export default merge(common, home, address);

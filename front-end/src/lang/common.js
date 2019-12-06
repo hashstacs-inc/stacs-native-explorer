@@ -10,7 +10,7 @@ export default {
 			notConfirm: '取消',
 			yesConfirm: '确定',
 			close: '关闭',
-			search: "查询",
+			search: "根据Address/TX ID/Block/BD Name查询",
 			copy: "复制",
 			copySuccess: '复制成功',
 			copyFailed: '复制失败',
@@ -36,7 +36,7 @@ export default {
 			notConfirm: 'Cancel',
 			yesConfirm: 'Confirm',
 			close: 'Close',
-			search: "Search",
+			search: "Search by Address/TX ID/Block/BD Name",
 			export: "Export",
 			copy: "Copy",
 			copySuccess: 'Copy Success',
@@ -50,7 +50,7 @@ export default {
 			days: "Days"
 		},
 		topMenu: {
-            home: "home", //首页,
+            home: "Home", //首页,
             bd:"BD"
 		},
 	}

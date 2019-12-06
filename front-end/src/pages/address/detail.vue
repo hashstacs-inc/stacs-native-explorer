@@ -39,7 +39,7 @@
           <el-tabs v-model="tabsActiveName" @tab-click="changeTabs">
             <!-- Transactions -->
             <el-tab-pane label="Transactions" name="Transactions">
-              <div class="table-top">A total of {{pageTotal}} records found</div>
+              <div class="table-top">{{$t('address.transactions.totalTxns')}} {{pageTotal}}</div>
               <el-table :data="transactionsDate" stripe style="width: 100%">
                 <template v-for="item in transactionsFrom">
                   <!-- 时间 -->
@@ -72,7 +72,8 @@
                         class="FailedStyle"
                         @click="ShowErrorInfo(scope.row.txId)"
                       >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />View
+                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />
+                        {{$t('address.common.view')}}
                       </span>
                     </template>
                   </el-table-column>
@@ -148,172 +149,6 @@
                 </template>
               </el-table>
             </el-tab-pane>
-            <!-- Issuance -->
-            <el-tab-pane label="Issuance" name="Issuance">
-              <el-table :data="issuanceDate" stripe style="width: 100%">
-                <template v-for="item in issuanceFrom">
-                  <!-- 时间 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-if="item.prop === 'blockTime'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{formatDate(scope.row[item.prop])}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- 状态 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'status'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row.status}}</span>
-                      <!-- 失败显示 -->
-                      <span
-                        v-if="scope.row.status === 'Failed'"
-                        class="FailedStyle"
-                        @click="ShowErrorInfo(scope.row.txId)"
-                      >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />View
-                      </span>
-                    </template>
-                  </el-table-column>
-                  <!-- block -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'blockHeight'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goBlockDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- txid -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'txId'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTxIdDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- amount -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'amount'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  ></el-table-column>
-                </template>
-              </el-table>
-            </el-tab-pane>
-            <!-- Credentials -->
-            <el-tab-pane label="Credentials" name="Credentials">
-              <section v-if="credentialsBase.length>0">
-                <article class="Basic-Information" v-for="(v, k) in credentialsBase" :key="k">
-                  <el-card class="bi-box">
-                    <header class="bi-title">Basic Information</header>
-                    <hr />
-                    <section class="base-box">
-                      <div
-                        class="bi-information"
-                        v-for="(val, key) in baseFormationLabel"
-                        :key="key"
-                      >
-                        <span class="table-label">{{val.label}}</span>
-                        <span
-                          class="table-desc"
-                          v-if="val.prop === 'blockHeight'"
-                          @click="goBlockDetails(v[val.prop])"
-                        >{{v[val.prop]}}</span>
-                        <span
-                          class="table-desc"
-                          v-else-if="val.prop === 'txId'"
-                          @click="goTxIdDetails(v[val.prop])"
-                        >{{v[val.prop]}}</span>
-                        <!-- <span
-                        class="table-desc"
-                        v-else-if="val.prop === 'address'"
-                        @click="goAddressDetails(v[val.prop], tokenValue)"
-                        >{{v[val.prop]}}</span>-->
-                        <span v-else-if="val.prop === 'createTime'">{{formatDate(v[val.prop])}}</span>
-                        <span style="font-weight: 500" v-else>{{v[val.prop]}}</span>
-                        <template>
-                          <el-button
-                            type="text"
-                            class="error-area"
-                            v-if="val.label === 'Status' && v[val.prop] === 'Failed'"
-                            @click="ShowErrorInfo(scope.row.txId)"
-                          >
-                            <img src="../../assets/img/view.png" style="margin-right: 5px" />View
-                          </el-button>
-                        </template>
-                      </div>
-                    </section>
-                  </el-card>
-                </article>
-                <el-card class="bi-box" style="margin-top:20px;">
-                  <header class="bi-title">Credentials Information</header>
-                  <hr />
-                  <section class="base-box">
-                    <div
-                      class="bi-information"
-                      v-for="(val, key) in credentialsFormationLabel"
-                      :key="key"
-                    >
-                      <span class="table-label">{{val.label}}</span>
-                      <span style="font-weight: 500">{{credentialsData[val.prop]}}</span>
-                      <template>
-                        <el-button
-                          type="text"
-                          class="error-area"
-                          v-if="val.label === 'Status' && v[val.prop] === 'Failed'"
-                          @click="ShowErrorInfo(scope.row.txId)"
-                        >
-                          <img src="../../assets/img/view.png" style="margin-right: 5px" />View
-                        </el-button>
-                      </template>
-                    </div>
-                  </section>
-                </el-card>
-              </section>
-              <section v-else class="el-table__empty-block"><span class="el-table__empty-text">No Data</span></section>
-            </el-tab-pane>
           </el-tabs>
         </section>
       </el-card>
@@ -326,13 +161,9 @@
         @lastPage="lastPage"
         @firstPage="firstPage"
         @changePage="changePage"
-        v-if="tabsActiveName !== 'Credentials'"
       />
+      <!-- v-if="tabsActiveName !== 'Credentials'" -->
     </article>
-    <!-- <div style="width: 100%;display: flex;justify-content: center">
-      <mu-button class="primary-button" style='background-color:#183A78;color: white' @click="$router.go(-1)">Return
-      </mu-button>
-    </div>-->
   </div>
 </template>
 
@@ -350,12 +181,12 @@ export default {
   data() {
     return {
       BasicFormationLabel: [
-        { label: "Address", prop: "Address" },
-        { label: "Token", prop: "Token" },
-        { label: "Balance", prop: "Balance" }
+        { label: `${this.$t("address.baseInfo.address")}`, prop: "Address" },
+        { label: `${this.$t("address.baseInfo.token")}`, prop: "Token" },
+        { label: `${this.$t("address.baseInfo.balance")}`, prop: "Balance" }
       ],
       tokenValue: "",
-      tabsActiveName: "Transactions",
+      tabsActiveName: `${this.$t("address.transactions.tabsName")}`,
       tokenList: [],
       noTokenList: "",
       loading: false,
@@ -369,122 +200,43 @@ export default {
       transactionsDate: [],
       transactionsFrom: [
         {
-          label: "TX ID", // 交易Id
+          label: `${this.$t("address.transactions.txid")}`, // 交易Id
           prop: "txId",
           showTooltip: true
         },
         {
-          label: "Time Stamp+UTC", // 时间
+          label: `${this.$t("address.transactions.timeStamp")}`, // 时间
           prop: "blockTime",
           showTooltip: true,
-          width:170
+          width: 170
         },
         {
-          label: "From", // 交易转出地址
+          label: `${this.$t("address.transactions.bdName")}`, // BD名称
           prop: "fromAddress",
           showTooltip: true
         },
         {
-          label: "To", // 交易接收地址
+          label: `${this.$t("address.transactions.bdType")}`, // BD类型
           prop: "toAddress",
           showTooltip: true
         },
         {
-          label: "Amount", // 交易数量
+          label: `${this.$t("address.transactions.functionName")}`, // 方法名称
           prop: "amount",
           showTooltip: true
         },
         {
-          label: "Type", // 交易token类型
-          prop: "bizType",
-          showTooltip: true
-        },
-        {
-          label: "Block", // 区块高度
+          label: `${this.$t("address.transactions.transactionFee")}`, // 此次BD执行交易收取的手续费金额及币种
           prop: "blockHeight",
           showTooltip: true
         },
         {
-          label: "Status", // 交易状态
+          label: `${this.$t("address.transactions.status")}`, // 交易状态
           prop: "status",
           showTooltip: true,
           width: 180
         }
-      ],
-      issuanceFrom: [
-        {
-          label: "TX ID", // 交易Id
-          prop: "txId",
-          showTooltip: true
-        },
-        {
-          label: "Time Stamp+UTC", // 时间
-          prop: "blockTime",
-          showTooltip: true,
-          width:170
-        },
-        {
-          label: "Operation Address", // 操作人地址
-          prop: "issueAddr",
-          showTooltip: true,
-           width:170
-        },
-        {
-          label: "Owner Address", // Token地址
-          prop: "ownerAddr",
-          showTooltip: true,
-           width:150
-        },
-        {
-          label: "Amount", // 金额
-          prop: "amount",
-          showTooltip: true
-        },
-        {
-          label: "Type", // 类型
-          prop: "type",
-          showTooltip: true
-        },
-        {
-          label: "Issuer", // Issuer
-          prop: "issuer",
-          showTooltip: true
-        },
-        {
-          label: "Approval Authority", // 发行机构
-          prop: "agency",
-          showTooltip: true,
-          width:170
-        },
-        {
-          label: "Block", // 区块高度
-          prop: "blockHeight",
-          showTooltip: true
-        },
-        {
-          label: "Status", // 状态
-          prop: "status",
-          showTooltip: true
-        }
-      ],
-      issuanceDate: [],
-      credentialsBase: [],
-      baseFormationLabel: [
-        { label: "TX ID", prop: "txId" },
-        { label: "Transaction Requestor", prop: "address" },
-        { label: "Status", prop: "status" },
-        { label: "Type", prop: "type" },
-        { label: "Blcok", prop: "blockHeight" },
-        { label: "Time Stamp +UTC", prop: "createTime" }
-      ],
-      credentialsFormationLabel: [
-        { label: "User's Nationality", prop: "countries" },
-        { label: "Country of Residence", prop: "residence" },
-        { label: "KYC Institution", prop: "kyc_source_name" },
-        { label: "Type of lnvestor", prop: "invest_type" },
-        { label: "Address", prop: "address" }
-      ],
-      credentialsData: {}
+      ]
     };
   },
   components: {
@@ -575,10 +327,6 @@ export default {
     changeTabs(tab) {
       if (tab.label === "Transactions") {
         this.getTransactions();
-      } else if (tab.label === "Issuance") {
-        this.getIssues();
-      } else {
-        this.getBizModels();
       }
     },
     // 点击地址
@@ -646,84 +394,6 @@ export default {
           this.loading = false;
         }
       }
-    },
-    // 获取issues信息
-    async getIssues() {
-      this.loading = true;
-      this.repData.address = this.addressId;
-      if (this.tokenValue) {
-        this.repData.currency = this.tokenValue;
-      }
-      let item = await queryIssuesDetails(this.repData);
-      if (!item.data.success) {
-        this.$router.push({
-          path: "/invalidSearch",
-          query: { info: this.$route.query.address }
-        });
-      } else {
-        if (item.data.data) {
-          this.issuanceDate = JSON.parse(
-            JSON.stringify(item.data.data.pageList)
-          );
-          if (this.issuanceDate) {
-            this.issuanceDate.forEach(el => {
-              el.status =
-                el.status.charAt(0).toUpperCase() +
-                el.status.slice(1).toLowerCase();
-            });
-          }
-          this.tokenList = JSON.parse(JSON.stringify(item.data.data.tokens));
-          if (!this.tokenList) {
-            this.tokenList = [];
-          }
-          this.tokenList.forEach(el => {
-            el.label = el.currencyName + "(" + el.currency + ")";
-          });
-          if (item.data.data.currency) {
-            this.tokenValue = item.data.data.currency;
-          } else {
-            this.tokenValue = "--";
-          }
-          this.pageTotal = item.data.data.total;
-          this.BasicFormationLabel.filter(v => v.label === "Balance")[0].prop =
-            item.data.data.balance;
-          this.loading = false;
-        } else {
-          this.BasicFormationLabel.filter(
-            v => v.label === "Balance"
-          )[0].prop = null;
-          this.noTokenList = "- -";
-          this.loading = false;
-        }
-      }
-    },
-    // 获取存证信息
-    async getBizModels() {
-      this.loading = true;
-      this.repData.address = this.addressId;
-      if (this.tokenValue) {
-        this.repData.currency = this.tokenValue;
-      }
-      let item = await queryBizModelsByPage(this.repData);
-      if (!item.data.success) {
-        this.$router.push({
-          path: "/invalidSearch",
-          query: { info: this.$route.query.address }
-        });
-      } else {
-        this.credentialsBase = JSON.parse(JSON.stringify(item.data.data));
-        if (this.credentialsBase&&this.credentialsBase.length>0) {
-          this.credentialsData = JSON.parse(this.credentialsBase[0].bizModel);
-          this.loading = false;
-          this.credentialsBase[0].status =
-            this.credentialsBase[0].status.charAt(0).toUpperCase() +
-            this.credentialsBase[0].status.slice(1).toLowerCase();
-        } else {
-          this.credentialsBase = [];
-          this.credentialsData = {};
-          this.loading = false;
-        }
-      }
     }
   },
   created() {
@@ -745,7 +415,7 @@ export default {
     padding-right: 20px;
   }
   .table-desc {
-    color: #0E265B;
+    color: #0e265b;
     cursor: pointer;
   }
 
@@ -770,7 +440,7 @@ export default {
         font-weight: 600;
       }
       .el-tabs__active-bar {
-        background-color: #0E265B;
+        background-color: #0e265b;
         height: 3px;
       }
       .table-top {
@@ -780,7 +450,7 @@ export default {
         box-sizing: border-box;
         padding-left: 40px;
         line-height: 40px;
-        color: #0E265B;
+        color: #0e265b;
       }
       .line-span {
         display: inline-block;

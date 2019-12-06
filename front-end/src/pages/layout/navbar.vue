@@ -23,7 +23,7 @@
       </div>
       <div class="searchBar">
         <el-input
-          placeholder="Search by Address/Token/TX ID/Block"
+          :placeholder="$t('common.search')"
           v-model.trim="searchContent"
           class="input-with-select"
           @keyup.enter.native="search()"
@@ -47,7 +47,7 @@ export default {
     return {
       menuDesc: [
         { index: "/", label: `${this.$t("topMenu.home")}` },
-        { index: "#", label: `${this.$t("topMenu.bd")}` }
+        { index: "", label: `${this.$t("topMenu.bd")}` }
         // { index: "trades", label: "Trades" },
         // { index: "contract", label: "Contract" },
         // { index: "issuance", label: "Issuance" },

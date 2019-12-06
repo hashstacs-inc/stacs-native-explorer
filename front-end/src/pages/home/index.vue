@@ -5,7 +5,7 @@
         <el-col :span="12">
           <titile-infomation
             :number="blockInformation.length ==0 ?0 :blockInformation[0].totalTxNum"
-            desc="Total Txns"
+            :desc="$t('left.totalTxns')"
             isName="id2"
             img="total_trade"
           />
@@ -13,7 +13,7 @@
         <el-col :span="12">
           <titile-infomation
             :number="blockInformation.length ==0 ?0 :blockInformation[0].height"
-            desc="Current block"
+            :desc="$t('right.currentBlock')"
             isName="id1"
             img="block_height"
           />
@@ -26,16 +26,15 @@
           <el-card style="height: 100%;">
             <div class="table-title">
               <div style="display: flex;align-items: center">
-                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />Recent Txns
+                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />{{$t('left.recentTxns')}}
               </div>
-              <!-- <span class="view-all" @click="$router.push('trades')">View All</span> -->
             </div>
             <hr style="border: 1px solid #B0C2E2;" />
             <div class="table-content">
               <div class="table-container" v-for="(item, key) in txsInformation" :key="key">
                 <div class="table-item">
                   <div style="width: 70%" class="txIdBox">
-                    TX#
+                    {{$t('left.tx')}} 
                     <el-tooltip :content="item.id" placement="top">
                       <span class="txid" v-if="item.couldClick===false">{{item.id}}</span>
                       <a
@@ -47,8 +46,6 @@
                     </el-tooltip>
                   </div>
                   <div style="width: 20%; margin-left: 10%;">
-                    <!-- <div style="margin-bottom: 15px;float:right">{{item.blockTime[0]}}</div>
-                    <div style="float: right">{{item.blockTime[0]}} +UTC</div>-->
                     <span>{{item.blockTime}} +UTC</span>
                   </div>
                 </div>
@@ -61,7 +58,7 @@
           <el-card style="height: 100%">
             <div class="table-title">
               <div style="display: flex;align-items: center">
-                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />Block Information
+                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />{{$t('right.blockInformation')}}
               </div>
             </div>
             <hr style="border: 1px solid #B0C2E2;" />
@@ -69,18 +66,17 @@
               <div class="table-container" v-for="(item, key) in blockInformation" :key="key">
                 <div class="table-item">
                   <div style="width: 33%">
-                    <div class="block-box">Block Size {{item.totalBlockSize}}</div>
+                    <div class="block-box">{{$t('right.blockSize')}} {{item.totalBlockSize}}</div>
                   </div>
                   <div style="width: 67%">
                     <div style="margin-bottom: 20px">
-                      <span>Block</span>
+                      <span>{{$t('right.block')}}</span>
                       <a
                         style="margin-left: 20px;"
                         class="on-click"
                         @click="toDetail(item.height)"
                       >{{item.height}}</a>
-                      <span style="margin-left: 40px">Txns</span>
-                      <!-- @click="toTrades(item.height)" -->
+                      <span style="margin-left: 40px">{{$t('right.txns')}}</span>
                       <span style="margin-left: 20px">{{item.txNum}}</span>
                     </div>
                     <div>{{item.blockTime}} +UTC</div>
