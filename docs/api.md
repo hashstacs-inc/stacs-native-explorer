@@ -28,7 +28,7 @@
 
 ## 接口列表
 
-### 查询交易列表
+### 交易列表查询
 
 `POST`: `/explorer/queryTxListByPage`
 
@@ -45,6 +45,21 @@
 // todo 增加 subbmiter 条件查询
 
 **响应结果:** ` Page<CoreTransactionVO>`
+
+### 区块列表查询
+
+`POST`: `/explorer/queryBlockListByPage`
+
+**请求参数**
+
+| 名称      | 类型     | 长度 | 是否必填 | 描述     |
+| --------- | -------- | ---- | -------- | -------- |
+| height    | `long`   |      | N        | 区块高度 |
+| blockHash | `string` | 64   | N        | 区块 Has |
+| pageNum   | `int`    |      | Y        |          |
+| pageSize  | `int`    |      | Y        |          |
+
+**响应结果**：`Page<BlockVO`
 
 ## 返回参数类型
 
@@ -67,4 +82,17 @@
 | bdCode        | `string` |                                       |
 | submitter     | `string` | 交易发起者                            |
 | submitterSign | `string` | 交易发起者的签名值                    |
+
+### BlockVO
+
+| 名称           | 类型         | 描述                    |
+| -------------- | ------------ | ----------------------- |
+| height         | `long`       | 区块高度                |
+| blockHash      | `string`     |                         |
+| previousHash   | `string`     | 上一个区块 hash         |
+| txNum          | `int`        | 交易数量                |
+| totalBlockSize | `bigDecimal` | 区块总大小，单位 ：`kb` |
+| totalTxNum     | `long`       | 累积交易数量            |
+| blockTime      | `data`       | 区块生成时间            |
+| version        | `string`     | 版本号                  |
 
