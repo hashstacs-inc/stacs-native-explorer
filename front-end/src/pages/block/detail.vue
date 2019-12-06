@@ -63,7 +63,7 @@
           <el-tabs v-model="tabsActiveName" @tab-click="changeTabs">
             <!-- Transactions -->
             <el-tab-pane label="Transactions" name="Transactions">
-              <div class="table-top">A total of {{pageTotal}} records found</div>
+              <div class="table-top">{{$t('block.transactions.totalTxns')}} {{pageTotal}}</div>
               <el-table :data="transactionsDate" stripe style="width: 100%">
                 <template v-for="item in transactionsFrom">
                   <!-- 状态 -->
@@ -82,7 +82,7 @@
                         class="FailedStyle"
                         @click="ShowErrorInfo(scope.row.txId)"
                       >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />View1
+                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />{{$t('block.common.view')}}
                       </span>
                     </template>
                   </el-table-column>
@@ -153,334 +153,6 @@
                 </template>
               </el-table>
             </el-tab-pane>
-            <!-- Issuance -->
-            <el-tab-pane label="Issuance" name="Issuance">
-              <el-table :data="issuanceDate" stripe style="width: 100%">
-                <template v-for="item in issuanceFrom">
-                  <!-- 时间 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-if="item.prop === 'blockTime'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  ></el-table-column>
-                  <!-- 状态 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'status'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row.status}}</span>
-                      <!-- 失败显示 -->
-                      <span
-                        v-if="scope.row.status === 'Failed'"
-                        class="FailedStyle"
-                        @click="ShowErrorInfo(scope.row.txId)"
-                      >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />View
-                      </span>
-                    </template>
-                  </el-table-column>
-                  <!-- block -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'blockHeight'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goBlockDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- txid -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'txId'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTxIdDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- address -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'ownerAddr'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goAddressDetails(scope.row[item.prop], scope.row.currency)"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- Token -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'currency'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTokenDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- amount -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'amount'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  ></el-table-column>
-                </template>
-              </el-table>
-            </el-tab-pane>
-            <!-- Credentials -->
-            <el-tab-pane label="Credentials" name="Credentials">
-              <el-table :data="credentialsDate" stripe style="width: 100%">
-                <template v-for="item in credentialsFrom">
-                  <!-- 时间 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-if="item.prop === 'blockTime'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  ></el-table-column>
-                  <!-- 状态 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'status'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row.status}}</span>
-                      <!-- 失败显示 -->
-                      <span
-                        v-if="scope.row.status === 'Failed'"
-                        class="FailedStyle"
-                        @click="ShowErrorInfo(scope.row.txId)"
-                      >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />View
-                      </span>
-                    </template>
-                  </el-table-column>
-                  <!-- block -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'blockHeight'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goBlockDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- txid -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'txId'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTxIdDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- address -->
-                  <!-- item.prop === 'requestAddress' ||  -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'kycAddress'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goAddressDetails(scope.row[item.prop], scope.row.currency)"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- Token -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'currency'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                     :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTokenDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  ></el-table-column>
-                </template>
-              </el-table>
-            </el-tab-pane>
-            <!-- Freeze -->
-            <el-tab-pane label="Freeze" name="Freeze">
-              <el-table :data="freezeDate" stripe style="width: 100%">
-                <template v-for="item in freezeFrom">
-                  <!-- 地址 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-if="item.prop === 'toAddress'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goAddressDetails(scope.row.toAddress, BasicFormationLabel[0].prop)"
-                      >{{scope.row.toAddress}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- txId -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'txId'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTxIdDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- Token -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'currency'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTokenDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- 状态 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'status'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row.status}}</span>
-                      <!-- 失败显示 -->
-                      <span
-                        v-if="scope.row.status === 'Failed'"
-                        class="FailedStyle"
-                        @click="ShowErrorInfo(scope.row.txId)"
-                      >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />View
-                      </span>
-                    </template>
-                  </el-table-column>
-                  <!-- 百分比 -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'percentage'"
-                    :show-overflowoverflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row.percentage}}%</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  ></el-table-column>
-                </template>
-              </el-table>
-            </el-tab-pane>
           </el-tabs>
         </section>
       </el-card>
@@ -495,10 +167,6 @@
         @changePage="changePage"
       />
     </article>
-    <!-- <div style="width: 100%;display: flex;justify-content: center">
-      <mu-button class="primary-button" style='background-color:#183A78;color: white' @click="$router.go(-1)">Return
-      </mu-button>
-    </div>-->
   </div>
 </template>
 
@@ -522,188 +190,54 @@ export default {
         blockHeight: ""
       },
       BasicFormationLabel: [
-        { label: "Block", prop: "blockHeight" },
-        { label: "Hash", prop: "blockHash" },
-        { label: "Parent Hash", prop: "parentHash" },
-        { label: "Time Stamp +UTC", prop: "blockTime" },
-        { label: "Total Transactions", prop: "totalTransactions" }
+        { label: `${this.$t("block.baseInfo.block")}`, prop: "blockHeight" },
+        { label: `${this.$t("block.baseInfo.hash")}`, prop: "blockHash" },
+        { label: `${this.$t("block.baseInfo.parentHash")}`, prop: "parentHash" },
+        { label: `${this.$t("block.baseInfo.blockTime")}`, prop: "blockTime" }
       ],
       loading: false,
       maxHeight: 0,
       pageTotal: 0,
-      tabsActiveName: "Transactions",
+      tabsActiveName: `${this.$t("block.transactions.tabsName")}`,
       BasicFormationData: {},
       transactionsFrom: [
         {
-          label: "TX ID", // 交易Id
+          label: `${this.$t("block.transactions.txid")}`, // 交易Id
           prop: "txId",
           showTooltip: true
         },
         {
-          label: "From", // 交易转出地址
+          label: `${this.$t("block.transactions.operationAddress")}`, // 交易转出地址
           prop: "fromAddress",
           showTooltip: true
         },
         {
-          label: "To", // 交易接收地址
+          label: `${this.$t("block.transactions.bdName")}`, // 交易接收地址
           prop: "toAddress",
           showTooltip: true
         },
         {
-          label: "Token", // 交易token类型
+          label: `${this.$t("block.transactions.bdType")}`, // 交易token类型
           prop: "currency",
           showTooltip: true
         },
         {
-          label: "Amount", // 交易数量
+          label: `${this.$t("block.transactions.functionName")}`, // 交易数量
           prop: "amount",
           showTooltip: true
         },
         {
-          label: "Type", // 交易类型
+          label: `${this.$t("block.transactions.transactionFee")}`, // 交易类型
           prop: "bizType",
           showTooltip: true
         },
         {
-          label: "Status", // 交易状态
+          label: `${this.$t("block.transactions.status")}`, // 交易状态
           prop: "status",
           showTooltip: true
         }
       ],
       transactionsDate: [],
-      issuanceFrom: [
-        {
-          label: "TX ID", // 交易Id
-          prop: "txId",
-          showTooltip: true,
-        },
-        {
-          label: "Operation Address", // 操作人地址
-          prop: "issueAddr",
-          showTooltip: true,
-          width:170
-        },
-        {
-          label: "Owner Address", // Token地址
-          prop: "ownerAddr",
-          showTooltip: true,
-          width:170
-        },
-        {
-          label: "Token", // Token
-          prop: "currency",
-          showTooltip: true
-        },
-        {
-          label: "Amount", // 金额
-          prop: "amount",
-          showTooltip: true
-        },
-        {
-          label: "Type", // 类型
-          prop: "type",
-          showTooltip: true
-        },
-        {
-          label: "Issuer", // Issuer
-          prop: "issuer",
-          showTooltip: true
-        },
-        {
-          label: "Approval Authority", // 发行机构
-          prop: "agency",
-          showTooltip: true,
-          width:170
-        },
-        {
-          label: "Status", // 状态
-          prop: "status",
-          showTooltip: true
-        }
-      ],
-      issuanceDate: [],
-      credentialsFrom: [
-        {
-          label: "TX ID", // 交易Id
-          prop: "txId",
-          showTooltip: true,
-          width:100
-        },
-        {
-          label: "Transaction Requestor", // 交易Id
-          prop: "requestAddress",
-          showTooltip: true,
-          width:200
-        },
-        {
-          label: "Address", // 发起人地址
-          prop: "kycAddress",
-          showTooltip: true
-        },
-        {
-          label: "User's Nationality", // 用户国籍
-          prop: "countries",
-          showTooltip: true,
-          width:160
-        },
-        {
-          label: "Country of Residence", // 用户住址
-          prop: "residence",
-          showTooltip: true,
-          width:190
-        },
-        {
-          label: "KYC Institution", // KYC认证机构
-          prop: "kyc_source_name",
-          showTooltip: true,
-           width:150
-        },
-        {
-          label: "Type of Investor", // 类型
-          prop: "invest_type",
-          showTooltip: true,
-           width:150
-        },
-        {
-          label: "Status", // 状态
-          prop: "status",
-          showTooltip: true
-        }
-      ],
-      credentialsDate: [],
-      freezeFrom: [
-        {
-          label: "TX ID", // 交易Id
-          prop: "txId",
-          showTooltip: true
-        },
-        {
-          label: "Operation Address", // 操作人地址
-          prop: "fromAddress",
-          showTooltip: true
-        },
-        {
-          label: "Contract Address", // Token地址
-          prop: "toAddress",
-          showTooltip: true
-        },
-        {
-          label: "Token", // Token
-          prop: "currency",
-          showTooltip: true
-        },
-        {
-          label: "Type", // 类型
-          prop: "bizType",
-          showTooltip: true
-        },
-        {
-          label: "Status", // 状态
-          prop: "status",
-          showTooltip: true
-        }
-      ],
-      freezeDate: []
     };
   },
   computed: {
@@ -825,92 +359,6 @@ export default {
         this.loading = false;
       }
     },
-    // 获取Issueance数据
-    async getBlockIssueance(block) {
-      this.loading = true;
-      this.queryData.blockHeight = block;
-      let item = await queryBlockIssueance(this.queryData);
-      if (!item.data.success) {
-        this.$router.push({
-          path: "/invalidSearch",
-          query: { info: this.$router.query.height }
-        });
-      } else {
-        this.BasicFormationData = JSON.parse(JSON.stringify(item.data.data));
-        this.issuanceDate = JSON.parse(JSON.stringify(item.data.data.pageList));
-        if (this.issuanceDate) {
-          this.issuanceDate.forEach(el => {
-            el.status =
-              el.status.charAt(0).toUpperCase() +
-              el.status.slice(1).toLowerCase();
-          });
-        }
-        this.pageTotal = item.data.data.total;
-        console.log(item)
-        this.maxHeight = item.data.data.maxHeight;
-        this.loading = false;
-      }
-    },
-    // 获取Credentials数据
-    async getBlockCredentials(block) {
-      this.loading = true;
-      this.queryData.blockHeight = block;
-      let item = await queryBlockCredentials(this.queryData);
-      if (!item.data.success) {
-        this.$router.push({
-          path: "/invalidSearch",
-          query: { info: this.$router.query.height }
-        });
-      } else {
-        this.BasicFormationData = JSON.parse(JSON.stringify(item.data.data));
-        if (item.data.data.pageList) {
-          item.data.data.pageList.forEach(v => {
-            for (let i in JSON.parse(v.bizModel)) {
-              v[i] = JSON.parse(v.bizModel)[i];
-            }
-          });
-        }
-        this.credentialsDate = JSON.parse(
-          JSON.stringify(item.data.data.pageList)
-        );
-        if (this.credentialsDate) {
-          this.credentialsDate.forEach(el => {
-            el.status =
-              el.status.charAt(0).toUpperCase() +
-              el.status.slice(1).toLowerCase();
-          });
-        }
-        this.pageTotal = item.data.data.total;
-        console.log(item)
-        this.maxHeight = item.data.data.maxHeight;
-        this.loading = false;
-      }
-    },
-    // 获取Freeze数据
-    async getBlockFreeze(block) {
-      // this.loading = true;
-      this.queryData.blockHeight = block;
-      let item = await queryBlockFreeze(this.queryData);
-      if (!item.data.success) {
-        this.$router.push({
-          path: "/invalidSearch",
-          query: { info: this.$router.query.height }
-        });
-      } else {
-        this.BasicFormationData = JSON.parse(JSON.stringify(item.data.data));
-        this.freezeDate = JSON.parse(JSON.stringify(item.data.data.pageList));
-        if (this.freezeDate) {
-          this.freezeDate.forEach(el => {
-            el.status =
-              el.status.charAt(0).toUpperCase() +
-              el.status.slice(1).toLowerCase();
-          });
-        }
-        this.pageTotal = item.data.data.total;
-        this.maxHeight = item.data.data.maxHeight;
-        this.loading = false;
-      }
-    },
     // 点击地址
     goAddressDetails(address) {
       this.$router.push({
@@ -948,23 +396,11 @@ export default {
       if (typeof block === "string" || typeof block === "number") {
         if (tab.label === "Transactions") {
           this.getBlockTransactions(block);
-        } else if (tab.label === "Issuance") {
-          this.getBlockIssueance(block);
-        } else if (tab.label === "Credentials") {
-          this.getBlockCredentials(block);
-        } else {
-          this.getBlockFreeze(block);
         }
       } else {
         if (tab.label === "Transactions") {
           this.getBlockTransactions(this.BasicFormationData.blockHeight);
-        } else if (tab.label === "Issuance") {
-          this.getBlockIssueance(this.BasicFormationData.blockHeight);
-        } else if (tab.label === "Credentials") {
-          this.getBlockCredentials(this.BasicFormationData.blockHeight);
-        } else {
-          this.getBlockFreeze(this.BasicFormationData.blockHeight);
-        }
+        } 
       }
     }
   },
