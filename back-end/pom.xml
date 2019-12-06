@@ -71,6 +71,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <appName>native-explorer</appName>
+                </configuration>
             </plugin>
         </plugins>
     </build>
