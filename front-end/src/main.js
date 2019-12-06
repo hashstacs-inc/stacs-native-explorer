@@ -35,6 +35,9 @@ import error from '@/components/errorInfo';
 Vue.component('error', error)
 Vue.config.productionTip = false
 
+//本地mock数据
+import "./mock";
+
 // 全局混入错误提示框
 Vue.mixin({
   methods: {

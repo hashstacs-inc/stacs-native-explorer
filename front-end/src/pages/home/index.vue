@@ -35,14 +35,12 @@
                 <div class="table-item">
                   <div style="width: 70%" class="txIdBox">
                     {{$t('left.tx')}} 
-                    <el-tooltip :content="item.id" placement="top">
-                      <span class="txid" v-if="item.couldClick===false">{{item.id}}</span>
+                    <el-tooltip :content="item.txId" placement="top">
                       <a
-                        v-else
                         @click="toDetail(0,item.txId)"
                         class="txid on-click"
                         :show-overflow-tooltip="true"
-                      >{{item.id}}</a>
+                      >{{item.txId}}</a>
                     </el-tooltip>
                   </div>
                   <div style="width: 20%; margin-left: 10%;">
@@ -94,7 +92,7 @@
 
 <script>
 import titileInfomation from "./titleInformation";
-import { queryBlocksByPage, queryTxsByPage, queryBlockByHeight } from "@/api";
+import { queryBlocksByPage, queryTxsByPage, queryBlockByHeight, queryTxListByPage } from "@/api";
 import { dateUTCFilter, processStr } from "../../utils";
 import { mapGetters } from "vuex";
 
@@ -109,11 +107,11 @@ export default {
       blockInformation: [],
       txsInformation: [],
       blockQueryData: {
-        pageNo: 1,
+        pageNum: 1,
         pageSize: 15
       },
       txsQueryData: {
-        pageNo: 1,
+        pageNum: 1,
         pageSize: 15
       }
     };
@@ -149,40 +147,22 @@ export default {
         }
       });
     },
-    queryTxsByPage() {
-      queryTxsByPage(this.txsQueryData).then(res => {
+    queryTxListByPage() {
+      queryTxListByPage(this.txsQueryData).then(res => {
         this.txsInformation = res.data.data;
-        let item;
-        for (item of this.txsInformation) {
-          // item["id"] = processStr(item.txId, 38);
-          item["id"] = item.txId;
-          item.blockTime = dateUTCFilter(item.blockTime);
-          if (
-            item.policyId === "ISSUE" ||
-            item.policyId === "ADDITIONAL_ISSUE" ||
-            item.policyId === "TRANSFER" ||
-            item.policyId === "SETTL_INTEREST" ||
-            item.policyId === "BIZ_MODEL" ||
-            item.policyId === "BUYBACK_FROZE" ||
-            item.policyId === "BUYBACK"
-          ) {
-            item.couldClick = true;
-          } else {
-            item.couldClick = false;
-          }
-        }
+        console.log(this.txsInformation)
       });
     }
   },
   mounted() {
-    this.queryBlocksByPage();
-    this.blockTimer = setInterval(() => {
-      this.queryBlocksByPage();
-    }, 5000);
-    this.queryTxsByPage();
-    this.txsTimer = setInterval(() => {
-      this.queryTxsByPage();
-    }, 5000);
+    // this.queryBlocksByPage();
+    // this.blockTimer = setInterval(() => {
+    //   this.queryBlocksByPage();
+    // }, 5000);
+    this.queryTxListByPage();
+    // this.txsTimer = setInterval(() => {
+    //   this.queryTxListByPage();
+    // }, 5000);
   },
   beforeDestroy() {
     clearInterval(this.blockTimer);

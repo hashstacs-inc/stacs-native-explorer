@@ -252,3 +252,14 @@ export function queryBlockByHeight(data) {
     data
   })
 }
+
+// 新接口
+// 查询交易列表
+
+export function queryTxListByPage(data) {
+  return request({
+    url: '/explorer/queryTxListByPage',
+    method: 'post',
+    data
+  })
+}

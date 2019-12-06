@@ -10,5 +10,4 @@ const i18n = new VueI18n({
 	locale: getLanguage(),
 	messages
 });
-console.log(i18n)
 export default i18n;
