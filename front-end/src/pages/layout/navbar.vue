@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       menuDesc: [
-        { index: "/", label: "Home" }
+        { index: "/", label: `${this.$t("topMenu.home")}` },
+        { index: "#", label: `${this.$t("topMenu.bd")}` }
         // { index: "trades", label: "Trades" },
         // { index: "contract", label: "Contract" },
         // { index: "issuance", label: "Issuance" },
@@ -109,7 +110,9 @@ export default {
       return this.$route.name;
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.menuDesc)
+  }
 };
 </script>
 

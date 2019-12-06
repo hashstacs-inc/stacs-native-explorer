@@ -9,6 +9,9 @@
           <div>
             <p>Copyright @ STO.com 2018</p>
             <p>All Rights Reserved 855.733.3310</p>
+            <div>
+              <toggleLanguage></toggleLanguage>
+            </div>
           </div>
           <div style="height: 30px;"></div>
         </section>
@@ -58,8 +61,12 @@
 </template>
 
 <script>
+import toggleLanguage from "@/components/toggleLanguage.vue";
 export default {
   name: "gspFooter",
+  components: {
+    toggleLanguage
+  },
   data() {
     return {
       urlPrefix: ""
