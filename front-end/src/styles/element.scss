@@ -1,0 +1,57 @@
+.el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li {
+  background-color: #ffffff;
+  border: 1px solid #E9E9E9;
+  font-weight:500;
+}
+.el-table thead.is-group th{
+  background-color: blue;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  border: 0px solid #ebeef5;
+  background-color: #ffffff00;
+  color: #000;
+}
+
+.el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li {
+  color: #1D4383;
+}
+
+.el-card {
+  border: 0px solid #ebeef5;
+  border-radius: 0px;
+}
+
+.el-select-dropdown {
+  border-radius: 0px;
+}
+
+.el-dialog__header {
+  background-color: #FBFBFB;
+  padding: 20px 20px 20px;
+  border-bottom: 1px solid #B0C2E2;
+}
+
+.mu-raised-button {
+  border-radius: 0px
+}
+
+.el-table thead {
+  color: #FBFBFB
+}
+
+.el-button--text {
+  color: #0E265B;
+  font-weight: bolder;
+}
+
+.el-date-editor .el-range__icon {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+}
+.el-date-editor .el-range-separator {
+  width: 24px;
+  display: flex;
+  align-items: center;
+}

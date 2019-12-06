@@ -1,0 +1,284 @@
+<template>
+  <div class="home-page">
+    <article class="home-title">
+      <el-row :gutter="20" style="display:flex;margin-top: 30px;">
+        <el-col :span="12">
+          <titile-infomation
+            :number="blockInformation.length ==0 ?0 :blockInformation[0].totalTxNum"
+            desc="Total Txns"
+            isName="id2"
+            img="total_trade"
+          />
+        </el-col>
+        <el-col :span="12">
+          <titile-infomation
+            :number="blockInformation.length ==0 ?0 :blockInformation[0].height"
+            desc="Current block"
+            isName="id1"
+            img="block_height"
+          />
+        </el-col>
+      </el-row>
+    </article>
+    <article class="home-title">
+      <el-row style="height: 769px;width: 1200px">
+        <el-col :span="12" style="height: 100%;padding-right: 10px">
+          <el-card style="height: 100%;">
+            <div class="table-title">
+              <div style="display: flex;align-items: center">
+                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />Recent Txns
+              </div>
+              <!-- <span class="view-all" @click="$router.push('trades')">View All</span> -->
+            </div>
+            <hr style="border: 1px solid #B0C2E2;" />
+            <div class="table-content">
+              <div class="table-container" v-for="(item, key) in txsInformation" :key="key">
+                <div class="table-item">
+                  <div style="width: 70%" class="txIdBox">
+                    TX#
+                    <el-tooltip :content="item.id" placement="top">
+                      <span class="txid" v-if="item.couldClick===false">{{item.id}}</span>
+                      <a
+                        v-else
+                        @click="toDetail(0,item.txId)"
+                        class="txid on-click"
+                        :show-overflow-tooltip="true"
+                      >{{item.id}}</a>
+                    </el-tooltip>
+                  </div>
+                  <div style="width: 20%; margin-left: 10%;">
+                    <!-- <div style="margin-bottom: 15px;float:right">{{item.blockTime[0]}}</div>
+                    <div style="float: right">{{item.blockTime[0]}} +UTC</div>-->
+                    <span>{{item.blockTime}} +UTC</span>
+                  </div>
+                </div>
+                <hr />
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="12" style="height: 100%;padding-left: 10px">
+          <el-card style="height: 100%">
+            <div class="table-title">
+              <div style="display: flex;align-items: center">
+                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />Block Information
+              </div>
+            </div>
+            <hr style="border: 1px solid #B0C2E2;" />
+            <div class="table-content">
+              <div class="table-container" v-for="(item, key) in blockInformation" :key="key">
+                <div class="table-item">
+                  <div style="width: 33%">
+                    <div class="block-box">Block Size {{item.totalBlockSize}}</div>
+                  </div>
+                  <div style="width: 67%">
+                    <div style="margin-bottom: 20px">
+                      <span>Block</span>
+                      <a
+                        style="margin-left: 20px;"
+                        class="on-click"
+                        @click="toDetail(item.height)"
+                      >{{item.height}}</a>
+                      <span style="margin-left: 40px">Txns</span>
+                      <!-- @click="toTrades(item.height)" -->
+                      <span style="margin-left: 20px">{{item.txNum}}</span>
+                    </div>
+                    <div>{{item.blockTime}} +UTC</div>
+                  </div>
+                </div>
+                <hr />
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </article>
+  </div>
+</template>
+
+<script>
+import titileInfomation from "./titleInformation";
+import { queryBlocksByPage, queryTxsByPage, queryBlockByHeight } from "@/api";
+import { dateUTCFilter, processStr } from "../../utils";
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters(["tasQueryData"])
+  },
+  data() {
+    return {
+      txsTimer: null,
+      blockTimer: null,
+      blockInformation: [],
+      txsInformation: [],
+      blockQueryData: {
+        pageNo: 1,
+        pageSize: 15
+      },
+      txsQueryData: {
+        pageNo: 1,
+        pageSize: 15
+      }
+    };
+  },
+  components: {
+    titileInfomation
+  },
+  methods: {
+    toTrades(height) {
+      this.$router.push({ name: "trades", query: { height } });
+    },
+    toDetail(height, id) {
+      if (height) {
+        this.$router.push({ name: "blockDetail", query: { height } });
+      }
+      if (id) {
+        // this.tasQueryData.txId = id;
+        // 跳转txID界面
+        this.$router.push({
+          path: "/txidDetails",
+          query: {
+            id: id
+          }
+        });
+      }
+    },
+    queryBlocksByPage() {
+      queryBlocksByPage(this.blockQueryData).then(res => {
+        this.blockInformation = res.data.data;
+        let item;
+        for (item of this.blockInformation) {
+          item.blockTime = dateUTCFilter(item.blockTime);
+        }
+      });
+    },
+    queryTxsByPage() {
+      queryTxsByPage(this.txsQueryData).then(res => {
+        this.txsInformation = res.data.data;
+        let item;
+        for (item of this.txsInformation) {
+          // item["id"] = processStr(item.txId, 38);
+          item["id"] = item.txId;
+          item.blockTime = dateUTCFilter(item.blockTime);
+          if (
+            item.policyId === "ISSUE" ||
+            item.policyId === "ADDITIONAL_ISSUE" ||
+            item.policyId === "TRANSFER" ||
+            item.policyId === "SETTL_INTEREST" ||
+            item.policyId === "BIZ_MODEL" ||
+            item.policyId === "BUYBACK_FROZE" ||
+            item.policyId === "BUYBACK"
+          ) {
+            item.couldClick = true;
+          } else {
+            item.couldClick = false;
+          }
+        }
+      });
+    }
+  },
+  mounted() {
+    this.queryBlocksByPage();
+    this.blockTimer = setInterval(() => {
+      this.queryBlocksByPage();
+    }, 5000);
+    this.queryTxsByPage();
+    this.txsTimer = setInterval(() => {
+      this.queryTxsByPage();
+    }, 5000);
+  },
+  beforeDestroy() {
+    clearInterval(this.blockTimer);
+    clearInterval(this.txsTimer);
+    this.blockTimer = null;
+    this.txsTimer = null;
+  }
+};
+</script>
+
+<style>
+.home-page {
+  font-family: HelveticaNeue-Medium;
+}
+
+.block-box {
+  height: 66px;
+  width: 150px;
+  background-color: #aaa9aa;
+  color: white;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-title {
+  font-weight: 600;
+  align-items: center;
+  height: 55px;
+  color: #18519c;
+  font-size: 16px;
+  font-family: Recent Transactions;
+  justify-content: space-between;
+  display: flex;
+  padding: 0px 20px 0px 20px;
+  background-color: #f5f7f9;
+}
+
+.table-content {
+  height: 719px;
+  overflow-y: auto;
+}
+
+.table-item {
+  padding: 20px;
+  align-items: center;
+  height: 100px;
+  display: flex;
+  /*justify-content: space-between;*/
+}
+
+.view-all {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #063c8c;
+  width: 72px;
+  height: 28px;
+  color: #063c8c;
+}
+
+.view-all:hover {
+  background-color: white;
+}
+
+/* .table-container {
+  padding: 20px;
+} */
+
+.home-title {
+  justify-content: center;
+  display: flex;
+  margin-top: 60px;
+  font-size: 14px;
+}
+.txIdBox {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* .txid {
+  display: inline-block;
+} */
+.on-click {
+  color: #18519c;
+}
+.on-click:hover {
+  color: #3675DF;
+  text-decoration: underline;
+}
+</style>

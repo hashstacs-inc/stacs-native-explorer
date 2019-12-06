@@ -1,0 +1,222 @@
+@import "./element";
+@import "./font";
+
+.has-gutter {
+  background-color: blue;
+}
+
+.el-pager li {
+  background: white;
+}
+
+a {
+  color: #0e265b;
+  // font-weight: bolder;
+  cursor: pointer;
+}
+
+.el-card__body {
+  padding: 0px;
+}
+
+input:focus {
+  border-color: black;
+}
+
+.trades-search {
+  input {
+    border-color: white;
+    font-size: 14px;
+  }
+  input:hover {
+    border-color: black;
+  }
+}
+
+hr {
+  margin: 0;
+  opacity: 0.3;
+}
+
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.5s;
+}
+
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.el-form-item__label {
+  text-align: left;
+  width: 91px;
+  padding-right: 0px;
+}
+
+.el-input__inner {
+  height: 34px;
+  width: 250px;
+  font-size: 12px;
+}
+
+.el-input__inner:hover {
+  border-color: #1e3a71;
+}
+
+.el-table td {
+  padding: 12px;
+}
+
+.el-table td,
+.el-table th.is-leaf {
+  padding-left: 12px;
+}
+
+.primary-button {
+  font-size: 16px;
+  color: white;
+  width: 177px;
+  height: 40px;
+  background-color: #183a78;
+}
+
+.el-table tr {
+  height: 66px;
+  color: #0e265b;
+  //background-color:#FBFBFB;
+}
+
+th {
+  padding: 0px 30px 0px 30px;
+}
+
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgb(214, 214, 214);
+}
+
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);*/
+  border-radius: 10px;
+  /*background: #EDEDED;*/
+}
+
+.trades-formation {
+  margin-top: 60px;
+  height: 726px;
+}
+.el-tabs__nav-wrap::after {
+  background-color: #e0e0e0;
+}
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  // background-color: rgba(126, 26, 31, 0.1);
+  color: #0e265b;
+}
+.el-tabs__item.is-active {
+  color: #0e265b !important;
+}
+.el-tabs__item:hover {
+  color: #0e265b !important;
+}
+.el-select-dropdown__item.selected {
+  color: #0e265b;
+}
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #0e265b;
+}
+.el-select .el-input__inner:focus {
+  border-color: #0e265b;
+}
+.el-table th > .cell {
+  color: #303133;
+}
+.el-table .cell {
+  color: #303133;
+  span {
+    color: #303133;
+  }
+}
+//抽离样式，方便于后期对应不同的项目，更快的更改样式主题风格，而只修改更少的文件。
+.line-span-no {
+  cursor: pointer;
+  color: #18519c !important;
+}
+.line-span-no:hover {
+  color: #3675df !important;
+  text-decoration: underline;
+}
+.FailedStyle {
+  color: #18519c !important;
+  cursor: pointer;
+}
+.FailedStyle:hover {
+  color: #3675DF !important;
+  text-decoration: underline;
+}
+.on-click {
+  color: #18519c !important;
+}
+.on-click:hover {
+  color: #3675DF !important;
+  text-decoration: underline;
+}
+.table-desc {
+  color: #18519c !important;
+  cursor: pointer;
+}
+.table-desc:hover {
+  color: #3675DF !important;
+  text-decoration: underline;
+}
+.line-span-no {
+  cursor: pointer;
+  color: #18519c !important;
+}
+.line-span-no:hover {
+  color: #3675DF !important;
+  text-decoration: underline;
+}
+.backhome{
+  background: linear-gradient(to left, #20478a, #1b2d59);
+  color: white
+}
+.pagination-currPage{
+  color: #18519c;
+}
+.pagination-first, .pagination-last {
+  width: 60px;
+  color: #18519c;
+}
+.pagination-prev, .pagination-next {
+  width: 36px;
+  color: #18519c;
+}
+.issDetail-page .table-body .el-tabs__item.is-active{
+  font-weight: 600 !important;
+}
+.issDetail-page .table-body .el-tabs__item{
+  font-weight: normal !important;
+}
+.el-button--primary{
+  background-color: #233975;
+  border-color: #233975;
+}
+.el-button--primary:hover{
+  background-color: #093EAA;
+  border-color: #093EAA;
+}

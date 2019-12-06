@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" th:src="@{/assets-boss/js/html5shiv.min.js}"></script>
+    <![endif]-->
+    <link rel="shortcut icon" th:href="@{/assets-boss/ico/minus.png}"/>
+
+</head>
+<body style="height: 100%">
+<div class="intercept-content">
+    <div style="height: 100px;display: flex;align-items: center;background-color:rgba(0,0,0,0.0);">
+        <!--<input id="token" name="token" style="width: 200px;height: 30px" placeholder="请输入邀请码">-->
+        <!--<button class="el-button" style="margin-left: 20px;height: 36px;width: 84px;" @click="commit">提交</button>-->
+        <!--<a href="javascript:" class="btn btn-warning btn-block J-token-send">-->
+        <!--<span class="entypo-paper-plane"></span>-->
+        <!--提交-->
+        <!--</a>-->
+        <form action="/token/token" method="post">
+            <p style='color:white'>邀请码: <input type="text" name="token"/></p>
+            <input type="submit"/>
+        </form>
+    </div>
+</div>
+</body>
+
+
+<style>
+    html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0px;
+    }
+
+    .intercept-content {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url("/assets-boss/img/banner.jpg");
+    }
+</style>
+
+
+</html>
