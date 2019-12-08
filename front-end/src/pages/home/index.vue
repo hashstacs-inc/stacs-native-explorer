@@ -92,7 +92,7 @@
 
 <script>
 import titileInfomation from "./titleInformation";
-import { queryBlocksByPage, queryTxsByPage, queryBlockByHeight, queryTxListByPage } from "@/api";
+import { queryBlocksByPage, queryTxsByPage, queryBlockByHeight, queryTxListByPage, queryBlockListByPage } from "@/api";
 import { dateUTCFilter, processStr } from "../../utils";
 import { mapGetters } from "vuex";
 
@@ -138,8 +138,8 @@ export default {
         });
       }
     },
-    queryBlocksByPage() {
-      queryBlocksByPage(this.blockQueryData).then(res => {
+    queryBlockListByPage() {
+      queryBlockListByPage(this.blockQueryData).then(res => {
         this.blockInformation = res.data.data;
         let item;
         for (item of this.blockInformation) {
@@ -150,14 +150,17 @@ export default {
     queryTxListByPage() {
       queryTxListByPage(this.txsQueryData).then(res => {
         this.txsInformation = res.data.data;
-        console.log(this.txsInformation)
+        let item;
+        for (item of this.txsInformation) {
+          item.blockTime = dateUTCFilter(item.blockTime);
+        }
       });
     }
   },
   mounted() {
-    // this.queryBlocksByPage();
+    this.queryBlockListByPage();
     // this.blockTimer = setInterval(() => {
-    //   this.queryBlocksByPage();
+    //   this.queryBlockListByPage();
     // }, 5000);
     this.queryTxListByPage();
     // this.txsTimer = setInterval(() => {

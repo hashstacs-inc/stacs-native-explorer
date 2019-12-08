@@ -255,10 +255,18 @@ export function queryBlockByHeight(data) {
 
 // 新接口
 // 查询交易列表
-
 export function queryTxListByPage(data) {
   return request({
     url: '/explorer/queryTxListByPage',
+    method: 'post',
+    data
+  })
+}
+
+// 区块列表查询
+export function queryBlockListByPage(data) {
+  return request({
+    url: '/explorer/queryBlockListByPage',
     method: 'post',
     data
   })
