@@ -69,19 +69,19 @@
 | 名称              | 类型       | 描述                                  | 列表查询是否提供 |
 | ----------------- | ---------- | ------------------------------------- | ---------------- |
 | txId              | `string`   | 交易 Id                               |      TX ID    Y        |
-| bizModel          | `object`   |                                       |                  |
+| bizModel          | `object`   |                                       |         Y         |
 | policyId          | `string`   |                                       |         Function Name  Y        |
-| version           | `string`   | 交易版本号                            |                  |
-| blockHeight       | `long`     | 交易所在区块高度                      |                  |
-| sender            | `string`   | 交易发送的节点名称                    |                  |
-| actionDatas       | `string`   | 交易包含的 action list                |                  |
+| version           | `string`   | 交易版本号                            |        Y          |
+| blockHeight       | `long`     | 交易所在区块高度                      |        Y          |
+| sender            | `string`   | 交易发送的节点名称                    |         Y         |
+| actionDatas       | `string`   | 交易包含的 action list                |        Y          |
 | executeResult     | `string`   | 交易执行结果，`0`：fail，`1`：success |       Status  Y           |
-| errorCode         | `string`   | 错误代码                              |                  |
+| errorCode         | `string`   | 错误代码                              |          Y        |
 | errorMessage      | `string`   | 错误信息                              |        失败错误信息  Y          |
-| txType            | `string`   | 交易类型                              |                  |
-| contractState     | `object`   | 合约状态                              |                  |
+| txType            | `string`   | 交易类型                              |          Y        |
+| contractState     | `object`   | 合约状态                              |         Y         |
 | bdCode            | `string`   |                                       |                  |
-| submitter         | `string`   | 交易发起者                            |  Operation Address     Y           |
+| submitter         | `string`   | 交易发起者                            |  Operation Address         |
 | submitterSign     | `string`   | 交易发起者的签名值                    |                  |
 | lockTime          | `dataTime` |                                       |                  |
 | sendTime          | `dataTime` | 交易创建时间                          |                  |
@@ -89,12 +89,12 @@
 | policyVersion     | `int`      |                                       |                  |
 | dealCount         | `int`      |                                       |                  |
 | maxAllowFee       | `string`   | 最大允许手续费                        |                  |
-| feeAmount         | `string`   | 实际手续费                            |       Transaction Fee  Y           |
+| feeAmount         | `string`   | 实际手续费                            |       Transaction Fee          |
 | feePaymentAddress | `string`   | 手续费转入地址                        |                  |
-| feeCurrency       | `string`   | 手续费货币                            |      币种 Y            |
+| feeCurrency       | `string`   | 手续费货币                            |      币种           |
 | receiptData       | `string`   |                                       |                  |
 
-todo:Time Stamp +UTC 区块时间 blockTime
+todo:Time Stamp +UTC 区块时间 blockTime Y
 
 ### BlockVO
 
