@@ -26,7 +26,8 @@
           <el-card style="height: 100%;">
             <div class="table-title">
               <div style="display: flex;align-items: center">
-                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />{{$t('left.recentTxns')}}
+                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />
+                {{$t('left.recentTxns')}}
               </div>
             </div>
             <hr style="border: 1px solid #B0C2E2;" />
@@ -34,7 +35,7 @@
               <div class="table-container" v-for="(item, key) in txsInformation" :key="key">
                 <div class="table-item">
                   <div style="width: 70%" class="txIdBox">
-                    {{$t('left.tx')}} 
+                    {{$t('left.tx')}}
                     <el-tooltip :content="item.txId" placement="top">
                       <a
                         @click="toDetail(0,item.txId)"
@@ -56,7 +57,8 @@
           <el-card style="height: 100%">
             <div class="table-title">
               <div style="display: flex;align-items: center">
-                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />{{$t('right.blockInformation')}}
+                <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />
+                {{$t('right.blockInformation')}}
               </div>
             </div>
             <hr style="border: 1px solid #B0C2E2;" />
@@ -92,9 +94,10 @@
 
 <script>
 import titileInfomation from "./titleInformation";
-import { queryBlocksByPage, queryTxsByPage, queryBlockByHeight, queryTxListByPage, queryBlockListByPage } from "@/api";
-import { dateUTCFilter, processStr } from "../../utils";
+import { queryTxListByPage, queryBlockListByPage } from "@/api";
+import { dateUTCFilter } from "../../utils";
 import { mapGetters } from "vuex";
+import { transferThousands, isEmptyComma } from "@/utils/signUtils";
 
 export default {
   computed: {
@@ -120,16 +123,12 @@ export default {
     titileInfomation
   },
   methods: {
-    toTrades(height) {
-      this.$router.push({ name: "trades", query: { height } });
-    },
     toDetail(height, id) {
       if (height) {
+        height = isEmptyComma(height);
         this.$router.push({ name: "blockDetail", query: { height } });
       }
       if (id) {
-        // this.tasQueryData.txId = id;
-        // 跳转txID界面
         this.$router.push({
           path: "/txidDetails",
           query: {
@@ -144,6 +143,8 @@ export default {
         let item;
         for (item of this.blockInformation) {
           item.blockTime = dateUTCFilter(item.blockTime);
+          item.height = transferThousands(item.height);
+          item.txNum = transferThousands(item.txNum);
         }
       });
     },
@@ -159,13 +160,13 @@ export default {
   },
   mounted() {
     this.queryBlockListByPage();
-    // this.blockTimer = setInterval(() => {
-    //   this.queryBlockListByPage();
-    // }, 5000);
+    this.blockTimer = setInterval(() => {
+      this.queryBlockListByPage();
+    }, 5000);
     this.queryTxListByPage();
-    // this.txsTimer = setInterval(() => {
-    //   this.queryTxListByPage();
-    // }, 5000);
+    this.txsTimer = setInterval(() => {
+      this.queryTxListByPage();
+    }, 5000);
   },
   beforeDestroy() {
     clearInterval(this.blockTimer);
@@ -257,7 +258,7 @@ export default {
   color: #18519c;
 }
 .on-click:hover {
-  color: #3675DF;
+  color: #3675df;
   text-decoration: underline;
 }
 </style>

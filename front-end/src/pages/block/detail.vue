@@ -172,10 +172,7 @@
 
 <script>
 import {
-  queryBlockTransactions,
-  queryBlockIssueance,
-  queryBlockCredentials,
-  queryBlockFreeze
+  queryBlockListByPage
 } from "@/api";
 import { dateUTCFilter } from "@/utils";
 import { convertNum } from "@/utils/signUtils";
@@ -333,9 +330,10 @@ export default {
     },
     // 获取Transactions数据
     async getBlockTransactions(block) {
+      console.log(block)
       this.loading = true;
       this.queryData.blockHeight = block;
-      let item = await queryBlockTransactions(this.queryData);
+      let item = await queryBlockListByPage(this.queryData);
       if (!item.data.success) {
         this.$router.push({
           path: "/invalidSearch",

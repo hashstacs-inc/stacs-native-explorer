@@ -77,3 +77,55 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
 
   return sym + resValue;
 }
+
+/**
+ *  判断是否是正整数或小数
+ *  @param num 传入的值
+ */
+export const isNumber = (num) => {
+  return /^\d+([.]{1}\d+){0,1}$/.test(num);
+}
+
+/**
+ * 将数字转换为千分位（包括整数、小数），只处理整数部分，小数部分不动
+ * @param {*} num 
+ */
+export const transferThousands = (num) => {
+  if (!isNumber(num)) return '';
+  return `${num}`.replace(/0*(\d+)/,"$1").replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+}
+
+/**
+ *  判断小数点后是否不超过8位，超过返回false，未超过返回true
+ * @param {*} num 
+ */
+export const isEightDecimal = (num) => {
+  if (isNaN(num)) num = '';
+
+  const numStr = `${num}`;
+  const index = numStr.indexOf('.');
+  if (index > -1) {
+    return numStr.slice(index + 1, numStr.length).length <= 8;
+  }
+  return true;
+}
+/**
+ *  判断小数点后是否不超过8位，如果超过8位直接截取前8位
+ * @param {*} num 
+ */
+export const isCutEight = (num) => {
+  if (!isEightDecimal(num)) {
+    const numStr = `${num}`;
+    const index = numStr.indexOf('.');
+    return numStr.slice(0, index) + '.' + numStr.slice(index + 1, index + 1 + 8);
+  }
+  return num;
+}
+
+/**
+ *  将千分位数字里的所有逗号去掉
+ * @param {*} num 
+ */
+export const isEmptyComma = (num) => {
+  return `${num}`.replace(/\,/g, '');
+}

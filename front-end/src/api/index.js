@@ -136,24 +136,6 @@ export function queryTx(data) {
   })
 }
 
-//查询区块列表API
-export function queryBlocksByPage(data) {
-  return request({
-    url: '/explorer/v2/queryBlocksByPage',
-    method: 'post',
-    data
-  })
-}
-
-//查询交易列表API
-export function queryTxsByPage(data) {
-  return request({
-    url: '/explorer/v2/queryTxsByPage',
-    method: 'post',
-    data
-  })
-}
-
 //查询智能合约 API
 export function queryContractCodeByPage(data) {
   return request({
@@ -245,13 +227,6 @@ export function queryBizModelByTxId(data) {
   })
 }
 
-export function queryBlockByHeight(data) {
-  return request({
-    url: '/explorer/v2/queryBlockByHeight',
-    method: 'post',
-    data
-  })
-}
 
 // 新接口
 // 查询交易列表

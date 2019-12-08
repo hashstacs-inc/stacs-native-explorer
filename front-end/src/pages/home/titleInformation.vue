@@ -17,6 +17,7 @@
 
 <script>
 import CountUp from "countup";
+import { isEmptyComma } from "@/utils/signUtils";
 
 export default {
   props: ["number", "desc", "isName", "img"],
@@ -31,6 +32,7 @@ export default {
   },
   watch: {
     number(newVal, oldVal) {
+      newVal = isEmptyComma(newVal);
       var options = {
         useEasing: true,
         useGrouping: true,
