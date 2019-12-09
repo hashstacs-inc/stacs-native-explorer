@@ -69,32 +69,35 @@
 | 名称              | 类型       | 描述                                  | 列表查询是否提供 |
 | ----------------- | ---------- | ------------------------------------- | ---------------- |
 | txId              | `string`   | 交易 Id                               |      TX ID    Y        |
-| bizModel          | `object`   |                                       |         Y         |
+| bizModel          | `object`   |                                       |                |
 | policyId          | `string`   |                                       |         Function Name  Y        |
-| version           | `string`   | 交易版本号                            |        Y          |
+| version           | `string`   | 交易版本号                            |               |
 | blockHeight       | `long`     | 交易所在区块高度                      |        Y          |
-| sender            | `string`   | 交易发送的节点名称                    |         Y         |
-| actionDatas       | `string`   | 交易包含的 action list                |        Y          |
+| sender            | `string`   | 交易发送的节点名称                    |                 |
+| actionDatas       | `string`   | 交易包含的 action list                |        Y         |
 | executeResult     | `string`   | 交易执行结果，`0`：fail，`1`：success |       Status  Y           |
-| errorCode         | `string`   | 错误代码                              |          Y        |
-| errorMessage      | `string`   | 错误信息                              |        失败错误信息  Y          |
+| errorCode         | `string`   | 错误代码                              |              |
+| errorMessage      | `string`   | 错误信息                              |        失败错误信息          |
 | txType            | `string`   | 交易类型                              |          Y        |
-| contractState     | `object`   | 合约状态                              |         Y         |
+| contractState     | `object`   | 合约状态                              |               |
 | bdCode            | `string`   |                                       |                  |
-| submitter         | `string`   | 交易发起者                            |  Operation Address         |
+| submitter         | `string`   | 交易发起者                            |  Operation Address  Y       |
 | submitterSign     | `string`   | 交易发起者的签名值                    |                  |
 | lockTime          | `dataTime` |                                       |                  |
 | sendTime          | `dataTime` | 交易创建时间                          |                  |
 | singDatas         | `string`   | 签名信息                              |                  |
 | policyVersion     | `int`      |                                       |                  |
 | dealCount         | `int`      |                                       |                  |
-| maxAllowFee       | `string`   | 最大允许手续费                        |                  |
-| feeAmount         | `string`   | 实际手续费                            |       Transaction Fee          |
+| maxAllowFee       | `string`   | 最大允许手续费                        |           Y       |
+| feeAmount         | `string`   | 实际手续费                            |       Transaction Fee   Y       |
 | feePaymentAddress | `string`   | 手续费转入地址                        |                  |
-| feeCurrency       | `string`   | 手续费货币                            |      币种           |
+| feeCurrency       | `string`   | 手续费货币                            |      币种    Y       |
 | receiptData       | `string`   |                                       |                  |
 
-todo:Time Stamp +UTC 区块时间 blockTime Y
+todo:
+    1.Time Stamp +UTC 区块时间 blockTime Y
+    2.BD Name Y
+    3.BD Type Y
 
 ### BlockVO
 
@@ -118,6 +121,8 @@ todo:Time Stamp +UTC 区块时间 blockTime Y
 | stateRootHash     | `string`     |                         |                  |
 | createTime        | `dataTime`   | 区块创建时间            |                  |
 
+todo:
+    1.maxHeight 最大区块高度 Y
 
 
 1.首页的搜索框接口
