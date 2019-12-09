@@ -86,36 +86,6 @@
                       </span>
                     </template>
                   </el-table-column>
-                  <!-- From 和 To-->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'fromAddress' || item.prop === 'toAddress'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goAddressDetails(scope.row[item.prop], scope.row.currency)"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- Token -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'currency'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goTokenDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
                   <!-- txid -->
                   <el-table-column
                     :prop="item.prop"
@@ -131,16 +101,19 @@
                       >{{scope.row[item.prop]}}</span>
                     </template>
                   </el-table-column>
-                  <!-- amount -->
+                  <!-- address -->
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
-                    v-else-if="item.prop === 'amount'"
+                    v-else-if="item.prop === 'submitter'"
                     :show-overflow-tooltip="item.showTooltip"
                     :key="item.prop"
                   >
                     <template slot-scope="scope">
-                      <span>{{scope.row[item.prop]}}</span>
+                      <span
+                        class="line-span-no"
+                        @click="goAddressDetails(scope.row[item.prop])"
+                      >{{scope.row[item.prop]}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -171,11 +144,9 @@
 </template>
 
 <script>
-import {
-  queryBlockListByPage
-} from "@/api";
+import {queryBlockListByPage } from "@/api";
 import { dateUTCFilter } from "@/utils";
-import { convertNum } from "@/utils/signUtils";
+import { convertNum, transferThousands } from "@/utils/signUtils";
 import pagination from "@/components/pagination.vue";
 
 export default {
@@ -204,33 +175,33 @@ export default {
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.operationAddress")}`, // 交易转出地址
-          prop: "fromAddress",
+          label: `${this.$t("block.transactions.operationAddress")}`, // submitter 交易发起者
+          prop: "submitter",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.bdName")}`, // 交易接收地址
-          prop: "toAddress",
+          label: `${this.$t("block.transactions.bdName")}`, // bd名称
+          prop: "bdName",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.bdType")}`, // 交易token类型
-          prop: "currency",
+          label: `${this.$t("block.transactions.bdType")}`, // bd类型
+          prop: "bdType",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.functionName")}`, // 交易数量
-          prop: "amount",
+          label: `${this.$t("block.transactions.functionName")}`, // 功能名称
+          prop: "policyId",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.transactionFee")}`, // 交易类型
-          prop: "bizType",
+          label: `${this.$t("block.transactions.transactionFee")}`, // 实际手续费
+          prop: "feeAmount",
           showTooltip: true
         },
         {
           label: `${this.$t("block.transactions.status")}`, // 交易状态
-          prop: "status",
+          prop: "executeResult",
           showTooltip: true
         }
       ],
@@ -346,13 +317,13 @@ export default {
         );
         if (this.transactionsDate) {
           this.transactionsDate.forEach(el => {
-            el.status =
-              el.status.charAt(0).toUpperCase() +
-              el.status.slice(1).toLowerCase();
+            el.executeResult =
+              el.executeResult.charAt(0).toUpperCase() +
+              el.executeResult.slice(1).toLowerCase();
+            el.feeAmount =  transferThousands(el.feeAmount);
           });
         }
-        this.pageTotal = item.data.data.total;
-        console.log(item)
+        this.pageTotal = transferThousands(item.data.data.total);
         this.maxHeight = item.data.data.maxHeight;
         this.loading = false;
       }
@@ -370,16 +341,6 @@ export default {
     // 格式化时间
     formatDate(time) {
       return dateUTCFilter(time);
-    },
-    // 点击Token
-    goTokenDetails(token) {
-      this.$router.push({
-        path: "/tokenDetail",
-        name: "tokenDetail",
-        query: {
-          token
-        }
-      });
     },
     // 点击TXid
     goTxIdDetails(txid) {

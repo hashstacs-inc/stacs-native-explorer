@@ -19,4 +19,13 @@ Mock.mock(RegExp('/explorer/queryBlockListByPage'), "post", function (options) {
   }
 });
 
+Mock.mock(RegExp('/explorer/v2/queryAddressTransactions'), "post", function (options) {
+  return dashboard.addressList
+});
+
+Mock.mock(RegExp('/explorer/v2/queryTxDetailById'), "post", function (options) {
+  return dashboard.txListDetail
+});
+
+
 export default Mock;

@@ -32,7 +32,6 @@ export default {
   },
   watch: {
     number(newVal, oldVal) {
-      newVal = isEmptyComma(newVal);
       var options = {
         useEasing: true,
         useGrouping: true,

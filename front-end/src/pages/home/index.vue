@@ -97,7 +97,7 @@ import titileInfomation from "./titleInformation";
 import { queryTxListByPage, queryBlockListByPage } from "@/api";
 import { dateUTCFilter } from "../../utils";
 import { mapGetters } from "vuex";
-import { transferThousands, isEmptyComma } from "@/utils/signUtils";
+import { transferThousands, } from "@/utils/signUtils";
 
 export default {
   computed: {
@@ -125,7 +125,6 @@ export default {
   methods: {
     toDetail(height, id) {
       if (height) {
-        height = isEmptyComma(height);
         this.$router.push({ name: "blockDetail", query: { height } });
       }
       if (id) {
@@ -143,7 +142,6 @@ export default {
         let item;
         for (item of this.blockInformation) {
           item.blockTime = dateUTCFilter(item.blockTime);
-          item.height = transferThousands(item.height);
           item.txNum = transferThousands(item.txNum);
         }
       });

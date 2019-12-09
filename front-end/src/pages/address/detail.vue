@@ -77,39 +77,6 @@
                       </span>
                     </template>
                   </el-table-column>
-                  <!-- From 和 To-->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'fromAddress' || item.prop === 'toAddress'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                    :width="item.width"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        v-if="scope.row[item.prop] !== addressId"
-                        @click="goAddressDetails(scope.row[item.prop], scope.row.currency)"
-                      >{{scope.row[item.prop]}}</span>
-                      <span class="line-span" v-else>{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- block -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'blockHeight'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                  >
-                    <template slot-scope="scope">
-                      <span
-                        class="line-span-no"
-                        @click="goBlockDetails(scope.row[item.prop])"
-                      >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
                   <!-- txid -->
                   <el-table-column
                     :prop="item.prop"
@@ -124,18 +91,6 @@
                         class="line-span-no"
                         @click="goTxIdDetails(scope.row[item.prop])"
                       >{{scope.row[item.prop]}}</span>
-                    </template>
-                  </el-table-column>
-                  <!-- amount -->
-                  <el-table-column
-                    :prop="item.prop"
-                    :label="item.label"
-                    v-else-if="item.prop === 'amount'"
-                    :show-overflow-tooltip="item.showTooltip"
-                    :key="item.prop"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{scope.row[item.prop]}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -171,7 +126,8 @@
 import {
   queryTransactionsDetails,
   queryIssuesDetails,
-  queryBizModelsByPage
+  queryBizModelsByPage,
+  queryTransactionsDetailsNew
 } from "@/api";
 import { dateUTCFilter } from "@/utils";
 import { convertNum } from "@/utils/signUtils";
@@ -314,36 +270,11 @@ export default {
         }
       });
     },
-    // 点击block
-    goBlockDetails(block) {
-      this.$router.push({
-        path: "/blockDetail",
-        query: {
-          height: block
-        }
-      });
-    },
     // 切换tabs页
     changeTabs(tab) {
       if (tab.label === "Transactions") {
         this.getTransactions();
       }
-    },
-    // 点击地址
-    goAddressDetails(address, token) {
-      this.$router.push({
-        path: "/addressDetail",
-        name: "addressDetail",
-        query: {
-          address,
-          token
-        }
-      });
-      this.tabsActiveName = "Transactions";
-      let tab = {
-        label: this.tabsActiveName
-      };
-      this.changeTabs(tab);
     },
     // 获取Transactions信息
     async getTransactions() {
@@ -352,7 +283,8 @@ export default {
       if (this.tokenValue) {
         this.repData.currency = this.tokenValue;
       }
-      let item = await queryTransactionsDetails(this.repData);
+      let item = await queryTransactionsDetailsNew(this.repData);
+      console.log(item)
       if (!item.data.success) {
         this.$router.push({
           path: "/invalidSearch",

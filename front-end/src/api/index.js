@@ -1,14 +1,5 @@
 import request from '@/server'
 
-//查询address的Transactions页
-export function queryTransactionsDetails(data) {
-  return request({
-    url: '/explorer/v2/queryAddressTransactions',
-    method: 'post',
-    data
-  })
-}
-
 //查询address的issue页
 export function queryIssuesDetails(data) {
   return request({
@@ -245,4 +236,30 @@ export function queryBlockListByPage(data) {
     method: 'post',
     data
   })
+}
+
+//查询address的Transactions页
+export function queryTransactionsDetailsNew(data) {
+  return request({
+    url: '/explorer/v2/queryAddressTransactions',
+    method: 'post',
+    data
+  })
+}
+
+//查询错误信息
+export function queryTxNew(data) {
+  return request({
+    url: '/explorer/v2/queryTx',
+    method: 'post',
+    data
+  })
+}
+
+export function queryTxDetailByIdNew(data) {
+  return request({
+    url: '/explorer/v2/queryTxDetailById',
+    method: 'post',
+    data
+  });
 }

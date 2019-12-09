@@ -11,6 +11,14 @@
               v-if="item.isTo&&BasicInfo[item.prop]"
               @click="toDetail(item.target,BasicInfo[item.prop])"
             >{{BasicInfo[item.prop]}}</a>
+            <div v-else-if="item.prop === 'actionDatas'" class="contract-code">
+              <ul>
+                <li v-for="(val, key) in item.actionDatas" :key="key">
+                  <span>{{key + 1}}</span>
+                  <span>{{val}}</span>
+                </li>
+              </ul>
+            </div>
             <span v-else-if="item.isTo&&!BasicInfo[item.prop]" style="font-weight: 500">- -</span>
             <span v-else style="font-weight: 500">{{BasicInfo[item.prop]}}</span>
           </div>
@@ -20,7 +28,7 @@
   </div>
 </template>
 <script>
-import { queryTxDetailById } from "@/api";
+import { queryTxDetailById, queryTxDetailByIdNew } from "@/api";
 import { dateUTCFilter } from "@/utils";
 
 export default {
@@ -29,19 +37,33 @@ export default {
       showTooltip: true,
       loading: false,
       BasicInfoLabel: [
-        { label: "TX ID", prop: "txId" },
-        { label: "BD Name", prop: "txId" },
-        { label: "BD Type", prop: "txId" },
-        { label: "Function Name", prop: "txId" },
-        { label: "Operation Address", prop: "txId" },
-        { label: "Fee Max Amount", prop: "txId" },
-        { label: "Transaction Fee", prop: "txId" },
-        { label: "Block", prop: "txId" },
-        { label: "Time Stamp +UTC", prop: "txId" },
-        { label: "Status", prop: "txId" },
-        { label: "Input Data", prop: "txId" },
+        { label: `${this.$t("tx.baseInfo.txID")}`, prop: "txId" },
+        { label: `${this.$t("tx.baseInfo.bdName")}`, prop: "bdName" },
+        { label: `${this.$t("tx.baseInfo.bdType")}`, prop: "bdType" },
+        { label: `${this.$t("tx.baseInfo.functionName")}`, prop: "policyId" },
+        {
+          label: `${this.$t("tx.baseInfo.operationAddress")}`,
+          prop: "submitter",
+          isTo: true
+        },
+        {
+          label: `${this.$t("tx.baseInfo.feeMaxAmount")}`,
+          prop: "maxAllowFee"
+        },
+        {
+          label: `${this.$t("tx.baseInfo.transactionFee")}`,
+          prop: "feeAmount"
+        },
+        {
+          label: `${this.$t("tx.baseInfo.block")}`,
+          prop: "blockHeight",
+          isTo: true
+        },
+        { label: `${this.$t("tx.baseInfo.timeStamp")}`, prop: "blockTime" },
+        { label: `${this.$t("tx.baseInfo.status")}`, prop: "executeResult" },
+        { label: `${this.$t("tx.baseInfo.inputData")}`, prop: "actionDatas" }
       ],
-      BasicInfo: {},
+      BasicInfo: {}
     };
   },
   computed: {
@@ -60,51 +82,18 @@ export default {
     },
     getList() {
       this.loading = true;
-      queryTxDetailById({
+      queryTxDetailByIdNew({
         txId: this.txId
       })
         .then(res => {
+          console.log(res);
           if (!res.data.success) {
             this.$router.push({
               path: "/invalidSearch",
               query: { info: this.$route.query.id }
             });
           } else {
-            this.determineType(res.data.data.baseInfo.type);
-            this.BasicInfo = res.data.data.baseInfo;
-            this.BasicInfo.blockTime = dateUTCFilter(
-              Number(this.BasicInfo.blockTime)
-            );
-            if (this.BasicInfo.type === "Credentials") {
-              this.BasicInfo.currency = "";
-              this.TokenInfo = JSON.parse(this.BasicInfo.bizModel);
-            } else {
-              this.TokenInfo = res.data.data.tokenInfo;
-              if (!this.TokenInfo.price) {
-                this.TokenInfo.price = "- -";
-              }
-              if (!this.TokenInfo.exchangeStartDate) {
-                this.TokenInfo.exchangeStartDate = "- -";
-              }
-              if (!this.TokenInfo.exchangeEndDate) {
-                this.TokenInfo.exchangeEndDate = "- -";
-              }
-              if (!this.TokenInfo.issuer) {
-                this.TokenInfo.issuer = "- -";
-              }
-              if (!this.TokenInfo.type) {
-                this.TokenInfo.type = "- -";
-              }
-            }
-
-            this.tableDetailsList = res.data.data.tradeDetails;
-            if (this.tableDetailsList) {
-              this.tableDetailsList.forEach(el => {
-                el.status =
-                  el.status.charAt(0).toUpperCase() +
-                  el.status.slice(1).toLowerCase();
-              });
-            }
+            this.BasicInfo = res.data.data;
           }
           this.loading = false;
         })
@@ -112,42 +101,6 @@ export default {
           this.loading = false;
         });
     },
-    // determineType(val) {
-    //   console.log(val);
-    //   // 基础信息label配置
-    //   let arrBasicInfoLabel = [
-    //     { label: "TX ID", prop: "txId" }
-    //   ];
-      
-    //   //BasicInfoLabel和TokenInfoLabel判断
-    //   if (val === "Rates") {
-    //     this.BasicInfoLabel = arrBasicInfoRates;
-    //   } else {
-    //     this.BasicInfoLabel = arrBasicInfoLabel;
-    //   }
-    //   if (val !== "Credentials") {
-    //     this.TokenInfoLabel = arrTokenInfoLabel;
-    //   } else {
-    //     this.TokenInfoLabel = arrTokenInfoLabelAnother;
-    //   }
-
-    //   //tableConfig判断
-    //   if (
-    //     val === "Transfer" ||
-    //     val === "Rates" ||
-    //     val === "Disposed" ||
-    //     val === "Subscription"
-    //   ) {
-    //     this.tableConfig = configTranAndRa;
-    //   } else if (val === "Issuance" || val === "Increments") {
-    //     this.tableConfig = configIssAndIn;
-    //   } else if (val === "Credentials") {
-    //     this.tableConfig = configCre;
-    //   } else if (val === "Matured") {
-    //     this.tableConfig = configMatured;
-    //   }
-    // },
-
     // 去token/block/address等详情页
     toDetail(target, prop) {
       console.log(target, prop);
