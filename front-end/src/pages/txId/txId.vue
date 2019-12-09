@@ -11,7 +11,7 @@
               v-if="item.isTo&&BasicInfo[item.prop]"
               @click="toDetail(item.target,BasicInfo[item.prop])"
             >{{BasicInfo[item.prop]}}</a>
-            <div v-else-if="item.prop === 'actionDatas'" class="contract-code">
+            <div v-else-if="item.prop === 'actionDatas'" class="action-data">
               <ul>
                 <li v-for="(val, key) in item.actionDatas" :key="key">
                   <span>{{key + 1}}</span>
@@ -174,6 +174,26 @@ export default {
   min-height: 60px;
   display: flex;
   align-items: center;
+  .action-data {
+    height: 300px;
+    overflow: auto;
+    width: 80%;
+    display: inline-block;
+    ul {
+      width: 100%;
+      padding: 0;
+    }
+    li {
+      list-style: none;
+      span:nth-child(2) {
+        display: inline-block;
+        vertical-align: top;
+      }
+      span:nth-child(1) {
+        margin-right: 10px;
+      }
+    }
+  }
 }
 .autoTable {
   -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
