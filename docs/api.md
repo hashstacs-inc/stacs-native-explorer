@@ -122,7 +122,7 @@ todo:
 | createTime        | `dataTime`   | 区块创建时间            |                  |
 
 todo:
-    1.maxHeight 最大区块高度 Y
+    1.maxHeight 最大区块高度 blockTime Y
 
 
 1.首页的搜索框接口
