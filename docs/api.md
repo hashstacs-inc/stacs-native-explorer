@@ -1,5 +1,3 @@
-6区块链浏览器-API
-
 ## 接口规范
 
 ### 请求头规范
@@ -28,6 +26,8 @@
 
 ## 接口列表
 
+查询修改为 get
+
 ### 交易列表查询
 
 `POST`: `/explorer/queryTxListByPage`
@@ -37,15 +37,29 @@
 | 名称        | 类型     | 长度 | 是否必填 | 描述                                                   |
 | ----------- | -------- | ---- | -------- | ------------------------------------------------------ |
 | blockHeight | `long`   |      | N        | 区块高度                                               |
-| txId        | `string` | 64   | N        | 交易 id                                                |
 | sender      | `string` | 32   | N        | 发送交易的节点名称(非地址)                             |
 | pageNum     | `int`    |      | Y        | 页码                                                   |
 | pageSize    | `int`    |      | Y        | 分页条数                                               |
 | order       | `string` |      | N        | 1. `desc`：倒序 <br />2. `asc`：顺序<br />默认：`desc` |
+| subbmiter   | `string` | 40   | N        | 交易提交者地址                                         |
 
-// todo 增加 subbmiter 条件查询
+**响应结果:** ` Page<TransactionVO>`
 
-**响应结果:** ` Page<CoreTransactionVO>`
+### 交易详情查询
+
+| 名称 | 类型     | 长度 | 是否必填 | 描述    |
+| ---- | -------- | ---- | -------- | ------- |
+| txId | `string` | 64   | Y        | 交易 id |
+
+**响应结果:** ` TransactionVO`
+
+### 区块详情查询
+
+| 名称   | 类型   | 长度 | 是否必填 | 描述     |
+| ------ | ------ | ---- | -------- | -------- |
+| height | `long` |      | Y        | 区块高度 |
+
+**响应结果:** ` BlockVO`
 
 ### 区块列表查询
 
@@ -62,6 +76,25 @@
 
 **响应结果**：`Page<BlockVO>`
 
+### 合约列表列表
+
+> 查询币种列表时：byType="assets"
+
+| 名称   | 类型     | 长度 | 是否必填 | 描述                                    |
+| ------ | -------- | ---- | -------- | --------------------------------------- |
+| bdType | `string` | 32   | N        | bdType（过滤 system）：contract、assets |
+
+**响应结果：**`List<ContractVO>`
+
+### 余额查询
+
+| 名称     | 类型     | 长度 | 是否必填 | 描述                       |
+| -------- | -------- | ---- | -------- | -------------------------- |
+| contract | `string` | 64   | Y        | 合约地址                   |
+| identity | `string` | 40   | Y        | 用户地址（对应 submitter） |
+
+**响应类型：**`string`
+
 ## 返回参数类型
 
 ### TransactionVO
@@ -76,7 +109,7 @@
 | sender            | `string`   | 交易发送的节点名称                    |                 |
 | actionDatas       | `string`   | 交易包含的 action list                |        Y         |
 | executeResult     | `string`   | 交易执行结果，`0`：fail，`1`：success |       Status  Y           |
-| errorCode         | `string`   | 错误代码                              |              |
+| errorCode         | `string`   | 错误代码                              | Y |
 | errorMessage      | `string`   | 错误信息                              |        失败错误信息          |
 | txType            | `string`   | 交易类型                              |          Y        |
 | contractState     | `object`   | 合约状态                              |               |
@@ -93,11 +126,9 @@
 | feePaymentAddress | `string`   | 手续费转入地址                        |                  |
 | feeCurrency       | `string`   | 手续费货币                            |      币种    Y       |
 | receiptData       | `string`   |                                       |                  |
-
-todo:
-    1.Time Stamp +UTC 区块时间 blockTime Y
-    2.BD Name Y
-    3.BD Type Y
+| blockTime | `long` | 区块生成时间 | Y |
+| bdName | `string` | | Y |
+| bdType | `string` | | Y |
 
 ### BlockVO
 
@@ -119,14 +150,29 @@ todo:
 | txReceiptRootHash | `string`     |                         |                  |
 | caRootHash        | `string`     |                         |                  |
 | stateRootHash     | `string`     |                         |                  |
-| createTime        | `dataTime`   | 区块创建时间            |                  |
+| maxHeight | `long` | 链上块当前最大高度 |  |
 
-todo:
-    1.maxHeight 最大区块高度 blockTime Y
+### ContractVO
 
+| 名称          | 类型     | 描述              | 列表查询是否提供 |
+| ------------- | -------- | ----------------- | ---------------- |
+| address       | `string` | 合约地址          | Y                |
+| name          | `string` | 合约名称          | Y                |
+| symbol        | `string` | 合约代码          | Y                |
+| extension     | `string` | 扩展字段          | N                |
+| bdCode        | `string` |                   | Y                |
+| bdCodeVersion | `string` |                   | Y                |
+| status        | `string` |                   | Y                |
+| blockHeight   | `long`   |                   | N                |
+| txId          | `string` | 合约创建的交易 Id | N                |
+| actionIndex   | `int`    |                   | N                |
+| language      | `string` | 合约语言          | N                |
+| version       | `string` | 合约版本          | Y                |
+| code          | `string` | 合约源码          | N                |
+| createTime    | `long`   | 创建时间          | Y                |
 
-1.首页的搜索框接口
-2.首页的Block Information接口
-3.address的Transactions
-4.block的Transactions
-5.txid的信息
+1. submitter 地址查询、合约方法调用（余额查询(balanceOf)）
+2. 交易详情 & 列表
+3. 块高度：块详情（最大块高度）、块的交易列表
+4. bdName（不做） 条件查询
+5. 合约列表
