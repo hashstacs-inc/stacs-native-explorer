@@ -3,16 +3,14 @@ package io.stacs.nav.dapp.explorer.controller;
 import com.alipay.sofa.ark.spi.service.ArkInject;
 import io.stacs.nav.drs.api.IQueryService;
 import io.stacs.nav.drs.api.model.RespData;
+import io.stacs.nav.drs.api.model.TransactionPO;
 import io.stacs.nav.drs.api.model.block.BlockVO;
-import io.stacs.nav.drs.api.model.query.QueryBlockByHeightVO;
 import io.stacs.nav.drs.api.model.query.QueryBlockVO;
 import io.stacs.nav.drs.api.model.query.QueryTxListVO;
 import io.stacs.nav.drs.api.model.query.QueryTxVO;
 import io.stacs.nav.drs.api.model.tx.CoreTransactionVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,20 +28,45 @@ import static io.stacs.nav.drs.api.model.RespData.success;
         return success(queryService.queryCurrentHeight());
     }
 
-    @PostMapping("/queryTxListByPage")
-    public RespData<List<CoreTransactionVO>> queryCoreTxListByPage(QueryTxListVO vo) {
-        return success(queryService.queryCoreTxListByPage(vo));
+    @GetMapping("/queryTx")
+    public RespData<List<TransactionPO>> queryTx(@RequestParam(required = false) Long blockHeight, @RequestParam(required = false) String txId,
+                                                 @RequestParam(required = false) String submitter, @RequestParam Integer pageNo,
+                                                 @RequestParam Integer pageSize) {
+        QueryTxListVO vo = new QueryTxListVO();
+        vo.setBlockHeight(blockHeight);
+        vo.setSubmitter(submitter);
+        vo.setTxId(txId);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        return success(queryService.queryTx(vo));
     }
 
-    @PostMapping("/queryCoreTxById") public RespData<CoreTransactionVO> queryCoreTxById(QueryTxVO vo) {
+    @GetMapping("/queryTxById") public RespData<CoreTransactionVO> queryCoreTxById(@RequestParam String txId) {
+        QueryTxVO vo = new QueryTxVO();
+        vo.setTxId(txId);
         return success(queryService.queryCoreTxById(vo));
     }
 
-    @PostMapping("/queryBlockListByPage") public RespData<List<BlockVO>> queryBlockListByPage(QueryBlockVO vo) {
-        return success(queryService.queryBlockListByPage(vo));
+    @GetMapping("/queryBlocks")
+    public RespData<List<BlockVO>> queryBlocks(@RequestParam Long height, @RequestParam String blockHash,
+                                               @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
+        QueryBlockVO vo = new QueryBlockVO();
+        vo.setHeight(height);
+        vo.setBlockHash(blockHash);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        return success(queryService.queryBlocks(vo));
     }
 
-    @PostMapping("/queryBlockByHeight") public RespData<BlockVO> queryBlockByHeight(QueryBlockByHeightVO vo) {
-        return success(queryService.queryBlockByHeight(vo));
+    @PostMapping("/queryBlockByHeight")
+    public RespData<List<BlockVO>> queryBlockByHeight(@RequestParam Long height, @RequestParam String blockHash,
+                                                      @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
+        QueryBlockVO vo = new QueryBlockVO();
+        vo.setHeight(height);
+        vo.setBlockHash(blockHash);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        return success(queryService.queryBlocks(vo));
     }
+
 }
