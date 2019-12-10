@@ -19,12 +19,12 @@
             >
               <el-option
                 v-for="item in tokenList"
-                :key="item.currency"
+                :key="item.symbol"
                 :label="item.label"
-                :value="item.currency"
+                :value="item.symbol"
               ></el-option>
             </el-select>
-            <span v-else-if="item.prop === 'Address'">{{addressId}}</span>
+            <span v-else-if="item.prop === 'Address'">{{submitterAddress}}</span>
             <span
               v-else-if="(item.label === 'Balance' && item.prop == 0)||(item.label === 'Balance' && !item.prop)"
             >- -</span>
@@ -36,10 +36,10 @@
     <article class="Basic-Information">
       <el-card class="bi-box">
         <section class="table-body">
-          <el-tabs v-model="tabsActiveName" @tab-click="changeTabs">
+          <el-tabs v-model="tabsActiveName" @tab-click="changeTabs" v-loading="tableLoading">
             <!-- Transactions -->
             <el-tab-pane label="Transactions" name="Transactions">
-              <div class="table-top">{{$t('address.transactions.totalTxns')}} {{pageTotal}}</div>
+              <div class="table-top">{{$t('address.transactions.totalTxns')}} {{txNum}}</div>
               <el-table :data="transactionsDate" stripe style="width: 100%">
                 <template v-for="item in transactionsFrom">
                   <!-- 时间 -->
@@ -59,18 +59,18 @@
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
-                    v-else-if="item.prop === 'status'"
+                    v-else-if="item.prop === 'executeResult'"
                     :show-overflow-tooltip="item.showTooltip"
                     :key="item.prop"
                     :width="item.width"
                   >
                     <template slot-scope="scope">
-                      <span>{{scope.row.status}}</span>
+                      <span>{{scope.row.executeResult}}</span>
                       <!-- 失败显示 -->
                       <span
-                        v-if="scope.row.status === 'Failed'"
+                        v-if="scope.row.executeResult === `${$t('common.failed')}`"
                         class="FailedStyle"
-                        @click="ShowErrorInfo(scope.row.txId)"
+                        @click="ShowErrorInfo(scope.row.errorMessage)"
                       >
                         <img src="@/assets/img/view.png" style="margin: 0 5px;" />
                         {{$t('address.common.view')}}
@@ -109,7 +109,7 @@
       </el-card>
       <!-- 分页 -->
       <pagination
-        :currentPage="repData.pageNo"
+        :currentPage="queryTxList.pageNum"
         :totalStrip="pageTotal"
         @nextPage="nextPage"
         @prevPage="prevPage"
@@ -119,18 +119,26 @@
       />
       <!-- v-if="tabsActiveName !== 'Credentials'" -->
     </article>
+    <el-dialog
+      :title="$t('common.errorInfo')"
+      :visible.sync="errorMessagedialogVisible"
+      width="30%"
+    >
+      <span>{{errorMessage}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="errorMessagedialogVisible = false"
+        >{{$t('common.yesConfirm')}}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {
-  queryTransactionsDetails,
-  queryIssuesDetails,
-  queryBizModelsByPage,
-  queryTransactionsDetailsNew
-} from "@/api";
+import { queryContractList, queryTxListByPage } from "@/api";
 import { dateUTCFilter } from "@/utils";
-import { convertNum } from "@/utils/signUtils";
+import { transferThousands } from "@/utils/signUtils";
 import pagination from "@/components/pagination.vue";
 
 export default {
@@ -143,16 +151,26 @@ export default {
       ],
       tokenValue: "",
       tabsActiveName: `${this.$t("address.transactions.tabsName")}`,
+      errorMessage:"",
       tokenList: [],
       noTokenList: "",
       loading: false,
-      repData: {
-        address: "",
-        // currency: '',
-        pageNo: 1,
+      tableLoading: false,
+      errorMessagedialogVisible:false,
+      queryContract: {
+        bdType: "assets"
+      },
+      queryBalance: {
+        contract: "", //合约地址
+        identity: "" //用户地址（对应 submitter）
+      },
+      queryTxList: {
+        subbmiter: "",
+        pageNum: 1,
         pageSize: 20
       },
       pageTotal: 0,
+      txNum:0,
       transactionsDate: [],
       transactionsFrom: [
         {
@@ -168,27 +186,27 @@ export default {
         },
         {
           label: `${this.$t("address.transactions.bdName")}`, // BD名称
-          prop: "fromAddress",
+          prop: "bdName",
           showTooltip: true
         },
         {
           label: `${this.$t("address.transactions.bdType")}`, // BD类型
-          prop: "toAddress",
+          prop: "bdType",
           showTooltip: true
         },
         {
           label: `${this.$t("address.transactions.functionName")}`, // 方法名称
-          prop: "amount",
+          prop: "policyId",
           showTooltip: true
         },
         {
           label: `${this.$t("address.transactions.transactionFee")}`, // 此次BD执行交易收取的手续费金额及币种
-          prop: "blockHeight",
+          prop: "feeAmount",
           showTooltip: true
         },
         {
           label: `${this.$t("address.transactions.status")}`, // 交易状态
-          prop: "status",
+          prop: "executeResult",
           showTooltip: true,
           width: 180
         }
@@ -199,22 +217,15 @@ export default {
     pagination
   },
   computed: {
-    // 地址ID
-    addressId() {
+    // 用户地址（对应 submitter）
+    submitterAddress() {
       return this.$route.query.address;
-    },
-    // TokenId
-    currencyToken() {
-      return this.$route.query.token;
     }
   },
   methods: {
-    returnConvertNum(num) {
-      return convertNum(num);
-    },
     // 改变页数
     changePage(page) {
-      this.repData.pageNo = page;
+      this.queryTxList.pageNum = page;
       let tab = {
         label: this.tabsActiveName
       };
@@ -222,7 +233,7 @@ export default {
     },
     // 第一页
     firstPage() {
-      this.repData.pageNo = 1;
+      this.queryTxList.pageNum = 1;
       let tab = {
         label: this.tabsActiveName
       };
@@ -230,7 +241,7 @@ export default {
     },
     // 最后一页
     lastPage(page) {
-      this.repData.pageNo = page;
+      this.queryTxList.pageNum = page;
       let tab = {
         label: this.tabsActiveName
       };
@@ -238,7 +249,7 @@ export default {
     },
     // 上一页
     prevPage() {
-      this.repData.pageNo--;
+      this.queryTxList.pageNum--;
       let tab = {
         label: this.tabsActiveName
       };
@@ -246,7 +257,7 @@ export default {
     },
     // 下一页
     nextPage() {
-      this.repData.pageNo++;
+      this.queryTxList.pageNum++;
       let tab = {
         label: this.tabsActiveName
       };
@@ -254,8 +265,12 @@ export default {
     },
     // 改变token
     changeToken(token) {
-      this.repData.pageNo = 1;
-      this.goAddressDetails(this.addressId, token);
+      this.tokenList.forEach(el => {
+        if (el.symbol === token) {
+          this.queryBalance.contract = el.address;
+        }
+      });
+      this.getBalance();
     },
     // 格式化时间
     formatDate(time) {
@@ -276,14 +291,11 @@ export default {
         this.getTransactions();
       }
     },
-    // 获取Transactions信息
-    async getTransactions() {
+    // 获取合约列表列表
+    async getContractList() {
       this.loading = true;
-      this.repData.address = this.addressId;
-      if (this.tokenValue) {
-        this.repData.currency = this.tokenValue;
-      }
-      let item = await queryTransactionsDetailsNew(this.repData);
+      this.queryBalance.identity = this.submitterAddress;
+      let item = await queryContractList(this.queryContract);
       if (!item.data.success) {
         this.$router.push({
           path: "/invalidSearch",
@@ -291,45 +303,64 @@ export default {
         });
       } else {
         if (item.data.data) {
-          this.transactionsDate = JSON.parse(
-            JSON.stringify(item.data.data.pageList)
-          );
-          if (this.transactionsDate) {
-            this.transactionsDate.forEach(el => {
-              el.status =
-                el.status.charAt(0).toUpperCase() +
-                el.status.slice(1).toLowerCase();
-            });
-          }
-          this.tokenList = JSON.parse(JSON.stringify(item.data.data.tokens));
+          this.tokenList = JSON.parse(JSON.stringify(item.data.data.list));
           if (!this.tokenList) {
-            this.tokenList = [];
-          }
-          this.tokenList.forEach(el => {
-            el.label = el.currencyName + "(" + el.currency + ")";
-          });
-          if (item.data.data.currency) {
-            this.tokenValue = item.data.data.currency;
-          } else {
             this.tokenValue = "--";
+          } else {
+            this.tokenList.forEach(el => {
+              el.label = el.name + "(" + el.symbol + ")";
+            });
+            this.tokenValue = this.tokenList[0].symbol;
+            this.queryBalance.contract = this.tokenList[0].address;
+            this.getBalance();
           }
-          this.pageTotal = item.data.data.total;
-          this.BasicFormationLabel.filter(v => v.label === "Balance")[0].prop =
-            item.data.data.balance;
           this.loading = false;
         } else {
-          this.BasicFormationLabel.filter(
-            v => v.label === "Balance"
-          )[0].prop = null;
           this.noTokenList = "- -";
           this.loading = false;
         }
       }
+    },
+    // 余额查询
+    getBalance() {
+      console.log(this.queryBalance);
+    },
+    // 根据address查询交易列表
+    async getAddressTxList(address) {
+      this.tableLoading = true;
+      this.queryTxList.subbmiter = address;
+      let item = await queryTxListByPage(this.queryTxList);
+      console.log(item);
+      if (!item.data.success) {
+        this.$router.push({
+          path: "/invalidSearch",
+          query: { info: this.$route.query.height }
+        });
+      } else {
+        this.transactionsDate = JSON.parse(JSON.stringify(item.data.data.list));
+        this.transactionsDate.forEach(el => {
+          if (el.feeAmount) {
+            el.feeAmount = transferThousands(el.feeAmount) + el.feeCurrency;
+          }
+          if (el.executeResult === "1") {
+            el.executeResult = `${this.$t("common.success")}`;
+          } else {
+            el.executeResult = `${this.$t("common.failed")}`;
+          }
+        });
+        this.pageTotal = item.data.data.total;
+        this.txNum = transferThousands(this.pageTotal);
+        this.tableLoading = false;
+      }
+    },
+     ShowErrorInfo(errorMessage) {
+      this.errorMessage = errorMessage;
+      this.errorMessagedialogVisible = true;
     }
   },
   created() {
-    this.tokenValue = this.currencyToken;
-    this.getTransactions();
+    this.getContractList();
+    this.getAddressTxList(this.submitterAddress);
   }
 };
 </script>

@@ -12,12 +12,14 @@
               @click="toDetail(item.target,BasicInfo[item.prop])"
             >{{BasicInfo[item.prop]}}</a>
             <div v-else-if="item.prop === 'actionDatas'" class="action-data">
-              <ul>
-                <li v-for="(val, key) in item.actionDatas" :key="key">
-                  <span>{{key + 1}}</span>
-                  <span>{{val}}</span>
-                </li>
-              </ul>
+              <div v-for="(val, key) in BasicInfo[item.prop]" :key="key">
+                <ul>
+                  <li v-for="(v, k) in val" :key="k">
+                    <span>{{k}}:</span>
+                    <span>{{v}}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
             <span v-else-if="item.isTo&&!BasicInfo[item.prop]" style="font-weight: 500">- -</span>
             <span v-else style="font-weight: 500">{{BasicInfo[item.prop]}}</span>
@@ -28,8 +30,9 @@
   </div>
 </template>
 <script>
-import { queryTxDetailById, queryTxDetailByIdNew } from "@/api";
+import { queryTxDetails } from "@/api";
 import { dateUTCFilter } from "@/utils";
+import { transferThousands } from "@/utils/signUtils";
 
 export default {
   data() {
@@ -73,16 +76,16 @@ export default {
   },
   methods: {
     renderTable() {
-      [].forEach.call(document.querySelectorAll(".tableList div"), function(
+      [].forEach.call(document.querySelectorAll(".tableList >div"), function(
         div,
         index
       ) {
-        if (index % 2 !== 0) div.style.background = "#F6F6F6";
+        if (index % 2 !== 0) div.style.background = "#f6f8fa";
       });
     },
     getList() {
       this.loading = true;
-      queryTxDetailByIdNew({
+      queryTxDetails({
         txId: this.txId
       })
         .then(res => {
@@ -93,6 +96,22 @@ export default {
             });
           } else {
             this.BasicInfo = res.data.data;
+            this.BasicInfo.maxAllowFee =
+              transferThousands(res.data.data.maxAllowFee) +
+              " " +
+              res.data.data.feeCurrency;
+            this.BasicInfo.feeAmount =
+              transferThousands(res.data.data.feeAmount) +
+              " " +
+              res.data.data.feeCurrency;
+            this.BasicInfo.blockTime = dateUTCFilter(res.data.data.blockTime);
+            if (res.data.data.executeResult === "1") {
+              this.BasicInfo.executeResult = `${this.$t("common.success")}`;
+            } else {
+              this.BasicInfo.executeResult = `${this.$t("common.failed")}`;
+            }
+            console.log(this.BasicInfo.actionDatas);
+            console.log(JSON.parse(JSON.stringify(this.BasicInfo.actionDatas)));
           }
           this.loading = false;
         })
@@ -175,20 +194,29 @@ export default {
   .action-data {
     height: 300px;
     overflow: auto;
-    width: 80%;
+    width: 74%;
     display: inline-block;
-    ul {
-      width: 100%;
-      padding: 0;
-    }
-    li {
-      list-style: none;
-      span:nth-child(2) {
-        display: inline-block;
-        vertical-align: top;
+    div {
+      border-bottom: 2px solid darkblue;
+      ul {
+        width: 100%;
+        padding: 0;
       }
-      span:nth-child(1) {
-        margin-right: 10px;
+      li {
+        list-style: none;
+        display: flex;
+        padding-bottom: 15px;
+        span:nth-child(2) {
+          width: 100%;
+          vertical-align: top;
+          word-wrap: break-word;
+          word-break: break-all;
+          // white-space:nowrap;
+        }
+        span:nth-child(1) {
+          width: 15%;
+          text-align: left;
+        }
       }
     }
   }

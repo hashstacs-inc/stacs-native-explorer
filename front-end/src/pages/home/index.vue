@@ -148,7 +148,8 @@ export default {
     },
     queryTxListByPage() {
       queryTxListByPage(this.txsQueryData).then(res => {
-        this.txsInformation = res.data.data;
+        console.log(res)
+        this.txsInformation = res.data.data.list;
         let item;
         for (item of this.txsInformation) {
           item.blockTime = dateUTCFilter(item.blockTime);
@@ -158,19 +159,19 @@ export default {
   },
   mounted() {
     this.queryBlockListByPage();
-    this.blockTimer = setInterval(() => {
-      this.queryBlockListByPage();
-    }, 5000);
+    // this.blockTimer = setInterval(() => {
+    //   this.queryBlockListByPage();
+    // }, 5000);
     this.queryTxListByPage();
-    this.txsTimer = setInterval(() => {
-      this.queryTxListByPage();
-    }, 5000);
+    // this.txsTimer = setInterval(() => {
+    //   this.queryTxListByPage();
+    // }, 5000);
   },
   beforeDestroy() {
-    clearInterval(this.blockTimer);
-    clearInterval(this.txsTimer);
-    this.blockTimer = null;
-    this.txsTimer = null;
+    // clearInterval(this.blockTimer);
+    // clearInterval(this.txsTimer);
+    // this.blockTimer = null;
+    // this.txsTimer = null;
   }
 };
 </script>

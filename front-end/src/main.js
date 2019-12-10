@@ -30,28 +30,12 @@ Vue.use(ElementUI, { //兼容vue-i18n@6.x版本
   i18n: (key, value) => i18n.t(key, value)
 });
 
-import error from '@/components/errorInfo';
-Vue.component('error', error)
+// import error from '@/components/errorInfo';
+// Vue.component('error', error)
 Vue.config.productionTip = false
 
 //本地mock数据
 import "./mock";
-
-// 全局混入错误提示框
-Vue.mixin({
-  methods: {
-    ShowErrorInfo(info) {
-      var error = Vue.extend({
-        template: '<error :txid="info"/>',
-        data() {
-          this.info = info;
-          return {}
-        }
-      });
-      document.getElementById('app').appendChild(new error().$mount().$el);
-    }
-  }
-});
 
 /* eslint-disable no-new */
 new Vue({

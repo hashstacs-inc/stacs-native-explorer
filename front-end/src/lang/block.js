@@ -11,7 +11,7 @@ export default {
                 blockTime: 'Time Stamp +UTC'
             },
             common: {
-                view: 'View'
+                view: '查看'
             },
             transactions: {
                 tabsName: 'Transactions',

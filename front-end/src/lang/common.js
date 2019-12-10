@@ -5,8 +5,10 @@ export default {
 	'zh-CN': {
 		common: {
 			success: '成功',
+			failed: '失败',
 			info: '提示',
 			error: '错误',
+			errorInfo: '错误提示',
 			notConfirm: '取消',
 			yesConfirm: '确定',
 			close: '关闭',
@@ -50,8 +52,10 @@ export default {
 	'en-GB': {
 		common: {
 			success: 'Success',
+			failed: 'Failed',
 			info: 'Hint',
 			error: 'Error',
+			errorInfo: 'Error Info',
 			notConfirm: 'Cancel',
 			yesConfirm: 'Confirm',
 			close: 'Close',

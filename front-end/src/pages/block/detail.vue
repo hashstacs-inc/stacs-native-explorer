@@ -60,29 +60,29 @@
     <article class="Basic-Information">
       <el-card class="bi-box">
         <section class="table-body">
-          <el-tabs v-model="tabsActiveName" @tab-click="changeTabs">
+          <el-tabs v-model="tabsActiveName" @tab-click="changeTabs" v-loading="tableLoading">
             <!-- Transactions -->
             <el-tab-pane label="Transactions" name="Transactions">
-              <div class="table-top">{{$t('block.transactions.totalTxns')}} {{pageTotal}}</div>
+              <div class="table-top">{{$t('block.transactions.totalTxns')}} {{txNum}}</div>
               <el-table :data="transactionsDate" stripe style="width: 100%">
                 <template v-for="item in transactionsFrom">
                   <!-- 状态 -->
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
-                    v-if="item.prop === 'status'"
-                    :show-overflow-tooltip="item.showTooltip"
+                    v-if="item.prop === 'executeResult'"
                     :key="item.prop"
                   >
                     <template slot-scope="scope">
-                      <span>{{scope.row.status}}</span>
+                      <span>{{scope.row.executeResult}}</span>
                       <!-- 失败显示 -->
                       <span
-                        v-if="scope.row.status === 'Failed'"
+                        v-if="scope.row.executeResult === `${$t('common.failed')}`"
                         class="FailedStyle"
-                        @click="ShowErrorInfo(scope.row.txId)"
+                        @click="ShowErrorInfo(scope.row.errorMessage)"
                       >
-                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />{{$t('block.common.view')}}
+                        <img src="@/assets/img/view.png" style="margin: 0 5px;" />
+                        {{$t('block.common.view')}}
                       </span>
                     </template>
                   </el-table-column>
@@ -116,13 +116,20 @@
                       >{{scope.row[item.prop]}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column
+                  <!-- feeAmount feeCurrency -->
+                  <!-- <el-table-column
                     :prop="item.prop"
                     :label="item.label"
-                    v-else
+                    v-else-if="item.prop === 'feeAmount'"
                     :show-overflow-tooltip="item.showTooltip"
                     :key="item.prop"
-                  ></el-table-column>
+                  >
+                    <template slot-scope="scope">
+                      <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
+                      <span v-else>--</span>
+                    </template>
+                  </el-table-column> -->
+                  <el-table-column :prop="item.prop" :label="item.label" v-else :key="item.prop"></el-table-column>
                 </template>
               </el-table>
             </el-tab-pane>
@@ -131,7 +138,7 @@
       </el-card>
       <!-- 分页 -->
       <pagination
-        :currentPage="queryData.pageNo"
+        :currentPage="queryTxList.pageNum"
         :totalStrip="pageTotal"
         @nextPage="nextPage"
         @prevPage="prevPage"
@@ -140,32 +147,55 @@
         @changePage="changePage"
       />
     </article>
+    <el-dialog
+      :title="$t('common.errorInfo')"
+      :visible.sync="errorMessagedialogVisible"
+      width="30%"
+    >
+      <span>{{errorMessage}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="errorMessagedialogVisible = false"
+        >{{$t('common.yesConfirm')}}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {queryBlockListByPage } from "@/api";
+import { queryBlockDetails, queryTxListByPage } from "@/api";
 import { dateUTCFilter } from "@/utils";
-import { convertNum, transferThousands } from "@/utils/signUtils";
+import { transferThousands } from "@/utils/signUtils";
 import pagination from "@/components/pagination.vue";
 
 export default {
   data() {
     return {
-      queryData: {
-        pageNo: 1,
+      queryBlockData: {
+        height: ""
+      },
+      queryTxList: {
+        pageNum: 1,
         pageSize: 20,
         blockHeight: ""
       },
       BasicFormationLabel: [
         { label: `${this.$t("block.baseInfo.block")}`, prop: "blockHeight" },
         { label: `${this.$t("block.baseInfo.hash")}`, prop: "blockHash" },
-        { label: `${this.$t("block.baseInfo.parentHash")}`, prop: "parentHash" },
+        {
+          label: `${this.$t("block.baseInfo.parentHash")}`,
+          prop: "parentHash"
+        },
         { label: `${this.$t("block.baseInfo.blockTime")}`, prop: "blockTime" }
       ],
       loading: false,
+      tableLoading: false,
       maxHeight: 0,
       pageTotal: 0,
+      txNum: 0,
+      errorMessage: "",
+      errorMessagedialogVisible: false,
       tabsActiveName: `${this.$t("block.transactions.tabsName")}`,
       BasicFormationData: {},
       transactionsFrom: [
@@ -181,18 +211,15 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.bdName")}`, // bd名称
-          prop: "bdName",
-          showTooltip: true
+          prop: "bdName"
         },
         {
           label: `${this.$t("block.transactions.bdType")}`, // bd类型
-          prop: "bdType",
-          showTooltip: true
+          prop: "bdType"
         },
         {
           label: `${this.$t("block.transactions.functionName")}`, // 功能名称
-          prop: "policyId",
-          showTooltip: true
+          prop: "policyId"
         },
         {
           label: `${this.$t("block.transactions.transactionFee")}`, // 实际手续费
@@ -201,11 +228,10 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.status")}`, // 交易状态
-          prop: "executeResult",
-          showTooltip: true
+          prop: "executeResult"
         }
       ],
-      transactionsDate: [],
+      transactionsDate: []
     };
   },
   computed: {
@@ -218,9 +244,6 @@ export default {
   },
   inject: ["reload"],
   methods: {
-    returnConvertNum(num) {
-      return convertNum(num);
-    },
     // 下一页
     nextPage() {
       this.queryData.pageNo++;
@@ -299,11 +322,11 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 获取Transactions数据
-    async getBlockTransactions(block) {
+    // 获取block详情数据
+    async getBlockData(block) {
       this.loading = true;
-      this.queryData.blockHeight = block;
-      let item = await queryBlockListByPage(this.queryData);
+      this.queryBlockData.height = block;
+      let item = await queryBlockDetails(this.queryBlockData);
       if (!item.data.success) {
         this.$router.push({
           path: "/invalidSearch",
@@ -311,20 +334,35 @@ export default {
         });
       } else {
         this.BasicFormationData = JSON.parse(JSON.stringify(item.data.data));
-        this.transactionsDate = JSON.parse(
-          JSON.stringify(item.data.data.pageList)
-        );
-        if (this.transactionsDate) {
-          this.transactionsDate.forEach(el => {
-            el.executeResult =
-              el.executeResult.charAt(0).toUpperCase() +
-              el.executeResult.slice(1).toLowerCase();
-            el.feeAmount =  transferThousands(el.feeAmount);
-          });
-        }
-        this.pageTotal = transferThousands(item.data.data.total);
         this.maxHeight = item.data.data.maxHeight;
         this.loading = false;
+      }
+    },
+    // 获取block下的交易列表
+    async getBlockTxList(block) {
+      this.tableLoading = true;
+      this.queryTxList.blockHeight = block;
+      let item = await queryTxListByPage(this.queryTxList);
+      if (!item.data.success) {
+        this.$router.push({
+          path: "/invalidSearch",
+          query: { info: this.$route.query.height }
+        });
+      } else {
+        this.transactionsDate = JSON.parse(JSON.stringify(item.data.data.list));
+        this.transactionsDate.forEach(el => {
+          if(el.feeAmount){
+            el.feeAmount = transferThousands(el.feeAmount) + el.feeCurrency;
+          }
+          if (el.executeResult === "1") {
+            el.executeResult = `${this.$t("common.success")}`;
+          } else {
+            el.executeResult = `${this.$t("common.failed")}`;
+          }
+        });
+        this.pageTotal = item.data.data.total;
+        this.txNum = transferThousands(this.pageTotal);
+        this.tableLoading = false;
       }
     },
     // 点击地址
@@ -353,17 +391,22 @@ export default {
     changeTabs(tab, block) {
       if (typeof block === "string" || typeof block === "number") {
         if (tab.label === "Transactions") {
-          this.getBlockTransactions(block);
+          this.getBlockTxList(block);
         }
       } else {
         if (tab.label === "Transactions") {
-          this.getBlockTransactions(this.BasicFormationData.blockHeight);
-        } 
+          this.getBlockTxList(this.BasicFormationData.blockHeight);
+        }
       }
+    },
+    ShowErrorInfo(errorMessage) {
+      this.errorMessage = errorMessage;
+      this.errorMessagedialogVisible = true;
     }
   },
   created() {
-    this.getBlockTransactions(this.blockHeight);
+    this.getBlockData(this.blockHeight);
+    this.getBlockTxList(this.blockHeight);
   }
 };
 </script>
@@ -372,10 +415,6 @@ export default {
 .issDetail-page {
   color: #444444;
   font-family: HelveticaNeue;
-  * {
-    padding: 0;
-    margin: 0;
-  }
   .block-height {
     border: 1px solid #e9e9e9;
     text-align: center;
@@ -386,7 +425,7 @@ export default {
       cursor: pointer;
       float: left;
       i {
-        color: #0E265B;
+        color: #0e265b;
       }
     }
     .max-height {
@@ -412,8 +451,11 @@ export default {
       color: #444444;
       font-weight: 600;
     }
+    .el-tabs__header {
+      margin: 0;
+    }
     .el-tabs__active-bar {
-      background-color: #0E265B;
+      background-color: #0e265b;
       height: 3px;
     }
     .table-top {
@@ -421,9 +463,9 @@ export default {
       height: 40px;
       background-color: #f7faff;
       box-sizing: border-box;
-      padding-left: 40px;
+      padding: 0 40px;
       line-height: 40px;
-      color: #0E265B;
+      color: #0e265b;
     }
     .line-span {
       display: inline-block;
