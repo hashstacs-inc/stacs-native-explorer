@@ -5,7 +5,7 @@
         <el-col :span="12">
           <titile-infomation
             :number="blockInformation.length ==0 ?0 :blockInformation[0].totalTxNum"
-            :desc="$t('left.totalTxns')"
+            :desc="$t('home.left.totalTxns')"
             isName="id2"
             img="total_trade"
           />
@@ -13,7 +13,7 @@
         <el-col :span="12">
           <titile-infomation
             :number="blockInformation.length ==0 ?0 :blockInformation[0].height"
-            :desc="$t('right.currentBlock')"
+            :desc="$t('home.right.currentBlock')"
             isName="id1"
             img="block_height"
           />
@@ -27,7 +27,7 @@
             <div class="table-title">
               <div style="display: flex;align-items: center">
                 <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />
-                {{$t('left.recentTxns')}}
+                {{$t('home.left.recentTxns')}}
               </div>
             </div>
             <hr style="border: 1px solid #B0C2E2;" />
@@ -35,7 +35,7 @@
               <div class="table-container" v-for="(item, key) in txsInformation" :key="key">
                 <div class="table-item">
                   <div style="width: 70%" class="txIdBox">
-                    {{$t('left.tx')}}
+                    {{$t('home.left.tx')}}
                     <el-tooltip :content="item.txId" placement="top">
                       <a
                         @click="toDetail(0,item.txId)"
@@ -58,7 +58,7 @@
             <div class="table-title">
               <div style="display: flex;align-items: center">
                 <img src="../../assets/icon/trade_icon.png" style="margin-right: 10px" />
-                {{$t('right.blockInformation')}}
+                {{$t('home.right.blockInformation')}}
               </div>
             </div>
             <hr style="border: 1px solid #B0C2E2;" />
@@ -66,17 +66,17 @@
               <div class="table-container" v-for="(item, key) in blockInformation" :key="key">
                 <div class="table-item">
                   <div style="width: 33%">
-                    <div class="block-box">{{$t('right.blockSize')}} {{item.totalBlockSize}}</div>
+                    <div class="block-box">{{$t('home.right.blockSize')}} {{item.totalBlockSize}}</div>
                   </div>
                   <div style="width: 67%">
                     <div style="margin-bottom: 20px">
-                      <span>{{$t('right.block')}}</span>
+                      <span>{{$t('home.right.block')}}</span>
                       <a
                         style="margin-left: 20px;"
                         class="on-click"
                         @click="toDetail(item.height)"
                       >{{item.height}}</a>
-                      <span style="margin-left: 40px">{{$t('right.txns')}}</span>
+                      <span style="margin-left: 40px">{{$t('home.right.txns')}}</span>
                       <span style="margin-left: 20px">{{item.txNum}}</span>
                     </div>
                     <div>{{item.blockTime}} +UTC</div>

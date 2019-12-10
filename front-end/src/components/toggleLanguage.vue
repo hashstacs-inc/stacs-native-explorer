@@ -17,7 +17,6 @@ export default {
   name: "toggleLanguage",
   watch: {
     lang(newVal, oldVal) {
-      console.log(newVal, oldVal);
       this.language = this.lang;
     }
   },
@@ -65,16 +64,5 @@ export default {
   .el-select .el-input .el-select__caret {
     color: #fff !important;
   }
-  // &.zh-CN {
-  //   input {
-  //     background: url("../assets/system/zh-CN.png") no-repeat left !important;
-  //     background-size: 30px 20px;
-  //   }
-  // }
-  // &.en-GB {
-  //   input {
-  //     background: url("../assets/system/en-GB.png") no-repeat left !important;
-  //   }
-  // }
 }
 </style>

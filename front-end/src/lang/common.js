@@ -27,6 +27,25 @@ export default {
             home: "首页", //首页
             bd:"BD"
 		},
+		footer:{
+			left:[
+				"©2019-2020",
+				"GSX Group All Rights Reserved."
+			],
+			center:[
+				"Terms and Conditions",
+				"Cookie Policy",
+				"Privacy Pplicy"
+			],
+			right:[
+				"Contact Us",
+				"Suite 741C",
+				"Europort",
+				"Gibraltar",
+				"GX11 1AA",
+				"Email: info@gsx.gi"
+			]
+		}
 	},
 	'en-GB': {
 		common: {
@@ -53,5 +72,24 @@ export default {
             home: "Home", //首页,
             bd:"BD"
 		},
+		footer:{
+			left:[
+				"©2019-2020",
+				"GSX Group All Rights Reserved."
+			],
+			center:[
+				"Terms and Conditions",
+				"Cookie Policy",
+				"Privacy Pplicy"
+			],
+			right:[
+				"Contact Us",
+				"Suite 741C",
+				"Europort",
+				"Gibraltar",
+				"GX11 1AA",
+				"Email: info@gsx.gi"
+			]
+		}
 	}
 }

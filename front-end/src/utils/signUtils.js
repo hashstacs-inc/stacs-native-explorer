@@ -12,8 +12,6 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
       if (digits) {
         return parseFloat(num_str).toFixed(digits);
       } else {
-        
-        // console.log(1,num_str)
         return parseFloat(num_str);
       }
     } else {
@@ -71,9 +69,6 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
   }
   resValue = resArr.join('');
   //此处是千分位处理
-  console.log(resValue)
-
-
 
   return sym + resValue;
 }

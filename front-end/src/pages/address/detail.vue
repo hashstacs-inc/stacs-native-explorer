@@ -284,7 +284,6 @@ export default {
         this.repData.currency = this.tokenValue;
       }
       let item = await queryTransactionsDetailsNew(this.repData);
-      console.log(item)
       if (!item.data.success) {
         this.$router.push({
           path: "/invalidSearch",

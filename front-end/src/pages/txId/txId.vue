@@ -86,7 +86,6 @@ export default {
         txId: this.txId
       })
         .then(res => {
-          console.log(res);
           if (!res.data.success) {
             this.$router.push({
               path: "/invalidSearch",
@@ -103,7 +102,6 @@ export default {
     },
     // 去token/block/address等详情页
     toDetail(target, prop) {
-      console.log(target, prop);
       if (target === "tokenDetail") {
         this.$router.push({
           path: target,

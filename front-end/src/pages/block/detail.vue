@@ -301,7 +301,6 @@ export default {
     },
     // 获取Transactions数据
     async getBlockTransactions(block) {
-      console.log(block)
       this.loading = true;
       this.queryData.blockHeight = block;
       let item = await queryBlockListByPage(this.queryData);
