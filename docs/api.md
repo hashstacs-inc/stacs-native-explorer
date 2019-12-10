@@ -41,7 +41,7 @@
 | pageNum     | `int`    |      | Y        | 页码                                                   |
 | pageSize    | `int`    |      | Y        | 分页条数                                               |
 | order       | `string` |      | N        | 1. `desc`：倒序 <br />2. `asc`：顺序<br />默认：`desc` |
-| subbmiter   | `string` | 40   | N        | 交易提交者地址                                         |
+| submitter   | `string` | 40   | N        | 交易提交者地址                                         |
 
 **响应结果:** ` Page<TransactionVO>`
 

@@ -19,6 +19,7 @@
     <properties>
         <drs.version>1.0.0-SNAPSHOT</drs.version>
         <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
+        <sofa.ark.version>1.0.0</sofa.ark.version>
     </properties>
 
     <dependencyManagement>
@@ -27,6 +28,11 @@
             <dependency>
                 <groupId>io.stacs.nav</groupId>
                 <artifactId>drs-api</artifactId>
+                <version>${drs.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.stacs.nav</groupId>
+                <artifactId>drs-core</artifactId>
                 <version>${drs.version}</version>
             </dependency>
             <!-- springboot-->
@@ -41,10 +47,57 @@
                 <version>${spring-boot.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>web-ark-plugin</artifactId>
+                <version>${sofa.ark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-springboot-starter</artifactId>
+                <version>${sofa.ark.version}</version>
+            </dependency>
+            <!-- db -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.6</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.43</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>1.2.13</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+            <!-- utils -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>22.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.16.18</version>
                 <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>1.9.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>1.9.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
