@@ -20,34 +20,13 @@ import static io.stacs.nav.drs.api.model.RespData.success;
  * @author dekuofa <br>
  * @date 2019-12-02 <br>
  */
-@SuppressWarnings("unchecked") @RestController @RequestMapping("/explorer") @Slf4j public class ExplorerController {
+@SuppressWarnings("unchecked") @RestController @RequestMapping("/block") @Slf4j public class BlockController {
 
     @ArkInject private IQueryService queryService;
 
-    @PostMapping("/currentHeight") public RespData<Long> queryCurrentHeight() {
-        return success(queryService.queryCurrentHeight());
-    }
 
-    @GetMapping("/queryTx")
-    public RespData<List<TransactionPO>> queryTx(@RequestParam(required = false) Long blockHeight, @RequestParam(required = false) String txId,
-                                                 @RequestParam(required = false) String submitter, @RequestParam Integer pageNo,
-                                                 @RequestParam Integer pageSize) {
-        QueryTxListVO vo = new QueryTxListVO();
-        vo.setBlockHeight(blockHeight);
-        vo.setSubmitter(submitter);
-        vo.setTxId(txId);
-        vo.setPageNo(pageNo);
-        vo.setPageSize(pageSize);
-        return success(queryService.queryTx(vo));
-    }
 
-    @GetMapping("/queryTxById") public RespData<CoreTransactionVO> queryCoreTxById(@RequestParam String txId) {
-        QueryTxVO vo = new QueryTxVO();
-        vo.setTxId(txId);
-        return success(queryService.queryCoreTxById(vo));
-    }
-
-    @GetMapping("/queryBlocks")
+    @GetMapping("/list")
     public RespData<List<BlockVO>> queryBlocks(@RequestParam Long height, @RequestParam String blockHash,
                                                @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
         QueryBlockVO vo = new QueryBlockVO();
@@ -58,7 +37,7 @@ import static io.stacs.nav.drs.api.model.RespData.success;
         return success(queryService.queryBlocks(vo));
     }
 
-    @PostMapping("/queryBlockByHeight")
+    @GetMapping("/detail")
     public RespData<List<BlockVO>> queryBlockByHeight(@RequestParam Long height, @RequestParam String blockHash,
                                                       @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
         QueryBlockVO vo = new QueryBlockVO();

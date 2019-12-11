@@ -1,5 +1,9 @@
 ## 接口规范
 
+### 路由
+
+**baseURL：**`/explorer`
+
 ### 请求头规范
 
 *   `GET`：**无额外参数**
@@ -30,7 +34,7 @@
 
 ### 交易列表查询
 
-`POST`: `/explorer/queryTxListByPage`
+`GET`: `/tx/list`
 
 **请求参数**
 
@@ -47,6 +51,8 @@
 
 ### 交易详情查询
 
+`GET`:`/tx/detail`
+
 | 名称 | 类型     | 长度 | 是否必填 | 描述    |
 | ---- | -------- | ---- | -------- | ------- |
 | txId | `string` | 64   | Y        | 交易 id |
@@ -54,6 +60,8 @@
 **响应结果:** ` TransactionVO`
 
 ### 区块详情查询
+
+`GET`:`/block/detail`
 
 | 名称   | 类型   | 长度 | 是否必填 | 描述     |
 | ------ | ------ | ---- | -------- | -------- |
@@ -63,7 +71,7 @@
 
 ### 区块列表查询
 
-`POST`: `/explorer/queryBlockListByPage`
+`GET`: `/block/list`
 
 **请求参数**
 
