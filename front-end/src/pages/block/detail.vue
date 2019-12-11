@@ -246,7 +246,7 @@ export default {
   methods: {
     // 下一页
     nextPage() {
-      this.queryData.pageNo++;
+      this.queryData.pageNum++;
       let tab = {
         label: this.tabsActiveName
       };
@@ -254,7 +254,7 @@ export default {
     },
     // 上一页
     prevPage() {
-      this.queryData.pageNo--;
+      this.queryData.pageNum--;
       let tab = {
         label: this.tabsActiveName
       };
@@ -262,7 +262,7 @@ export default {
     },
     // 最后一页
     lastPage(page) {
-      this.queryData.pageNo = page;
+      this.queryData.pageNum = page;
       let tab = {
         label: this.tabsActiveName
       };
@@ -270,7 +270,7 @@ export default {
     },
     // 第一页
     firstPage() {
-      this.queryData.pageNo = 1;
+      this.queryData.pageNum = 1;
       let tab = {
         label: this.tabsActiveName
       };
@@ -316,7 +316,7 @@ export default {
     },
     // 改变页数
     changePage(page) {
-      this.queryData.pageNo = page;
+      this.queryData.pageNum = page;
       let tab = {
         label: this.tabsActiveName
       };

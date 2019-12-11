@@ -2,7 +2,7 @@ const issuance = {
   state: {
     issuanceQueryData: {
       isTable: false,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 10,
       ownerAddress: '',
       currency: '',

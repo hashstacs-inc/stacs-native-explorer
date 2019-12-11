@@ -2,7 +2,7 @@ const transction = {
   state: {
     tasQueryData: {
       pageSize: 10,
-      pageNo: 1,
+      pageNum: 1,
       blockHeight: '',
       txId: ''
     },
