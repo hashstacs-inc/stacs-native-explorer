@@ -6,13 +6,13 @@
       </div>
       <div class="navbar-right">
         <el-menu
-          style="height:80px"
           :default-active="activeIndex"
           mode="horizontal"
           @select="handleSelect"
           background-color="#1e3a71"
-          active-text-color="white"
+          active-text-color="#ffffff"
           text-color="#e4e7ed"
+          :class="activeIndex !== '/' ? 'notHome':''"
         >
           <el-menu-item
             :index="item.index"
@@ -48,12 +48,6 @@ export default {
       menuDesc: [
         { index: "/", label: `${this.$t("topMenu.home")}` },
         { index: "", label: `${this.$t("topMenu.bd")}` }
-        // { index: "trades", label: "Trades" },
-        // { index: "contract", label: "Contract" },
-        // { index: "issuance", label: "Issuance" },
-        // { index: "purchase", label: "Purchase" },
-        // { index: "transfer", label: "Transfer" },
-        // { index: "credentials", label: "Credentials" }
       ],
       searchContent: "",
       searchStatus: false
@@ -107,6 +101,7 @@ export default {
   },
   computed: {
     activeIndex: function() {
+      console.log(this.$route.name)
       return this.$route.name;
     }
   },
@@ -139,6 +134,13 @@ export default {
 }
 .navbar-right ul {
   margin-left: 10%;
+}
+.navbar-right .el-menu.el-menu--horizontal{
+  height: 80px;
+}
+
+ul.el-menu--horizontal.el-menu.notHome li{
+  border-bottom:0px;
 }
 
 .navbar-left {
