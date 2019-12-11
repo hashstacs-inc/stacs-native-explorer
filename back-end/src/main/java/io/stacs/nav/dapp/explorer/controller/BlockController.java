@@ -1,6 +1,7 @@
 package io.stacs.nav.dapp.explorer.controller;
 
 import com.alipay.sofa.ark.spi.service.ArkInject;
+import com.github.pagehelper.PageInfo;
 import io.stacs.nav.drs.api.IQueryService;
 import io.stacs.nav.drs.api.model.RespData;
 import io.stacs.nav.drs.api.model.TransactionPO;
@@ -28,22 +29,22 @@ import static io.stacs.nav.drs.api.model.RespData.success;
 
     @GetMapping("/list")
     public RespData<List<BlockVO>> queryBlocks(@RequestParam Long height, @RequestParam String blockHash,
-                                               @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
+                                               @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         QueryBlockVO vo = new QueryBlockVO();
         vo.setHeight(height);
         vo.setBlockHash(blockHash);
-        vo.setPageNo(pageNo);
+        vo.setPageNum(pageNum);
         vo.setPageSize(pageSize);
         return success(queryService.queryBlocks(vo));
     }
 
     @GetMapping("/detail")
-    public RespData<List<BlockVO>> queryBlockByHeight(@RequestParam Long height, @RequestParam String blockHash,
-                                                      @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
+    public RespData<PageInfo<BlockVO>> queryBlockByHeight(@RequestParam Long height, @RequestParam String blockHash,
+                                                          @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         QueryBlockVO vo = new QueryBlockVO();
         vo.setHeight(height);
         vo.setBlockHash(blockHash);
-        vo.setPageNo(pageNo);
+        vo.setPageNum(pageNum);
         vo.setPageSize(pageSize);
         return success(queryService.queryBlocks(vo));
     }

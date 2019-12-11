@@ -1,6 +1,7 @@
 package io.stacs.nav.dapp.explorer.controller;
 
 import com.alipay.sofa.ark.spi.service.ArkInject;
+import com.github.pagehelper.PageInfo;
 import io.stacs.nav.drs.api.IQueryService;
 import io.stacs.nav.drs.api.model.RespData;
 import io.stacs.nav.drs.api.model.TransactionPO;
@@ -25,21 +26,21 @@ import static io.stacs.nav.drs.api.model.RespData.success;
 
     @ArkInject private IQueryService queryService;
 
-    @GetMapping("/list") public RespData<List<TransactionPO>> queryTx(@RequestParam(required = false) Long blockHeight,
-                                                                      @RequestParam(required = false) String txId,
-                                                                      @RequestParam(required = false) String submitter,
-                                                                      @RequestParam Integer pageNo,
-                                                                      @RequestParam Integer pageSize) {
+    @GetMapping("/list") public RespData<PageInfo<TransactionPO>> queryTx(@RequestParam(required = false) Long blockHeight,
+                                                                          @RequestParam(required = false) String txId,
+                                                                          @RequestParam(required = false) String submitter,
+                                                                          @RequestParam Integer pageNum,
+                                                                          @RequestParam Integer pageSize) {
         QueryTxListVO vo = new QueryTxListVO();
         vo.setBlockHeight(blockHeight);
         vo.setSubmitter(submitter);
         vo.setTxId(txId);
-        vo.setPageNo(pageNo);
+        vo.setPageNum(pageNum);
         vo.setPageSize(pageSize);
         return success(queryService.queryTx(vo));
     }
 
-    @GetMapping("/detail") public RespData<CoreTransactionVO> queryCoreTxById(@RequestParam String txId) {
+    @GetMapping("/detail") public RespData<TransactionPO> queryCoreTxById(@RequestParam String txId) {
         QueryTxVO vo = new QueryTxVO();
         vo.setTxId(txId);
         return success(queryService.queryTxById(vo));
