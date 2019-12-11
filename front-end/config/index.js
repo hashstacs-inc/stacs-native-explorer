@@ -16,7 +16,7 @@ module.exports = {
         // target: 'http://192.168.58.37:7070/', //联调地址
         // target:'https://test-stacs-native-browser.primeledger.cn/', //测试环境
         target:'http://10.200.174.52:30055/native-explorer/', //开发环境
-        // Referer:'http://10.200.173.189:31026/',
+        // Referer:'http://192.168.58.16:8080/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
@@ -25,7 +25,7 @@ module.exports = {
           // Referer: 'http://192.168.58.37:7070/',
           // Referer:'https://test-stacs-native-browser.primeledger.cn/'
           Referer:'http://10.200.174.52:30055/native-explorer/'
-          // Referer:'http://10.200.173.189:31026/'
+          // Referer:'http://192.168.58.16:8080/'
         }
       },
       '/api': {
@@ -33,7 +33,7 @@ module.exports = {
         // target: 'http://192.168.58.37:7070/',
         // target:'https://test-stacs-native-browser.primeledger.cn/',
         target:'http://10.200.174.52:30055/native-explorer/',
-        // Referer:'http://10.200.173.189:31026/',
+        // Referer:'http://192.168.58.16:8080/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
@@ -42,7 +42,7 @@ module.exports = {
           // Referer: 'http://192.168.58.37:7070/',
           // Referer:'https://test-stacs-native-browser.primeledger.cn/'
           Referer:'http://10.200.174.52:30055/native-explorer/'
-          // Referer:'http://10.200.173.189:31026/'
+          // Referer:'http://192.168.58.16:8080/'
         },
         pathRewrite: {
           '^/api': ''
