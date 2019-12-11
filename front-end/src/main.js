@@ -35,7 +35,7 @@ Vue.use(ElementUI, { //兼容vue-i18n@6.x版本
 Vue.config.productionTip = false
 
 //本地mock数据
-import "./mock";
+// import "./mock";
 
 /* eslint-disable no-new */
 new Vue({

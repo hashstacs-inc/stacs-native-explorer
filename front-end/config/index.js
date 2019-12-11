@@ -14,8 +14,8 @@ module.exports = {
       '/explorer': {
         // target: 'http://10.200.174.57:30047/',
         // target: 'http://192.168.58.37:7070/', //联调地址
-        target:'https://test-stacs-native-browser.primeledger.cn/', //测试环境
-        // target:'https://dev-stacs-native-browser.primeledger.cn/', //开发环境
+        // target:'https://test-stacs-native-browser.primeledger.cn/', //测试环境
+        target:'http://10.200.174.52:30055/native-explorer/', //开发环境
         // Referer:'http://10.200.173.189:31026/',
         changeOrigin: true,
         cookieDomainRewrite: '',
@@ -23,16 +23,16 @@ module.exports = {
         headers: {
           // Referer: 'http://10.200.174.57:30047/',
           // Referer: 'http://192.168.58.37:7070/',
-          Referer:'https://test-stacs-native-browser.primeledger.cn/'
-          // Referer:'https://dev-stacs-native-browser.primeledger.cn/'
+          // Referer:'https://test-stacs-native-browser.primeledger.cn/'
+          Referer:'http://10.200.174.52:30055/native-explorer/'
           // Referer:'http://10.200.173.189:31026/'
         }
       },
       '/api': {
         // target: 'http://10.200.174.57:30047/',
         // target: 'http://192.168.58.37:7070/',
-        target:'https://test-stacs-native-browser.primeledger.cn/',
-        // target:'https://dev-stacs-native-browser.primeledger.cn/',
+        // target:'https://test-stacs-native-browser.primeledger.cn/',
+        target:'http://10.200.174.52:30055/native-explorer/',
         // Referer:'http://10.200.173.189:31026/',
         changeOrigin: true,
         cookieDomainRewrite: '',
@@ -40,8 +40,8 @@ module.exports = {
         headers: {
           // Referer: 'http://10.200.174.57:30047/',
           // Referer: 'http://192.168.58.37:7070/',
-          Referer:'https://test-stacs-native-browser.primeledger.cn/'
-          // Referer:'https://dev-stacs-native-browser.primeledger.cn/'
+          // Referer:'https://test-stacs-native-browser.primeledger.cn/'
+          Referer:'http://10.200.174.52:30055/native-explorer/'
           // Referer:'http://10.200.173.189:31026/'
         },
         pathRewrite: {
