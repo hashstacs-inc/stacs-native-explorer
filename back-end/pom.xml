@@ -82,7 +82,7 @@
                     <artifactId>jackson-databind</artifactId>
                     <groupId>com.fasterxml.jackson.core</groupId>
                 </exclusion>
-                
+
             </exclusions>
         </dependency>
     </dependencies>
@@ -127,6 +127,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <webContextPath>/static</webContextPath>
                     <appName>native-explorer</appName>
                 </configuration>
             </plugin>

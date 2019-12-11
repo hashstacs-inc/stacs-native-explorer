@@ -21,7 +21,9 @@ target/
 
 ### project ###
 **/*.log
+*.db
 
 ### front-end ###
 yarn.lock
 dist
+
