@@ -12,11 +12,23 @@
               @click="toDetail(item.target,BasicInfo[item.prop])"
             >{{BasicInfo[item.prop]}}</a>
             <div v-else-if="item.prop === 'actionDatas'" class="action-data">
-              <div v-for="(val, key) in BasicInfo[item.prop]" :key="key">
-                <ul>
-                  <li v-for="(v, k) in val" :key="k">
+              <div v-for="(val, key) in inputData" :key="key" class="action-box">
+                <ul class="action-box-ul-outside">
+                  <li v-for="(v, k) in val" :key="k" :class="k==='sourCode' ? 'sourCodeLi':''">
                     <span>{{k}}:</span>
-                    <span>{{v}}</span>
+                    <span v-if="k!=='sourCode'">{{v}}</span>
+                    <span v-else>
+                      <ul class="action-box-ul-inside">
+                        <li
+                          v-for="(sourCodeV,sourCodeK) in v"
+                          :key="sourCodeK"
+                          v-show="sourCodeV!==''"
+                        >
+                          <span>{{sourCodeK+1}}</span>
+                          <span>{{sourCodeV}}</span>
+                        </li>
+                      </ul>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -66,7 +78,8 @@ export default {
         { label: `${this.$t("tx.baseInfo.status")}`, prop: "executeResult" },
         { label: `${this.$t("tx.baseInfo.inputData")}`, prop: "actionDatas" }
       ],
-      BasicInfo: {}
+      BasicInfo: {},
+      inputData: []
     };
   },
   computed: {
@@ -110,8 +123,13 @@ export default {
             } else {
               this.BasicInfo.executeResult = `${this.$t("common.failed")}`;
             }
-            console.log(this.BasicInfo.actionDatas);
-            console.log(JSON.parse(JSON.stringify(this.BasicInfo.actionDatas)));
+            this.inputData = res.data.data.actionDatas;
+            this.inputData.forEach(el => {
+              delete el.abi;
+              delete el.code;
+              el.sourCode = el.sourCode.split("\n");
+            });
+            console.log(this.inputData);
           }
           this.loading = false;
         })
@@ -192,30 +210,52 @@ export default {
   display: flex;
   align-items: center;
   .action-data {
-    height: 300px;
+    height: 450px;
     overflow: auto;
     width: 74%;
     display: inline-block;
-    div {
-      border-bottom: 2px solid darkblue;
-      ul {
+    .action-box {
+      border-bottom: 2px dashed #1e3a71;
+      &:nth-last-child(1){
+        border-bottom:0px;
+      }
+      .action-box-ul-outside {
         width: 100%;
         padding: 0;
-      }
-      li {
-        list-style: none;
-        display: flex;
-        padding-bottom: 15px;
-        span:nth-child(2) {
-          width: 100%;
-          vertical-align: top;
-          word-wrap: break-word;
-          word-break: break-all;
-          // white-space:nowrap;
+        >li {
+          list-style: none;
+          display: flex;
+          padding-bottom: 15px;
+          >span:nth-child(2) {
+            width: 100%;
+            vertical-align: top;
+            word-wrap: break-word;
+            word-break: break-all;
+            padding-right: 20px;
+            // white-space:nowrap;
+          }
+          >span:nth-child(1) {
+            width: 15%;
+            text-align: left;
+          }
+          .action-box-ul-inside {
+            padding-left: 0;
+            li {
+              padding-bottom: 5px;
+              span:nth-child(2) {
+                vertical-align: top;
+                word-wrap: break-word;
+                word-break: break-all;
+                padding: 0 10px;
+              }
+              span:nth-child(1) {
+                text-align: left;
+              }
+            }
+          }
         }
-        span:nth-child(1) {
-          width: 15%;
-          text-align: left;
+        .sourCodeLi{
+          display: block;
         }
       }
     }
