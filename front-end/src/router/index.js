@@ -8,12 +8,13 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '',
+      path: '/',
       name: '',
+      redirect:'home',
       component: () => import('@/pages/layout'),
       children: [{
-        path: '',
-        name: '/',
+        path: 'home',
+        name: 'home',
         component: () => import('@/pages/home')
       },
       {

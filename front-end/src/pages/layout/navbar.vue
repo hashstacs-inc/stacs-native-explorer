@@ -12,7 +12,7 @@
           background-color="#1e3a71"
           active-text-color="#ffffff"
           text-color="#e4e7ed"
-          :class="activeIndex !== '/' ? 'notHome':''"
+          :class="activeIndex !== 'home' ? 'notHome':''"
         >
           <el-menu-item
             :index="item.index"
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       menuDesc: [
-        { index: "/", label: `${this.$t("topMenu.home")}` },
+        { index: "home", label: `${this.$t("topMenu.home")}` },
         { index: "", label: `${this.$t("topMenu.bd")}` }
       ],
       searchContent: "",

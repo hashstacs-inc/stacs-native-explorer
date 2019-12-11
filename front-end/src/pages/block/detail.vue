@@ -117,7 +117,7 @@
                     </template>
                   </el-table-column>
                   <!-- feeAmount feeCurrency -->
-                  <!-- <el-table-column
+                  <el-table-column
                     :prop="item.prop"
                     :label="item.label"
                     v-else-if="item.prop === 'feeAmount'"
@@ -128,7 +128,7 @@
                       <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
                       <span v-else>--</span>
                     </template>
-                  </el-table-column> -->
+                  </el-table-column>
                   <el-table-column :prop="item.prop" :label="item.label" v-else :key="item.prop"></el-table-column>
                 </template>
               </el-table>
