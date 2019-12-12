@@ -1,6 +1,6 @@
 import request from '@/server'
 
-const baseUrl = 'native-explorer';
+const baseUrl = '/native-explorer';
 
 // 查询交易列表
 export function queryTxListByPage(data) {
