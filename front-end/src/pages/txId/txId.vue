@@ -164,12 +164,12 @@ export default {
           }
         });
       } else if (target === "addressDetail") {
-        this.$router.push({
-          path: target,
-          query: {
-            address: prop
-          }
-        });
+        // this.$router.push({
+        //   path: target,
+        //   query: {
+        //     address: prop
+        //   }
+        // });
       }
     }
   },
