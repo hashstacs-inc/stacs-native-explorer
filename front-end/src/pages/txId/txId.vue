@@ -134,7 +134,6 @@ export default {
             } else {
               this.BasicInfo.executeResult = `${this.$t("common.failed")}`;
             }
-            console.log(this.BasicInfo);
             this.inputData = JSON.parse(res.data.data.actionDatas);
             this.inputData.forEach(el => {
               delete el.abi;
@@ -150,7 +149,6 @@ export default {
     },
     // 去token/block/address等详情页
     toDetail(target, prop) {
-      console.log(target, prop)
       if (target === "tokenDetail") {
         this.$router.push({
           path: target,

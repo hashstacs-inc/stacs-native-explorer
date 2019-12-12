@@ -138,7 +138,7 @@ export default {
     },
     queryBlockListByPage() {
       queryBlockListByPage(this.blockQueryData).then(res => {
-        console.log(res);
+        console.log(res)
         this.blockInformation = res.data.data.list;
         let item;
         if (this.blockInformation) {
@@ -151,7 +151,7 @@ export default {
     },
     queryTxListByPage() {
       queryTxListByPage(this.txsQueryData).then(res => {
-        console.log(res);
+        console.log(res)
         this.txsInformation = res.data.data.list;
         let item;
         if (this.txsInformation) {

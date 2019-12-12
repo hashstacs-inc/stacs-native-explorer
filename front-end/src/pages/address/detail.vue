@@ -293,11 +293,9 @@ export default {
     },
     // 获取合约列表列表
     async getContractList() {
-      console.log(this.$route.query.address)
       this.loading = true;
       this.queryBalance.identity = this.submitterAddress;
       let item = await queryContractList(this.queryContract);
-      console.log(item,1212122)
       if (!item.data.successful) {
         this.$router.push({
           path: "/invalidSearch",
@@ -332,7 +330,6 @@ export default {
       this.tableLoading = true;
       this.queryTxList.subbmiter = address;
       let item = await queryTxListByPage(this.queryTxList);
-      console.log(item);
       if (!item.data.success) {
         this.$router.push({
           path: "/invalidSearch",

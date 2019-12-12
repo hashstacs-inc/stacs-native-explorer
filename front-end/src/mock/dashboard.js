@@ -1,7 +1,7 @@
 const txList = {
-  "respCode": "000000",
+  "code": "000000",
   "msg": "success",
-  "success": true,
+  "successful": true,
   "data":{
       "list":[{
         "txId": "79930c7e4459007a7268541a309a6f94da972360eac0f3026bc5120d2938768d",
@@ -45,9 +45,9 @@ const txList = {
 }
 
 const txListAn = {
-  "respCode": "000000",
+  "code": "000000",
   "msg": "success",
-  "success": true,
+  "successful": true,
   "data":{
       "list":[{
         "txId": "79930c7e4459007a7268541a309a6f94da972360eac0f3026bc5120d2938768d",
@@ -91,9 +91,9 @@ const txListAn = {
 }
 
 const blockList = {
-  "respCode": "000000",
+  "code": "000000",
   "msg": "success",
-  "success": true,
+  "successful": true,
   "data":
     [{
       "blockTime": 1575631429519,
@@ -106,9 +106,9 @@ const blockList = {
 }
 
 const blockListDetails = {
-  "respCode": "000000",
+  "code": "000000",
   "msg": "success",
-  "success": true,
+  "successful": true,
   "data":{
     "blockHash":"288f7900bf525bd14021bc89b18d6a9b9c44b3ed3fce88b17b5dbbf4f5846a34",
     "blockHeight":2904,
@@ -121,9 +121,9 @@ const blockListDetails = {
 
 
 const contractList = {
-  "respCode": "000000",
+  "code": "000000",
   "msg": "success",
-  "success": true,
+  "successful": true,
   "data":{
       "list":[{
         "address": "123",
@@ -144,9 +144,9 @@ const contractList = {
 }
 
 const txDetails = {
-  "respCode": "000000",
+  "code": "000000",
   "msg": "success",
-  "success": true,
+  "successful": true,
   "data":{
     "txId": "79930c7e4459007a7268541a309a6f94da972360eac0f3026bc5120d2938768d",
     "bdName":"ywz",

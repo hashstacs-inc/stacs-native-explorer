@@ -341,7 +341,6 @@ export default {
         });
       } else {
         this.BasicFormationData = JSON.parse(JSON.stringify(item.data.data));
-        console.log(this.BasicFormationData);
         this.maxHeight = item.data.data.maxHeight;
         this.loading = false;
       }
