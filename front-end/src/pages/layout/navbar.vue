@@ -59,6 +59,7 @@ export default {
       this.$router.push(key);
     },
     search() {
+      console.log(123)
       let address = /^[0-9a-f]{40}$/;
       let txId = /^[0-9a-f]{64}$/;
       let blockHeight = /^[0-9]\d*$/;

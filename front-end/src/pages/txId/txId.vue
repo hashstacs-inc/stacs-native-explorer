@@ -62,7 +62,8 @@ export default {
         {
           label: `${this.$t("tx.baseInfo.operationAddress")}`,
           prop: "submitter",
-          isTo: true
+          isTo: true,
+          target: "addressDetail"
         },
         {
           label: `${this.$t("tx.baseInfo.feeMaxAmount")}`,
@@ -75,7 +76,8 @@ export default {
         {
           label: `${this.$t("tx.baseInfo.block")}`,
           prop: "blockHeight",
-          isTo: true
+          isTo: true,
+          target: "blockDetail"
         },
         { label: `${this.$t("tx.baseInfo.timeStamp")}`, prop: "blockTime" },
         { label: `${this.$t("tx.baseInfo.status")}`, prop: "executeResult" },
@@ -148,6 +150,7 @@ export default {
     },
     // 去token/block/address等详情页
     toDetail(target, prop) {
+      console.log(target, prop)
       if (target === "tokenDetail") {
         this.$router.push({
           path: target,
