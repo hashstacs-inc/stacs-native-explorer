@@ -1,5 +1,5 @@
 import request from '@/server'
-const baseUrl = '/explorer'; // 
+const baseUrl = ''; // /explorer
 
 // 查询交易列表
 export function queryTxListByPage(data) {

@@ -97,7 +97,7 @@ import titileInfomation from "./titleInformation";
 import { queryTxListByPage, queryBlockListByPage } from "@/api";
 import { dateUTCFilter } from "../../utils";
 import { mapGetters } from "vuex";
-import { transferThousands, } from "@/utils/signUtils";
+import { transferThousands } from "@/utils/signUtils";
 
 export default {
   computed: {
@@ -138,21 +138,26 @@ export default {
     },
     queryBlockListByPage() {
       queryBlockListByPage(this.blockQueryData).then(res => {
-        this.blockInformation = res.data.data;
+        console.log(res);
+        this.blockInformation = res.data.data.list;
         let item;
-        for (item of this.blockInformation) {
-          item.blockTime = dateUTCFilter(item.blockTime);
-          item.txNum = transferThousands(item.txNum);
+        if (this.blockInformation) {
+          for (item of this.blockInformation) {
+            item.blockTime = dateUTCFilter(item.blockTime);
+            item.txNum = transferThousands(item.txNum);
+          }
         }
       });
     },
     queryTxListByPage() {
       queryTxListByPage(this.txsQueryData).then(res => {
-        console.log(res)
+        console.log(res);
         this.txsInformation = res.data.data.list;
         let item;
-        for (item of this.txsInformation) {
-          item.blockTime = dateUTCFilter(item.blockTime);
+        if (this.txsInformation) {
+          for (item of this.txsInformation) {
+            item.blockTime = dateUTCFilter(item.blockTime);
+          }
         }
       });
     }

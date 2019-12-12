@@ -9,14 +9,9 @@ const service = axios.create({
 })
 
 service.interceptors.response.use(config=> {
-  if (config.data.code === 'S401') {
-    window.location.href = config.data.data;
-    return;
-  }
-  if (config.data.respCode !== "000000") {
+  if (config.data.code !== "000000") {
     Message.error(config.data.msg)
   }
-
   return config
 })
 

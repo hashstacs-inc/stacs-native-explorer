@@ -11,7 +11,7 @@
           >
             <span class="table-label">{{item.label}}</span>
             <span
-              v-if="item.prop === 'parentHash'"
+              v-if="item.prop === 'previousHash'"
               class="table-desc"
               @click="prevHeight"
             >{{BasicFormationData[item.prop]}}</span>
@@ -21,7 +21,7 @@
             <span
               v-else-if="item.prop === 'totalTransactions'"
             >{{BasicFormationData[item.prop] ? BasicFormationData[item.prop] : 0}}</span>
-            <div v-else-if="item.prop === 'blockHeight'" class="block-height">
+            <div v-else-if="item.prop === 'height'" class="block-height">
               <el-tooltip
                 class="item"
                 effect="dark"
@@ -31,7 +31,7 @@
                 <div
                   class="span"
                   @click="prevHeight"
-                  :class="{'max-height': BasicFormationData.blockHeight <= 1}"
+                  :class="{'max-height': BasicFormationData.height <= 1}"
                 >
                   <i class="el-icon-arrow-left"></i>
                 </div>
@@ -46,7 +46,7 @@
                 <div
                   class="span"
                   @click="nextHeight"
-                  :class="{'max-height': BasicFormationData.blockHeight >= maxHeight}"
+                  :class="{'max-height': BasicFormationData.height >= maxHeight}"
                 >
                   <i class="el-icon-arrow-right"></i>
                 </div>
@@ -111,9 +111,11 @@
                   >
                     <template slot-scope="scope">
                       <span
+                        v-if="scope.row[item.prop]"
                         class="line-span-no"
                         @click="goAddressDetails(scope.row[item.prop])"
                       >{{scope.row[item.prop]}}</span>
+                      <span v-else>--</span>
                     </template>
                   </el-table-column>
                   <!-- feeAmount feeCurrency -->
@@ -129,7 +131,12 @@
                       <span v-else>--</span>
                     </template>
                   </el-table-column>
-                  <el-table-column :prop="item.prop" :label="item.label" v-else :key="item.prop"></el-table-column>
+                  <el-table-column :prop="item.prop" :label="item.label" v-else :key="item.prop">
+                    <template slot-scope="scope">
+                      <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
+                      <span v-else>--</span>
+                    </template>
+                  </el-table-column>
                 </template>
               </el-table>
             </el-tab-pane>
@@ -181,11 +188,11 @@ export default {
         blockHeight: ""
       },
       BasicFormationLabel: [
-        { label: `${this.$t("block.baseInfo.block")}`, prop: "blockHeight" },
+        { label: `${this.$t("block.baseInfo.block")}`, prop: "height" },
         { label: `${this.$t("block.baseInfo.hash")}`, prop: "blockHash" },
         {
           label: `${this.$t("block.baseInfo.parentHash")}`,
-          prop: "parentHash"
+          prop: "previousHash"
         },
         { label: `${this.$t("block.baseInfo.blockTime")}`, prop: "blockTime" }
       ],
@@ -278,41 +285,41 @@ export default {
     },
     // 上一个高度
     prevHeight() {
-      if (this.BasicFormationData.blockHeight <= 1) {
+      if (this.BasicFormationData.height <= 1) {
         return;
       }
       let tab = {
         label: this.tabsActiveName
       };
-      this.BasicFormationData.blockHeight--;
+      this.BasicFormationData.height--;
       let href = window.location.href.split("?");
       if (href[1].indexOf("height") !== -1) {
         history.pushState(
           "",
           "",
-          href[0] + "?" + "height=" + this.BasicFormationData.blockHeight
+          href[0] + "?" + "height=" + this.BasicFormationData.height
         );
       }
-      this.changeTabs(tab, this.BasicFormationData.blockHeight);
+      this.changeTabs(tab, this.BasicFormationData.height);
     },
     // 下一个高度
     nextHeight() {
-      if (this.BasicFormationData.blockHeight >= this.maxHeight) {
+      if (this.BasicFormationData.height >= this.maxHeight) {
         return;
       }
       let tab = {
         label: this.tabsActiveName
       };
-      this.BasicFormationData.blockHeight++;
+      this.BasicFormationData.height++;
       let href = window.location.href.split("?");
       if (href[1].indexOf("height") !== -1) {
         history.pushState(
           "",
           "",
-          href[0] + "?" + "height=" + this.BasicFormationData.blockHeight
+          href[0] + "?" + "height=" + this.BasicFormationData.height
         );
       }
-      this.changeTabs(tab, this.BasicFormationData.blockHeight);
+      this.changeTabs(tab, this.BasicFormationData.height);
     },
     // 改变页数
     changePage(page) {
@@ -327,13 +334,14 @@ export default {
       this.loading = true;
       this.queryBlockData.height = block;
       let item = await queryBlockDetails(this.queryBlockData);
-      if (!item.data.success) {
+      if (!item.data.successful) {
         this.$router.push({
           path: "/invalidSearch",
           query: { info: this.$route.query.height }
         });
       } else {
         this.BasicFormationData = JSON.parse(JSON.stringify(item.data.data));
+        console.log(this.BasicFormationData);
         this.maxHeight = item.data.data.maxHeight;
         this.loading = false;
       }
@@ -343,7 +351,7 @@ export default {
       this.tableLoading = true;
       this.queryTxList.blockHeight = block;
       let item = await queryTxListByPage(this.queryTxList);
-      if (!item.data.success) {
+      if (!item.data.successful) {
         this.$router.push({
           path: "/invalidSearch",
           query: { info: this.$route.query.height }
@@ -351,7 +359,7 @@ export default {
       } else {
         this.transactionsDate = JSON.parse(JSON.stringify(item.data.data.list));
         this.transactionsDate.forEach(el => {
-          if(el.feeAmount){
+          if (el.feeAmount) {
             el.feeAmount = transferThousands(el.feeAmount) + el.feeCurrency;
           }
           if (el.executeResult === "1") {
@@ -377,7 +385,7 @@ export default {
     },
     // 格式化时间
     formatDate(time) {
-      return dateUTCFilter(time);
+      return dateUTCFilter(Number(time));
     },
     // 点击TXid
     goTxIdDetails(txid) {

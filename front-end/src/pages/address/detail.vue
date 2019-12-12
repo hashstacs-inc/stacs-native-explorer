@@ -296,7 +296,7 @@ export default {
       this.loading = true;
       this.queryBalance.identity = this.submitterAddress;
       let item = await queryContractList(this.queryContract);
-      if (!item.data.success) {
+      if (!item.data.successful) {
         this.$router.push({
           path: "/invalidSearch",
           query: { info: this.$route.query.address }

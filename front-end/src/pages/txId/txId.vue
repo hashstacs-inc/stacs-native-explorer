@@ -33,7 +33,10 @@
                 </ul>
               </div>
             </div>
-            <span v-else-if="item.isTo&&!BasicInfo[item.prop]" style="font-weight: 500">- -</span>
+            <span
+              v-else-if="item.isTo&&!BasicInfo[item.prop] || !BasicInfo[item.prop] || BasicInfo[item.prop]===null"
+              style="font-weight: 500"
+            >- -</span>
             <span v-else style="font-weight: 500">{{BasicInfo[item.prop]}}</span>
           </div>
         </section>
@@ -102,34 +105,40 @@ export default {
         txId: this.txId
       })
         .then(res => {
-          if (!res.data.success) {
+          if (!res.data.successful) {
             this.$router.push({
               path: "/invalidSearch",
               query: { info: this.$route.query.id }
             });
           } else {
             this.BasicInfo = res.data.data;
-            this.BasicInfo.maxAllowFee =
-              transferThousands(res.data.data.maxAllowFee) +
-              " " +
-              res.data.data.feeCurrency;
-            this.BasicInfo.feeAmount =
-              transferThousands(res.data.data.feeAmount) +
-              " " +
-              res.data.data.feeCurrency;
+            if (this.BasicInfo.maxAllowFee && this.BasicInfo.feeCurrency) {
+              this.BasicInfo.maxAllowFee =
+                transferThousands(res.data.data.maxAllowFee) +
+                " " +
+                res.data.data.feeCurrency;
+            }
+
+            if (this.BasicInfo.feeAmount && this.BasicInfo.feeCurrency) {
+              this.BasicInfo.feeAmount =
+                transferThousands(res.data.data.feeAmount) +
+                " " +
+                res.data.data.feeCurrency;
+            }
+
             this.BasicInfo.blockTime = dateUTCFilter(res.data.data.blockTime);
             if (res.data.data.executeResult === "1") {
               this.BasicInfo.executeResult = `${this.$t("common.success")}`;
             } else {
               this.BasicInfo.executeResult = `${this.$t("common.failed")}`;
             }
-            this.inputData = res.data.data.actionDatas;
+            console.log(this.BasicInfo);
+            this.inputData = JSON.parse(res.data.data.actionDatas);
             this.inputData.forEach(el => {
               delete el.abi;
               delete el.code;
               el.sourCode = el.sourCode.split("\n");
             });
-            console.log(this.inputData);
           }
           this.loading = false;
         })
@@ -216,17 +225,17 @@ export default {
     display: inline-block;
     .action-box {
       border-bottom: 2px dashed #1e3a71;
-      &:nth-last-child(1){
-        border-bottom:0px;
+      &:nth-last-child(1) {
+        border-bottom: 0px;
       }
       .action-box-ul-outside {
         width: 100%;
         padding: 0;
-        >li {
+        > li {
           list-style: none;
           display: flex;
           padding-bottom: 15px;
-          >span:nth-child(2) {
+          > span:nth-child(2) {
             width: 100%;
             vertical-align: top;
             word-wrap: break-word;
@@ -234,7 +243,7 @@ export default {
             padding-right: 20px;
             // white-space:nowrap;
           }
-          >span:nth-child(1) {
+          > span:nth-child(1) {
             width: 15%;
             text-align: left;
           }
@@ -254,7 +263,7 @@ export default {
             }
           }
         }
-        .sourCodeLi{
+        .sourCodeLi {
           display: block;
         }
       }

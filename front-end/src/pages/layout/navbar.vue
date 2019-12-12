@@ -101,7 +101,6 @@ export default {
   },
   computed: {
     activeIndex: function() {
-      console.log(this.$route.name)
       return this.$route.name;
     }
   },
