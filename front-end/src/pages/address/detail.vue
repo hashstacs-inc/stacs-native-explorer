@@ -165,7 +165,7 @@ export default {
       tableLoading: false,
       errorMessagedialogVisible: false,
       queryContract: {
-        bdType: "asserts"
+        bdType: "assets"
       },
       queryBalance: {
         contract: "", //合约地址
