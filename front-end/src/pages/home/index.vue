@@ -162,13 +162,13 @@ export default {
   },
   mounted() {
     this.queryBlockListByPage();
-    // this.blockTimer = setInterval(() => {
-    //   this.queryBlockListByPage();
-    // }, 5000);
+    this.blockTimer = setInterval(() => {
+      this.queryBlockListByPage();
+    }, 5000);
     this.queryTxListByPage();
-    // this.txsTimer = setInterval(() => {
-    //   this.queryTxListByPage();
-    // }, 5000);
+    this.txsTimer = setInterval(() => {
+      this.queryTxListByPage();
+    }, 5000);
   },
   beforeDestroy() {
     clearInterval(this.blockTimer);
