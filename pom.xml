@@ -32,7 +32,7 @@
             </dependency>
             <dependency>
                 <groupId>io.stacs.nav</groupId>
-                <artifactId>drs-core</artifactId>
+                <artifactId>dapp-core</artifactId>
                 <version>${drs.version}</version>
             </dependency>
             <!-- springboot-->

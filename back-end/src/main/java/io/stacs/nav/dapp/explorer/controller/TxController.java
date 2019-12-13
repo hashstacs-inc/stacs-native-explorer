@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import io.stacs.nav.drs.api.IQueryService;
 import io.stacs.nav.drs.api.model.RespData;
 import io.stacs.nav.drs.api.model.TransactionPO;
+import io.stacs.nav.drs.api.model.TransactionVO;
 import io.stacs.nav.drs.api.model.query.QueryTxListVO;
 import io.stacs.nav.drs.api.model.query.QueryTxVO;
 import io.stacs.nav.drs.api.model.tx.CoreTransactionVO;
@@ -40,7 +41,7 @@ import static io.stacs.nav.drs.api.model.RespData.success;
         return success(queryService.queryTx(vo));
     }
 
-    @GetMapping("/detail") public RespData<TransactionPO> queryCoreTxById(@RequestParam String txId) {
+    @GetMapping("/detail") public RespData<TransactionVO> queryCoreTxById(@RequestParam String txId) {
         QueryTxVO vo = new QueryTxVO();
         vo.setTxId(txId);
         return success(queryService.queryTxById(vo));
