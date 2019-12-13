@@ -16,8 +16,7 @@
                 <ul class="action-box-ul-outside">
                   <li v-for="(v, k) in val" :key="k" :class="k==='sourCode' ? 'sourCodeLi':''">
                     <span>{{k}}:</span>
-                    <span v-if="k!=='sourCode'">{{v}}</span>
-                    <span v-else>
+                    <span v-if="k==='sourCode'">
                       <ul class="action-box-ul-inside">
                         <li
                           v-for="(sourCodeV,sourCodeK) in v"
@@ -28,6 +27,21 @@
                           <span>{{sourCodeV}}</span>
                         </li>
                       </ul>
+                    </span>
+                    <!-- <span v-else-if="k==='args'">
+                      <ul class="action-box-ul-inside">
+                        <li
+                          v-for="(sourCodeV,sourCodeK) in v"
+                          :key="sourCodeK"
+                        >
+                          <span>{{sourCodeK+1}}</span>
+                          <span>{{sourCodeV}}</span>
+                        </li>
+                      </ul>
+                    </span> -->
+                    <span v-else>
+                      <span v-if="v">{{v}}</span>
+                      <span v-else>- -</span>
                     </span>
                   </li>
                 </ul>
@@ -149,14 +163,7 @@ export default {
     },
     // 去token/block/address等详情页
     toDetail(target, prop) {
-      if (target === "tokenDetail") {
-        this.$router.push({
-          path: target,
-          query: {
-            token: prop
-          }
-        });
-      } else if (target === "blockDetail") {
+      if (target === "blockDetail") {
         this.$router.push({
           path: target,
           query: {
@@ -164,12 +171,12 @@ export default {
           }
         });
       } else if (target === "addressDetail") {
-        // this.$router.push({
-        //   path: target,
-        //   query: {
-        //     address: prop
-        //   }
-        // });
+        this.$router.push({
+          path: target,
+          query: {
+            address: prop
+          }
+        });
       }
     }
   },
@@ -245,13 +252,14 @@ export default {
             // white-space:nowrap;
           }
           > span:nth-child(1) {
-            width: 15%;
+            width: 20%;
             text-align: left;
           }
           .action-box-ul-inside {
             padding-left: 0;
             li {
               padding-bottom: 5px;
+              list-style: none;
               span:nth-child(2) {
                 vertical-align: top;
                 word-wrap: break-word;

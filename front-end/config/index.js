@@ -15,8 +15,8 @@ module.exports = {
         // target: 'http://10.200.174.57:30047/',
         // target: 'http://192.168.58.37:7070/', //联调地址
         // target:'https://test-stacs-native-browser.primeledger.cn/', //测试环境
-        target:'http://10.200.174.52:30055/', //开发环境
-        // target:'http://192.168.58.16:8080/explorer',
+        // target:'http://10.200.174.52:30055/', //开发环境
+        target:'http://192.168.58.16:8080/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
@@ -24,16 +24,16 @@ module.exports = {
           // Referer: 'http://10.200.174.57:30047/',
           // Referer: 'http://192.168.58.37:7070/',
           // Referer:'https://test-stacs-native-browser.primeledger.cn/'
-          Referer:'http://10.200.174.52:30055/'
-          // Referer:'http://192.168.58.16:8080/explorer'
+          // Referer:'http://10.200.174.52:30055/'
+          Referer:'http://192.168.58.16:8080/'
         }
       },
       '/api': {
         // target: 'http://10.200.174.57:30047/',
         // target: 'http://192.168.58.37:7070/',
         // target:'https://test-stacs-native-browser.primeledger.cn/',
-        target:'http://10.200.174.52:30055/',
-        // target:'http://192.168.58.16:8080/explorer',
+        // target:'http://10.200.174.52:30055/',
+        target:'http://192.168.58.16:8080/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
@@ -41,8 +41,8 @@ module.exports = {
           // Referer: 'http://10.200.174.57:30047/',
           // Referer: 'http://192.168.58.37:7070/',
           // Referer:'https://test-stacs-native-browser.primeledger.cn/'
-          Referer:'http://10.200.174.52:30055/'
-          // Referer:'http://192.168.58.16:8080/explorer'
+          // Referer:'http://10.200.174.52:30055/'
+          Referer:'http://192.168.58.16:8080/'
         },
         pathRewrite: {
           '^/api': ''

@@ -131,7 +131,13 @@
                       <span v-else>--</span>
                     </template>
                   </el-table-column>
-                  <el-table-column :prop="item.prop" :label="item.label" v-else :key="item.prop">
+                  <el-table-column
+                    :prop="item.prop"
+                    :label="item.label"
+                    v-else
+                    :key="item.prop"
+                    :show-overflow-tooltip="item.showTooltip"
+                  >
                     <template slot-scope="scope">
                       <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
                       <span v-else>--</span>
@@ -226,7 +232,8 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.functionName")}`, // 功能名称
-          prop: "policyId"
+          prop: "policyId",
+          showTooltip: true
         },
         {
           label: `${this.$t("block.transactions.transactionFee")}`, // 实际手续费

@@ -28,6 +28,7 @@
             <span
               v-else-if="(item.label === 'Balance' && item.prop == 0)||(item.label === 'Balance' && !item.prop)"
             >- -</span>
+            <span v-else-if="item.prop === 'Balance'">{{balance}}</span>
             <span v-else>{{item.prop}}</span>
           </div>
         </section>
@@ -100,7 +101,12 @@
                     :show-overflow-tooltip="item.showTooltip"
                     :key="item.prop"
                     :width="item.width"
-                  ></el-table-column>
+                  >
+                    <template slot-scope="scope">
+                      <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
+                      <span v-else>--</span>
+                    </template>
+                  </el-table-column>
                 </template>
               </el-table>
             </el-tab-pane>
@@ -136,7 +142,7 @@
 </template>
 
 <script>
-import { queryContractList, queryTxListByPage } from "@/api";
+import { queryContractList, queryTxListByPage, queryBanalce } from "@/api";
 import { dateUTCFilter } from "@/utils";
 import { transferThousands } from "@/utils/signUtils";
 import pagination from "@/components/pagination.vue";
@@ -151,26 +157,26 @@ export default {
       ],
       tokenValue: "",
       tabsActiveName: `${this.$t("address.transactions.tabsName")}`,
-      errorMessage:"",
+      errorMessage: "",
       tokenList: [],
       noTokenList: "",
+      balance: "",
       loading: false,
       tableLoading: false,
-      errorMessagedialogVisible:false,
+      errorMessagedialogVisible: false,
       queryContract: {
-        bdType: "assets"
+        bdType: "asserts"
       },
       queryBalance: {
         contract: "", //合约地址
         identity: "" //用户地址（对应 submitter）
       },
       queryTxList: {
-        subbmiter: "",
         pageNum: 1,
         pageSize: 20
       },
       pageTotal: 0,
-      txNum:0,
+      txNum: 0,
       transactionsDate: [],
       transactionsFrom: [
         {
@@ -287,8 +293,9 @@ export default {
     },
     // 切换tabs页
     changeTabs(tab) {
+      console.log(tab);
       if (tab.label === "Transactions") {
-        this.getTransactions();
+        this.getAddressTxList();
       }
     },
     // 获取合约列表列表
@@ -296,16 +303,12 @@ export default {
       this.loading = true;
       this.queryBalance.identity = this.submitterAddress;
       let item = await queryContractList(this.queryContract);
-      if (!item.data.successful) {
-        this.$router.push({
-          path: "/invalidSearch",
-          query: { info: this.$route.query.address }
-        });
-      } else {
+      if (item.data.successful) {
         if (item.data.data) {
-          this.tokenList = JSON.parse(JSON.stringify(item.data.data.list));
-          if (!this.tokenList) {
-            this.tokenValue = "--";
+          this.tokenList = JSON.parse(JSON.stringify(item.data.data));
+          if (this.tokenList.length<1) {
+            this.tokenValue = "- -";
+            this.balance = '- -'
           } else {
             this.tokenList.forEach(el => {
               el.label = el.name + "(" + el.symbol + ")";
@@ -319,18 +322,24 @@ export default {
           this.noTokenList = "- -";
           this.loading = false;
         }
+      } else {
+        this.loading = false;
       }
     },
     // 余额查询
-    getBalance() {
-      console.log(this.queryBalance);
+    async getBalance() {
+      let item = await queryBanalce(this.queryBalance);
+      if (item.data.successful) {
+        if (item.data.data) {
+          this.balance = transferThousands(item.data.data);
+        }
+      }
     },
     // 根据address查询交易列表
     async getAddressTxList(address) {
       this.tableLoading = true;
-      this.queryTxList.subbmiter = address;
       let item = await queryTxListByPage(this.queryTxList);
-      if (!item.data.success) {
+      if (!item.data.successful) {
         this.$router.push({
           path: "/invalidSearch",
           query: { info: this.$route.query.height }
@@ -352,7 +361,7 @@ export default {
         this.tableLoading = false;
       }
     },
-     ShowErrorInfo(errorMessage) {
+    ShowErrorInfo(errorMessage) {
       this.errorMessage = errorMessage;
       this.errorMessagedialogVisible = true;
     }

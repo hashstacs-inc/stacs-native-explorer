@@ -47,7 +47,7 @@ export default {
     return {
       menuDesc: [
         { index: "home", label: `${this.$t("topMenu.home")}` },
-        { index: "", label: `${this.$t("topMenu.bd")}` }
+        // { index: "", label: `${this.$t("topMenu.bd")}` }
       ],
       searchContent: "",
       searchStatus: false

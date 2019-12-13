@@ -95,14 +95,47 @@ const blockList = {
   "msg": "success",
   "successful": true,
   "data":
-    [{
-      "blockTime": 1575631429519,
-      "height": "2904",
-      "totalBlockSize": "1.55",
-      "totalTxNum": "4472",
-      "txNum": "1000",
-      "version": "v1.0",
-    }]
+    {
+      "list":[{
+        "txId": "79930c7e4459007a7268541a309a6f94da972360eac0f3026bc5120d2938768d",
+        "txType": "DEFAULT",
+        "blockTime": 1575876188985,
+        "submitter":"4888db5233813f18437cee95a2cc67d43a5bf06b",
+        "bdName":"ywz",
+        "bdType":"GG",
+        "policyId":"TRANSFER",
+        "feeAmount":"1000",
+        "executeResult":"1",
+        "feeCurrency":'ABC',
+        'height':"111"
+      },{
+        "txId": "79930c7e4459007a7268541a309a6f94da972360eac0f3026bc5120d2938768d",
+        "txType": "DEFAULT",
+        "blockTime": 1575876188985,
+        "submitter":"4888db5233813f18437cee95a2cc67d43a5bf06b",
+        "bdName":"ywz",
+        "bdType":"GG",
+        "policyId":"TRANSFER",
+        "feeAmount":"100000000.12345678",
+        "executeResult":"1",
+        "feeCurrency":'ABC'
+      },{
+        "txId": "79930c7e4459007a7268541a309a6f94da972360eac0f3026bc5120d2938768d",
+        "txType": "DEFAULT",
+        "blockTime": 1575876188985,
+        "submitter":"4888db5233813f18437cee95a2cc67d43a5bf06b",
+        "bdName":"ywz",
+        "bdType":"GG",
+        "policyId":"TRANSFER",
+        "feeAmount":"1000.12345678",
+        "executeResult":"0",
+        "feeCurrency":'ABC',
+        "errorMessage":"就是失败了"
+      }],
+      "pageNum": 1,
+      "pageSize": 20,
+      "total": 1000
+    }
 }
 
 const blockListDetails = {
@@ -111,10 +144,10 @@ const blockListDetails = {
   "successful": true,
   "data":{
     "blockHash":"288f7900bf525bd14021bc89b18d6a9b9c44b3ed3fce88b17b5dbbf4f5846a34",
-    "blockHeight":2904,
+    "height":2904,
     "blockTime":1575631429519,
-    "maxHeight":3000,
-    "parentHash":"1709cc5ebb3d70c17b6d70bf775b9ed6c1972101ff22e231c6a838f836249117",
+    "maxHeight":2905,
+    "previousHash":"1709cc5ebb3d70c17b6d70bf775b9ed6c1972101ff22e231c6a838f836249117",
   }
 }
 
@@ -141,6 +174,13 @@ const contractList = {
         "symbol": "UBUB01"
       }]
     }
+}
+
+const balance = {
+  "code": "000000",
+  "msg": "success",
+  "successful": true,
+  "data":['10000']
 }
 
 const txDetails = {
@@ -198,6 +238,7 @@ export default {
   blockList,
   blockListDetails,
   contractList,
+  balance,
   txDetails
 };
   
