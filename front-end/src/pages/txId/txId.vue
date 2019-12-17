@@ -47,6 +47,19 @@
                 </ul>
               </div>
             </div>
+            <!-- 失败显示 -->
+             <!-- v-if="scope.row.executeResult === `${$t('common.failed')}`" -->
+            <div v-else-if="item.prop === 'executeResult'">
+              <span>{{BasicInfo[item.prop]}}</span>
+              <span
+                  v-if="BasicInfo[item.prop]==='Failed'"
+                  class="FailedStyle"
+                  @click="ShowErrorInfo(BasicInfo.errorMessage)"
+                >
+                  <img src="@/assets/img/view.png" style="margin: 0 5px;" />
+                  {{$t('block.common.view')}}
+                </span>
+            </div>
             <span
               v-else-if="item.isTo&&!BasicInfo[item.prop] || !BasicInfo[item.prop] || BasicInfo[item.prop]===null"
               style="font-weight: 500"
@@ -56,6 +69,19 @@
         </section>
       </el-card>
     </article>
+    <el-dialog
+      :title="$t('common.errorInfo')"
+      :visible.sync="errorMessagedialogVisible"
+      width="30%"
+    >
+      <span>{{errorMessage}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="errorMessagedialogVisible = false"
+        >{{$t('common.yesConfirm')}}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -68,6 +94,8 @@ export default {
     return {
       showTooltip: true,
       loading: false,
+      errorMessage:'',
+      errorMessagedialogVisible: false,
       BasicInfoLabel: [
         { label: `${this.$t("tx.baseInfo.txID")}`, prop: "txId" },
         { label: `${this.$t("tx.baseInfo.bdName")}`, prop: "bdName" },
@@ -107,6 +135,10 @@ export default {
     }
   },
   methods: {
+    ShowErrorInfo(errorMessage) {
+      this.errorMessage = errorMessage;
+      this.errorMessagedialogVisible = true;
+    },
     renderTable() {
       [].forEach.call(document.querySelectorAll(".tableList >div"), function(
         div,
