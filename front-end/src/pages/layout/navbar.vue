@@ -153,9 +153,11 @@ ul.el-menu--horizontal.el-menu.notHome li{
 .searchBar {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 .searchBar .el-input__inner {
-  width: 483px;
+  /* width: 483px; */
+  width: 100%;
   height: 48px;
 }
 .searchBar .el-input-group__append {

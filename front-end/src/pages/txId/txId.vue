@@ -224,6 +224,7 @@ export default {
 
 .bi-information {
   min-height: 60px;
+  line-height: 60px;
   display: flex;
   align-items: center;
   .action-data {

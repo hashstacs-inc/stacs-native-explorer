@@ -452,9 +452,11 @@ export default {
 
   .bi-information {
     min-height: 60px;
+    line-height: 60px;
     display: flex;
     align-items: center;
     .el-input__inner {
+      height: 40px !important;
       width: 387px;
       padding-left: 12px;
     }

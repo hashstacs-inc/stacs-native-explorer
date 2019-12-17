@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
+import "babel-polyfill";
 import 'element-ui/lib/theme-chalk/index.css';
 import 'muse-ui/dist/muse-ui.css';
 import App from './App'
@@ -9,8 +10,8 @@ import ElementUI from 'element-ui';
 import './styles/index.scss' //全局CSS
 import store from './store';
 
-import MuseUI from 'muse-ui';
-Vue.use(MuseUI);
+// import MuseUI from 'muse-ui';
+// Vue.use(MuseUI);
 
 import vueToTop from 'vue-totop'
 Vue.use(vueToTop);
