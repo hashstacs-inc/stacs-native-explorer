@@ -40,7 +40,7 @@
                       </ul>
                     </span> -->
                     <span v-else>
-                      <span v-if="v">{{v}}</span>
+                      <span v-if="v || typeof v === 'number' ">{{v}}</span>
                       <span v-else>- -</span>
                     </span>
                   </li>
