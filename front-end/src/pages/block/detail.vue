@@ -405,10 +405,12 @@ export default {
     changeTabs(tab, block) {
       if (typeof block === "string" || typeof block === "number") {
         if (tab.label === "Transactions") {
+          this.getBlockData(block);
           this.getBlockTxList(block);
         }
       } else {
         if (tab.label === "Transactions") {
+          this.getBlockData(this.BasicFormationData.blockHeight);
           this.getBlockTxList(this.BasicFormationData.blockHeight);
         }
       }
