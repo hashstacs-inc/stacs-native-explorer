@@ -93,6 +93,7 @@
 
 
     <build>
+        <finalName>native-explorer</finalName>
         <plugins>
             <plugin>
                 <!-- Copy the front end into the static folder for JARs-->
