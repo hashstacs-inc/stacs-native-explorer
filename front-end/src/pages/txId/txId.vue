@@ -12,7 +12,8 @@
               @click="toDetail(item.target,BasicInfo[item.prop])"
             >{{BasicInfo[item.prop]}}</a>
             <div v-else-if="item.prop === 'actionDatas'" class="action-data">
-              <div v-for="(val, key) in inputData" :key="key" class="action-box">
+              <json-viewer :value="inputData" :expand-depth=10></json-viewer>
+              <!-- <div v-for="(val, key) in inputData" :key="key" class="action-box">
                 <ul class="action-box-ul-outside">
                   <li v-for="(v, k) in val" :key="k" :class="k==='sourCode' ? 'sourCodeLi':''">
                     <span>{{k}}:</span>
@@ -28,24 +29,13 @@
                         </li>
                       </ul>
                     </span>
-                    <!-- <span v-else-if="k==='args'">
-                      <ul class="action-box-ul-inside">
-                        <li
-                          v-for="(sourCodeV,sourCodeK) in v"
-                          :key="sourCodeK"
-                        >
-                          <span>{{sourCodeK+1}}</span>
-                          <span>{{sourCodeV}}</span>
-                        </li>
-                      </ul>
-                    </span> -->
                     <span v-else>
                       <span v-if="v || typeof v === 'number' ">{{v}}</span>
                       <span v-else>- -</span>
                     </span>
                   </li>
                 </ul>
-              </div>
+              </div> -->
             </div>
             <!-- 失败显示 -->
              <!-- v-if="scope.row.executeResult === `${$t('common.failed')}`" -->
@@ -184,8 +174,9 @@ export default {
             this.inputData.forEach(el => {
               delete el.abi;
               delete el.code;
-              el.sourCode = el.sourCode.split("\n");
+              // el.sourCode = el.sourCode.split("\n");
             });
+            console.log(this.inputData)
           }
           this.loading = false;
         })
@@ -309,6 +300,10 @@ export default {
           display: block;
         }
       }
+    }
+    .jv-container.jv-light{
+      line-height: 22px;
+      margin-left: -23px;
     }
   }
 }

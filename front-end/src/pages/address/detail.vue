@@ -94,6 +94,20 @@
                       >{{scope.row[item.prop]}}</span>
                     </template>
                   </el-table-column>
+                  <!-- Function Name -->
+                   <el-table-column
+                    :prop="item.prop"
+                    :label="item.label"
+                    v-else-if="item.prop === 'functionNames'"
+                    :show-overflow-tooltip="item.showTooltip"
+                    :key="item.prop"
+                    :width="item.width"
+                  >
+                    <template slot-scope="scope">
+                      <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
+                      <span v-else>- -</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
@@ -104,7 +118,7 @@
                   >
                     <template slot-scope="scope">
                       <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
-                      <span v-else>--</span>
+                      <span v-else>- -</span>
                     </template>
                   </el-table-column>
                 </template>
@@ -202,7 +216,7 @@ export default {
         },
         {
           label: `${this.$t("address.transactions.functionName")}`, // 方法名称
-          prop: "policyId",
+          prop: "functionNames",
           showTooltip: true
         },
         {
@@ -354,6 +368,13 @@ export default {
             el.executeResult = `${this.$t("common.success")}`;
           } else {
             el.executeResult = `${this.$t("common.failed")}`;
+          }
+          if(el.functionNames){
+            if(el.functionNames.length>1){
+              el.functionNames = '';
+            } else {
+              el.functionNames = el.functionNames[0];
+            }
           }
         });
         this.pageTotal = item.data.data.total;

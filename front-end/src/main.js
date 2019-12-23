@@ -10,6 +10,9 @@ import ElementUI from 'element-ui';
 import './styles/index.scss' //全局CSS
 import store from './store';
 
+import JsonViewer from 'vue-json-viewer';
+Vue.use(JsonViewer)
+
 // import MuseUI from 'muse-ui';
 // Vue.use(MuseUI);
 

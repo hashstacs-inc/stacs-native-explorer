@@ -115,7 +115,7 @@
                         class="line-span-no"
                         @click="goAddressDetails(scope.row[item.prop])"
                       >{{scope.row[item.prop]}}</span>
-                      <span v-else>--</span>
+                      <span v-else>- -</span>
                     </template>
                   </el-table-column>
                   <!-- feeAmount feeCurrency -->
@@ -128,7 +128,7 @@
                   >
                     <template slot-scope="scope">
                       <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
-                      <span v-else>--</span>
+                      <span v-else>- -</span>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -140,7 +140,7 @@
                   >
                     <template slot-scope="scope">
                       <span v-if="scope.row[item.prop]">{{scope.row[item.prop]}}</span>
-                      <span v-else>--</span>
+                      <span v-else>- -</span>
                     </template>
                   </el-table-column>
                 </template>
@@ -232,7 +232,7 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.functionName")}`, // 功能名称
-          prop: "policyId",
+          prop: "functionNames",
           showTooltip: true
         },
         {
@@ -373,6 +373,13 @@ export default {
           } else {
             el.executeResult = `${this.$t("common.failed")}`;
           }
+          if(el.functionNames){
+            if(el.functionNames.length>1){
+              el.functionNames = '';
+            } else {
+              el.functionNames = el.functionNames[0];
+            }
+          }
         });
         this.pageTotal = item.data.data.total;
         this.txNum = transferThousands(this.pageTotal);
@@ -410,8 +417,8 @@ export default {
         }
       } else {
         if (tab.label === "Transactions") {
-          this.getBlockData(this.BasicFormationData.blockHeight);
-          this.getBlockTxList(this.BasicFormationData.blockHeight);
+          this.getBlockData(this.blockHeight);
+          this.getBlockTxList(this.blockHeight);
         }
       }
     },
