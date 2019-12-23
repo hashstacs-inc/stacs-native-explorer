@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author dekuofa <br>
  * @date 2019-12-02 <br>
  */
-@SpringBootApplication public class Application {
+@SpringBootApplication(scanBasePackages = "io.stacs.nav.dapp") public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

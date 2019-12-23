@@ -14,7 +14,10 @@
 
     <dependencies>
         <!-- drs -->
-
+        <dependency>
+            <groupId>io.stacs.nav</groupId>
+            <artifactId>dapp-core</artifactId>
+        </dependency>
         <!-- springboot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -93,6 +96,7 @@
 
 
     <build>
+        <finalName>native-explorer</finalName>
         <plugins>
             <plugin>
                 <!-- Copy the front end into the static folder for JARs-->
