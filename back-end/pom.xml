@@ -14,7 +14,10 @@
 
     <dependencies>
         <!-- drs -->
-
+        <dependency>
+            <groupId>io.stacs.nav</groupId>
+            <artifactId>dapp-core</artifactId>
+        </dependency>
         <!-- springboot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
