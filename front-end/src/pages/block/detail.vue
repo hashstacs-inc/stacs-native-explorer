@@ -72,6 +72,7 @@
                     :label="item.label"
                     v-if="item.prop === 'executeResult'"
                     :key="item.prop"
+                    :width="item.width"
                   >
                     <template slot-scope="scope">
                       <span>{{scope.row.executeResult}}</span>
@@ -108,6 +109,7 @@
                     v-else-if="item.prop === 'submitter'"
                     :show-overflow-tooltip="item.showTooltip"
                     :key="item.prop"
+                    :width="item.width"
                   >
                     <template slot-scope="scope">
                       <span
@@ -165,7 +167,7 @@
       :visible.sync="errorMessagedialogVisible"
       width="30%"
     >
-      <span>{{errorMessage}}</span>
+      <div style="word-break: break-all;">{{errorMessage}}</div>
       <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
@@ -220,7 +222,12 @@ export default {
         {
           label: `${this.$t("block.transactions.operationAddress")}`, // submitter 交易发起者
           prop: "submitter",
-          showTooltip: true
+          showTooltip: true,
+          width: 170
+        },
+        {
+          label: `${this.$t("block.transactions.bdName")}`, // bdCODE
+          prop: "bdCode"
         },
         {
           label: `${this.$t("block.transactions.bdName")}`, // bd名称
@@ -242,7 +249,8 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.status")}`, // 交易状态
-          prop: "executeResult"
+          prop: "executeResult",
+          width: 170
         }
       ],
       transactionsDate: []

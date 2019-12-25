@@ -64,7 +64,7 @@
       :visible.sync="errorMessagedialogVisible"
       width="30%"
     >
-      <span>{{errorMessage}}</span>
+      <div style="word-break: break-all;">{{errorMessage}}</div>
       <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
@@ -88,6 +88,7 @@ export default {
       errorMessagedialogVisible: false,
       BasicInfoLabel: [
         { label: `${this.$t("tx.baseInfo.txID")}`, prop: "txId" },
+         { label: `${this.$t("tx.baseInfo.bdCode")}`, prop: "bdCode" },
         { label: `${this.$t("tx.baseInfo.bdName")}`, prop: "bdName" },
         { label: `${this.$t("tx.baseInfo.bdType")}`, prop: "bdType" },
         { label: `${this.$t("tx.baseInfo.functionName")}`, prop: "policyId" },

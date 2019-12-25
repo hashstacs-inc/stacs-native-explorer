@@ -144,7 +144,7 @@
       :visible.sync="errorMessagedialogVisible"
       width="30%"
     >
-      <span>{{errorMessage}}</span>
+      <div style="word-break: break-all;">{{errorMessage}}</div>
       <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
@@ -205,6 +205,11 @@ export default {
           width: 170
         },
         {
+          label: `${this.$t("address.transactions.bdCode")}`, // BD代码
+          prop: "bdCode",
+          showTooltip: true
+        },
+        {
           label: `${this.$t("address.transactions.bdName")}`, // BD名称
           prop: "bdName",
           showTooltip: true
@@ -222,13 +227,13 @@ export default {
         {
           label: `${this.$t("address.transactions.transactionFee")}`, // 此次BD执行交易收取的手续费金额及币种
           prop: "feeAmount",
-          showTooltip: true
+          showTooltip: true,
         },
         {
           label: `${this.$t("address.transactions.status")}`, // 交易状态
           prop: "executeResult",
           showTooltip: true,
-          width: 180
+          width: 170
         }
       ]
     };

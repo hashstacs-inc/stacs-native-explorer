@@ -6,6 +6,7 @@ export default {
         tx: {
             baseInfo: {
                 txID: 'TX ID',
+                bdCode: 'BD Code',
                 bdName: 'BD Name',
                 bdType: 'BD Type',
                 functionName: 'Function Name',
@@ -23,6 +24,7 @@ export default {
         tx: {
             baseInfo: {
                 txID: 'TX ID',
+                bdCode: 'BD Code',
                 bdName: 'BD Name',
                 bdType: 'BD Type',
                 functionName: 'Function Name',
