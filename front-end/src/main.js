@@ -7,7 +7,7 @@ import 'muse-ui/dist/muse-ui.css';
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
-import './styles/index.scss' //全局CSS
+import './styles/index.scss'
 import store from './store';
 
 import JsonViewer from 'vue-json-viewer';
@@ -28,18 +28,14 @@ for (const key in filter) {
   }
 }
 
-// 国际化处理
 import i18n from './i18n/index'
-Vue.use(ElementUI, { //兼容vue-i18n@6.x版本
+Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value)
 });
 
 // import error from '@/components/errorInfo';
 // Vue.component('error', error)
 Vue.config.productionTip = false
-
-//本地mock数据
-// import "./mock";
 
 /* eslint-disable no-new */
 new Vue({

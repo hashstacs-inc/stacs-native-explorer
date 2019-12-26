@@ -1,6 +1,6 @@
 import request from '@/server'
 
-// 查询交易列表
+// Query transaction list
 export function queryTxListByPage(data) {
   return request({
     url: '/native-explorer/tx/list',
@@ -8,7 +8,7 @@ export function queryTxListByPage(data) {
     params:data
   })
 }
-// 查询交易详情
+// Enquiry for transaction details
 export function queryTxDetails(data) {
   return request({
     url: '/native-explorer/tx/detail',
@@ -17,7 +17,7 @@ export function queryTxDetails(data) {
   })
 }
 
-// 区块列表查询
+// Block list query
 export function queryBlockListByPage(data) {
   return request({
     url: '/native-explorer/block/list',
@@ -26,7 +26,7 @@ export function queryBlockListByPage(data) {
   })
 }
 
-// 区块详情查询
+// Block details enquiry
 export function queryBlockDetails(data) {
   return request({
     url: '/native-explorer/block/detail',
@@ -35,7 +35,7 @@ export function queryBlockDetails(data) {
   })
 }
 
-// 合约列表列表
+// Contract list
 export function queryContractList(data) {
   return request({
     url: '/native-explorer/contract/list',
@@ -44,7 +44,7 @@ export function queryContractList(data) {
   })
 }
 
-// 余额查询
+// balance enquiry
 export function queryBanalce(data){
   return request({
     url: '/native-explorer/identity/balance',

@@ -13,32 +13,8 @@
             >{{BasicInfo[item.prop]}}</a>
             <div v-else-if="item.prop === 'actionDatas'" class="action-data">
               <json-viewer :value="inputData" :expand-depth=10></json-viewer>
-              <!-- <div v-for="(val, key) in inputData" :key="key" class="action-box">
-                <ul class="action-box-ul-outside">
-                  <li v-for="(v, k) in val" :key="k" :class="k==='sourCode' ? 'sourCodeLi':''">
-                    <span>{{k}}:</span>
-                    <span v-if="k==='sourCode'">
-                      <ul class="action-box-ul-inside">
-                        <li
-                          v-for="(sourCodeV,sourCodeK) in v"
-                          :key="sourCodeK"
-                          v-show="sourCodeV!==''"
-                        >
-                          <span>{{sourCodeK+1}}</span>
-                          <span>{{sourCodeV}}</span>
-                        </li>
-                      </ul>
-                    </span>
-                    <span v-else>
-                      <span v-if="v || typeof v === 'number' ">{{v}}</span>
-                      <span v-else>- -</span>
-                    </span>
-                  </li>
-                </ul>
-              </div> -->
+             
             </div>
-            <!-- 失败显示 -->
-             <!-- v-if="scope.row.executeResult === `${$t('common.failed')}`" -->
             <div v-else-if="item.prop === 'executeResult'">
               <span>{{BasicInfo[item.prop]}}</span>
               <span
@@ -175,9 +151,7 @@ export default {
             this.inputData.forEach(el => {
               delete el.abi;
               delete el.code;
-              // el.sourCode = el.sourCode.split("\n");
             });
-            console.log(this.inputData)
           }
           this.loading = false;
         })
@@ -185,7 +159,6 @@ export default {
           this.loading = false;
         });
     },
-    // 去token/block/address等详情页
     toDetail(target, prop) {
       if (target === "blockDetail") {
         this.$router.push({
@@ -274,7 +247,6 @@ export default {
             word-wrap: break-word;
             word-break: break-all;
             padding-right: 20px;
-            // white-space:nowrap;
           }
           > span:nth-child(1) {
             width: 20%;

@@ -1,5 +1,5 @@
 /**
- *  首页的国际化信息文件
+ *  home Internationalization information file
  * */
 export default {
 	'zh-CN': {

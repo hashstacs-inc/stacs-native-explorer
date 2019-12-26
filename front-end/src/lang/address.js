@@ -1,5 +1,5 @@
 /**
- *  address的国际化信息文件
+ *  address Internationalization information file
  * */
 export default {
 	'zh-CN': {

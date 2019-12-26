@@ -1,11 +1,9 @@
 import axios from 'axios'
 import {Message} from 'element-ui'
 
-// 创建axios实例
-
 const service = axios.create({
-  timeout: 60000, // 请求超时时间
-  baseURL: process.env.VUE_APP_API_BASE   // 反向代理
+  timeout: 60000,
+  baseURL: process.env.VUE_APP_API_BASE
 })
 
 service.interceptors.response.use(config=> {

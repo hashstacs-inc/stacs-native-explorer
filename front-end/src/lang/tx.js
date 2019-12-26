@@ -1,5 +1,5 @@
 /**
- *  block的国际化信息文件
+ *  block internationalization file
  * */
 export default {
 	'zh-CN': {

@@ -66,7 +66,6 @@
               <div class="table-top">{{$t('block.transactions.totalTxns')}} {{txNum}}</div>
               <el-table :data="transactionsDate" stripe style="width: 100%">
                 <template v-for="item in transactionsFrom">
-                  <!-- 状态 -->
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
@@ -76,7 +75,6 @@
                   >
                     <template slot-scope="scope">
                       <span>{{scope.row.executeResult}}</span>
-                      <!-- 失败显示 -->
                       <span
                         v-if="scope.row.executeResult === `${$t('common.failed')}`"
                         class="FailedStyle"
@@ -151,7 +149,6 @@
           </el-tabs>
         </section>
       </el-card>
-      <!-- 分页 -->
       <pagination
         :currentPage="queryTxList.pageNum"
         :totalStrip="pageTotal"
@@ -215,40 +212,40 @@ export default {
       BasicFormationData: {},
       transactionsFrom: [
         {
-          label: `${this.$t("block.transactions.txid")}`, // 交易Id
+          label: `${this.$t("block.transactions.txid")}`,
           prop: "txId",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.operationAddress")}`, // submitter 交易发起者
+          label: `${this.$t("block.transactions.operationAddress")}`,
           prop: "submitter",
           showTooltip: true,
           width: 170
         },
         {
-          label: `${this.$t("block.transactions.bdCode")}`, // bdCODE
+          label: `${this.$t("block.transactions.bdCode")}`,
           prop: "bdCode"
         },
         {
-          label: `${this.$t("block.transactions.bdName")}`, // bd名称
+          label: `${this.$t("block.transactions.bdName")}`,
           prop: "bdName"
         },
         {
-          label: `${this.$t("block.transactions.bdType")}`, // bd类型
+          label: `${this.$t("block.transactions.bdType")}`,
           prop: "bdType"
         },
         {
-          label: `${this.$t("block.transactions.functionName")}`, // 功能名称
+          label: `${this.$t("block.transactions.functionName")}`,
           prop: "functionNames",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.transactionFee")}`, // 实际手续费
+          label: `${this.$t("block.transactions.transactionFee")}`,
           prop: "feeAmount",
           showTooltip: true
         },
         {
-          label: `${this.$t("block.transactions.status")}`, // 交易状态
+          label: `${this.$t("block.transactions.status")}`,
           prop: "executeResult",
           width: 170
         }
@@ -266,7 +263,6 @@ export default {
   },
   inject: ["reload"],
   methods: {
-    // 下一页
     nextPage() {
       this.queryData.pageNum++;
       let tab = {
@@ -274,7 +270,6 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 上一页
     prevPage() {
       this.queryData.pageNum--;
       let tab = {
@@ -282,7 +277,6 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 最后一页
     lastPage(page) {
       this.queryData.pageNum = page;
       let tab = {
@@ -290,7 +284,6 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 第一页
     firstPage() {
       this.queryData.pageNum = 1;
       let tab = {
@@ -298,7 +291,6 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 上一个高度
     prevHeight() {
       if (this.BasicFormationData.height <= 1) {
         return;
@@ -317,7 +309,6 @@ export default {
       }
       this.changeTabs(tab, this.BasicFormationData.height);
     },
-    // 下一个高度
     nextHeight() {
       if (this.BasicFormationData.height >= this.maxHeight) {
         return;
@@ -336,7 +327,6 @@ export default {
       }
       this.changeTabs(tab, this.BasicFormationData.height);
     },
-    // 改变页数
     changePage(page) {
       this.queryData.pageNum = page;
       let tab = {
@@ -344,7 +334,6 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 获取block详情数据
     async getBlockData(block) {
       this.loading = true;
       this.queryBlockData.height = block;
@@ -360,7 +349,6 @@ export default {
         this.loading = false;
       }
     },
-    // 获取block下的交易列表
     async getBlockTxList(block) {
       this.tableLoading = true;
       this.queryTxList.blockHeight = block;
@@ -394,7 +382,6 @@ export default {
         this.tableLoading = false;
       }
     },
-    // 点击地址
     goAddressDetails(address) {
       this.$router.push({
         path: "/addressDetail",
@@ -404,11 +391,9 @@ export default {
         }
       });
     },
-    // 格式化时间
     formatDate(time) {
       return dateUTCFilter(Number(time));
     },
-    // 点击TXid
     goTxIdDetails(txid) {
       this.$router.push({
         path: "/txidDetails",

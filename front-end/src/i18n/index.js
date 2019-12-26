@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-// 引入国际化插件
+// Introducing internationalization plug-ins
 import VueI18n from 'vue-i18n'
 import messages from '../lang'
 import { getLanguage } from "@/utils/localStorage"

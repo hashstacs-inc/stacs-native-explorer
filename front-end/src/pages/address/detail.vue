@@ -43,7 +43,7 @@
               <div class="table-top">{{$t('address.transactions.totalTxns')}} {{txNum}}</div>
               <el-table :data="transactionsDate" stripe style="width: 100%">
                 <template v-for="item in transactionsFrom">
-                  <!-- 时间 -->
+                  <!-- time -->
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
@@ -56,7 +56,7 @@
                       <span>{{formatDate(scope.row[item.prop])}}</span>
                     </template>
                   </el-table-column>
-                  <!-- 状态 -->
+                  <!-- status -->
                   <el-table-column
                     :prop="item.prop"
                     :label="item.label"
@@ -67,7 +67,7 @@
                   >
                     <template slot-scope="scope">
                       <span>{{scope.row.executeResult}}</span>
-                      <!-- 失败显示 -->
+                      <!-- Failure shows -->
                       <span
                         v-if="scope.row.executeResult === `${$t('common.failed')}`"
                         class="FailedStyle"
@@ -127,7 +127,7 @@
           </el-tabs>
         </section>
       </el-card>
-      <!-- 分页 -->
+      <!-- paging -->
       <pagination
         :currentPage="queryTxList.pageNum"
         :totalStrip="pageTotal"
@@ -182,8 +182,8 @@ export default {
         bdType: "assets"
       },
       queryBalance: {
-        contract: "", //合约地址
-        identity: "" //用户地址（对应 submitter）
+        contract: "", // Contract address
+        identity: "" // User address（corresponding submitter）
       },
       queryTxList: {
         pageNum: 1,
@@ -194,43 +194,43 @@ export default {
       transactionsDate: [],
       transactionsFrom: [
         {
-          label: `${this.$t("address.transactions.txid")}`, // 交易Id
+          label: `${this.$t("address.transactions.txid")}`, // deal Id
           prop: "txId",
           showTooltip: true
         },
         {
-          label: `${this.$t("address.transactions.timeStamp")}`, // 时间
+          label: `${this.$t("address.transactions.timeStamp")}`, // time
           prop: "blockTime",
           showTooltip: true,
           width: 170
         },
         {
-          label: `${this.$t("address.transactions.bdCode")}`, // BD代码
+          label: `${this.$t("address.transactions.bdCode")}`, // BD code
           prop: "bdCode",
           showTooltip: true
         },
         {
-          label: `${this.$t("address.transactions.bdName")}`, // BD名称
+          label: `${this.$t("address.transactions.bdName")}`, // BD name
           prop: "bdName",
           showTooltip: true
         },
         {
-          label: `${this.$t("address.transactions.bdType")}`, // BD类型
+          label: `${this.$t("address.transactions.bdType")}`, // BD type
           prop: "bdType",
           showTooltip: true
         },
         {
-          label: `${this.$t("address.transactions.functionName")}`, // 方法名称
+          label: `${this.$t("address.transactions.functionName")}`, // functionName
           prop: "functionNames",
           showTooltip: true
         },
         {
-          label: `${this.$t("address.transactions.transactionFee")}`, // 此次BD执行交易收取的手续费金额及币种
+          label: `${this.$t("address.transactions.transactionFee")}`, // transactionFee
           prop: "feeAmount",
           showTooltip: true,
         },
         {
-          label: `${this.$t("address.transactions.status")}`, // 交易状态
+          label: `${this.$t("address.transactions.status")}`, // transaction status
           prop: "executeResult",
           showTooltip: true,
           width: 170
@@ -242,13 +242,13 @@ export default {
     pagination
   },
   computed: {
-    // 用户地址（对应 submitter）
+    // User address（corresponding submitter）
     submitterAddress() {
       return this.$route.query.address;
     }
   },
   methods: {
-    // 改变页数
+    // Change the number of pages
     changePage(page) {
       this.queryTxList.pageNum = page;
       let tab = {
@@ -256,7 +256,7 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 第一页
+    // first page
     firstPage() {
       this.queryTxList.pageNum = 1;
       let tab = {
@@ -264,7 +264,7 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 最后一页
+    // the last page
     lastPage(page) {
       this.queryTxList.pageNum = page;
       let tab = {
@@ -272,7 +272,7 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 上一页
+    // previous page
     prevPage() {
       this.queryTxList.pageNum--;
       let tab = {
@@ -280,7 +280,7 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 下一页
+    // next page
     nextPage() {
       this.queryTxList.pageNum++;
       let tab = {
@@ -288,7 +288,7 @@ export default {
       };
       this.changeTabs(tab);
     },
-    // 改变token
+    // change token
     changeToken(token) {
       this.tokenList.forEach(el => {
         if (el.symbol === token) {
@@ -297,11 +297,11 @@ export default {
       });
       this.getBalance();
     },
-    // 格式化时间
+    // Formatting time
     formatDate(time) {
       return dateUTCFilter(time);
     },
-    // 点击TXid
+    // click TXid
     goTxIdDetails(txid) {
       this.$router.push({
         path: "/txidDetails",
@@ -310,14 +310,12 @@ export default {
         }
       });
     },
-    // 切换tabs页
     changeTabs(tab) {
-      console.log(tab);
       if (tab.label === "Transactions") {
         this.getAddressTxList();
       }
     },
-    // 获取合约列表列表
+    // Gets the list of contracts
     async getContractList() {
       this.loading = true;
       this.queryBalance.identity = this.submitterAddress;
@@ -345,7 +343,7 @@ export default {
         this.loading = false;
       }
     },
-    // 余额查询
+    // balance enquiry
     async getBalance() {
       let item = await queryBanalce(this.queryBalance);
       if (item.data.successful) {
@@ -354,7 +352,6 @@ export default {
         }
       }
     },
-    // 根据address查询交易列表
     async getAddressTxList(address) {
       this.tableLoading = true;
       let item = await queryTxListByPage(this.queryTxList);

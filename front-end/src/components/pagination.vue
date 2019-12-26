@@ -39,7 +39,7 @@ export default {
       if (this.totalStrip <= 20) {
         return 1;
       } else {
-        return Math.ceil(this.totalStrip / 20); // 按每页20条划分页数
+        return Math.ceil(this.totalStrip / 20); // Divide the pages by 20 items per page
       }
     }
   },
@@ -93,7 +93,7 @@ export default {
         this.isEdit = false;
       }
     },
-    // 下一页
+    // page down
     nextPage() {
       if (this.currentPage >= this.totalPage) {
         return;
@@ -101,7 +101,7 @@ export default {
         this.$emit('nextPage');
       }
     },
-    // 上一页
+    // page up
     prevPage() {
       if (this.currentPage <= 1) {
         return;
@@ -109,7 +109,7 @@ export default {
         this.$emit('prevPage');
       }
     },
-    // 分页跳转到最后一页
+    // Pagination jumps to the last page
     lastPage() {
       if (this.currentPage == this.totalPage) {
         return;
@@ -117,7 +117,7 @@ export default {
         this.$emit('lastPage', this.totalPage);
       }
     },
-    // 分页跳转到第一页
+    // Page breaks to the first page
     firstPage() {
       if (this.currentPage == 1) {
         return;
@@ -125,7 +125,7 @@ export default {
         this.$emit('firstPage');
       }
     },
-    // 改变翻页编辑状态
+    // Change the page-turning edit state
     changEdit() {
       this.isEdit = true;
       this.$nextTick(() => {

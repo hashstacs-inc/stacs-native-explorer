@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-// let baseURL = '/api'     // 反向代理
+// let baseURL = '/api'     // reverse proxy
 const link = axios.create({
-  timeout: 30000, // 超时设置
-  baseURL: process.env.VUE_APP_API_BASE  // 反向代理
+  timeout: 30000, // timeout
+  baseURL: process.env.VUE_APP_API_BASE  // reverse proxy
 })
-// 跳转外部链接的请求接口
+// Request interface for jumping external links
 export function getLinkConfig() {
   return link({
     url: '/redirectmap',

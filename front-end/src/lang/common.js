@@ -1,5 +1,5 @@
 /**
- *  公用的国际化信息文件
+ *  common Internationalization information file
  * */
 export default {
 	'zh-CN': {
@@ -24,9 +24,9 @@ export default {
 			lots: "份",
 			days: "天"
 		},
-		// 菜单国家化文件
+		// nationalization file menu
 		topMenu: {
-            home: "首页", //首页
+            home: "首页", //home page
             bd:"BD"
 		},
 		footer:{
@@ -73,7 +73,7 @@ export default {
 			days: "Days"
 		},
 		topMenu: {
-            home: "Home", //首页,
+            home: "Home", //home page,
             bd:"BD"
 		},
 		footer:{
