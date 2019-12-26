@@ -5,7 +5,7 @@
       popper-class="toggleLanguage-drop"
       @change="toggleLanguage(language)"
     >
-      <el-option label="简体中文" class="zh-CN" value="zh-CN"></el-option>
+      <el-option label="Simplified Chinese" class="zh-CN" value="zh-CN"></el-option>
       <el-option label="English" class="en-GB" value="en-GB"></el-option>
     </el-select>
   </span>

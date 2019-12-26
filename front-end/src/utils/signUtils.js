@@ -1,12 +1,10 @@
 /**
- * 科学计数法字符 转换 为数字字符
+ * Scientific counting characters are converted to numeric characters
  * @param {String} num_str 
  * @param {String} digits 
  */
 
-export function convertNum(num_str, digits){ //参数必须为 字符串
-  //科学计数法字符 转换 为数字字符， 突破正数21位和负数7位的Number自动转换
-  // 兼容 小数点左边有多位数的情况，即 a×10^b（aEb），a非标准范围（1≤|a|<10）下的情况。如 3453.54E-6 or 3453.54E6
+export function convertNum(num_str, digits){
   if (num_str.indexOf('e') === -1) {
     if (num_str.indexOf('.') !== -1) {
       if (digits) {
@@ -26,7 +24,7 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
   resArr = [],
   sym = '';
   var numStr = num_str.toString();
-  if(numStr[0] == '-'){ // 如果为负数，转成正数处理，先去掉‘-’号，并保存‘-’.
+  if(numStr[0] == '-'){
     numStr = numStr.substr(1);
     sym = '-';
   }
@@ -49,7 +47,6 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
     if (Number(power) >= 0){
       var subres = resValue.substr(dotIndex);
       power = Number(power);
-      //幂数大于小数点后面的数字位数时，后面加0
       for(var i = 0; i < power - subres.length; i++) {
         resArr.push('0');
       }
@@ -59,7 +56,6 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
     } else {
       power = power.replace('-','');
       power = Number(power);
-    //幂数大于等于 小数点的index位置, 前面加0
     for(var i = 0; i <= power - dotIndex; i++) {
       resArr.unshift('0');
     }
@@ -68,21 +64,19 @@ export function convertNum(num_str, digits){ //参数必须为 字符串
     }
   }
   resValue = resArr.join('');
-  //此处是千分位处理
 
   return sym + resValue;
 }
 
 /**
- *  判断是否是正整数或小数
- *  @param num 传入的值
+ *  Determine if it is a positive integer or decimal
+ *  @param num
  */
 export const isNumber = (num) => {
   return /^\d+([.]{1}\d+){0,1}$/.test(num);
 }
 
 /**
- * 将数字转换为千分位（包括整数、小数），只处理整数部分，小数部分不动
  * @param {*} num 
  */
 export const transferThousands = (num) => {
@@ -91,7 +85,6 @@ export const transferThousands = (num) => {
 }
 
 /**
- *  判断小数点后是否不超过8位，超过返回false，未超过返回true
  * @param {*} num 
  */
 export const isEightDecimal = (num) => {
@@ -105,7 +98,6 @@ export const isEightDecimal = (num) => {
   return true;
 }
 /**
- *  判断小数点后是否不超过8位，如果超过8位直接截取前8位
  * @param {*} num 
  */
 export const isCutEight = (num) => {
@@ -118,7 +110,6 @@ export const isCutEight = (num) => {
 }
 
 /**
- *  将千分位数字里的所有逗号去掉
  * @param {*} num 
  */
 export const isEmptyComma = (num) => {
