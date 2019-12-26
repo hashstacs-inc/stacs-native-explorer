@@ -226,7 +226,7 @@ export default {
           width: 170
         },
         {
-          label: `${this.$t("block.transactions.bdName")}`, // bdCODE
+          label: `${this.$t("block.transactions.bdCode")}`, // bdCODE
           prop: "bdCode"
         },
         {
