@@ -277,6 +277,7 @@ export default {
     .jv-container.jv-light{
       line-height: 22px;
       margin-left: -23px;
+      min-height: 100%;
     }
   }
 }
