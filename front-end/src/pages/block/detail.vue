@@ -236,7 +236,7 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.functionName")}`,
-          prop: "functionNames",
+          prop: "functionName",
           showTooltip: true
         },
         {
@@ -368,13 +368,6 @@ export default {
             el.executeResult = `${this.$t("common.success")}`;
           } else {
             el.executeResult = `${this.$t("common.failed")}`;
-          }
-          if(el.functionNames){
-            if(el.functionNames.length>1){
-              el.functionNames = '';
-            } else {
-              el.functionNames = el.functionNames[0];
-            }
           }
         });
         this.pageTotal = item.data.data.total;
