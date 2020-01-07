@@ -432,12 +432,12 @@ export default {
         white-space: nowrap;
       }
       .line-span-no {
-        display: inline-block;
-        max-width: 140px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding-top: 7px;
+        // display: inline-block;
+        // max-width: 140px;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        // white-space: nowrap;
+        // padding-top: 7px;
       }
     }
   }

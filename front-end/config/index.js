@@ -12,21 +12,21 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/explorer': {
-        target: 'http://10.200.174.52:30010/',
+        target: 'http://10.200.174.117:6004/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
         headers: {
-          Referer: 'http://10.200.174.52:30010/',
+          Referer: 'http://10.200.174.117:6004/',
         }
       },
       '/api': {
-        target: 'http://10.200.174.52:30010/',
+        target: 'http://10.200.174.117:6004/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
         headers: {
-          Referer: 'http://10.200.174.52:30010/',
+          Referer: 'http://10.200.174.117:6004/',
         },
         pathRewrite: {
           '^/api': ''

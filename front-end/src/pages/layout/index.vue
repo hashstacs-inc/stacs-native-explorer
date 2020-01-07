@@ -8,7 +8,7 @@
         <router-view style="margin-top: 60px;"/>
       </transition>
     </main>
-    <footer style="margin-top: 225px">
+    <footer style="margin-top: 270px">
       <gsp-footer></gsp-footer>
     </footer>
   </div>

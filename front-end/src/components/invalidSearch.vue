@@ -8,10 +8,10 @@
       <div class="invalid-main">
         <div class="desc">Search String:{{info}}</div>
         <div class="back-button">
-          <mu-button
+          <el-button
             class="primary-button backhome"
             @click="goBack"
-          >Back Home</mu-button>
+          >Back Home</el-button>
         </div>
       </div>
     </el-card>
@@ -70,10 +70,11 @@ export default {
     text-align: center;
     span {
       font-family: HelveticaNeue-Medium;
-      font-size: 14px;
+      font-size: 16px;
       color: #727172;
-      line-height: 26px;
+      // line-height: 26px;
       font-weight: 600;
+      color: #fff;
     }
     .string-box {
       font-family: HelveticaNeue;

@@ -224,15 +224,18 @@ export default {
         },
         {
           label: `${this.$t("block.transactions.bdCode")}`,
-          prop: "bdCode"
+          prop: "bdCode",
+          showTooltip: true
         },
         {
           label: `${this.$t("block.transactions.bdName")}`,
-          prop: "bdName"
+          prop: "bdName",
+          showTooltip: true
         },
         {
           label: `${this.$t("block.transactions.bdType")}`,
-          prop: "bdType"
+          prop: "bdType",
+          showTooltip: true
         },
         {
           label: `${this.$t("block.transactions.functionName")}`,
