@@ -129,7 +129,6 @@
                     <execution>
                         <id>default-cli</id>
                         <goals>
-                            <!-- 指定执行参数，不能修改 -->
                             <goal>package</goal>
                         </goals>
                     </execution>
