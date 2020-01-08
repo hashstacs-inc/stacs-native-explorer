@@ -13,7 +13,9 @@
             >{{BasicInfo[item.prop]}}</a>
             <div v-else-if="item.prop === 'actionDatas'" class="action-data">
               <json-viewer :value="inputData" :expand-depth=10></json-viewer>
-             
+            </div>
+            <div v-else-if="item.prop === 'bizModel' && BasicInfo[item.prop]" class="action-data biz-model-obj">
+              <json-viewer :value="bizModelObj" :expand-depth=10></json-viewer>
             </div>
             <div v-else-if="item.prop === 'executeResult'">
               <span>{{BasicInfo[item.prop]}}</span>
@@ -64,7 +66,7 @@ export default {
       errorMessagedialogVisible: false,
       BasicInfoLabel: [
         { label: `${this.$t("tx.baseInfo.txID")}`, prop: "txId" },
-         { label: `${this.$t("tx.baseInfo.bdCode")}`, prop: "bdCode" },
+        { label: `${this.$t("tx.baseInfo.bdCode")}`, prop: "bdCode" },
         { label: `${this.$t("tx.baseInfo.bdName")}`, prop: "bdName" },
         { label: `${this.$t("tx.baseInfo.bdType")}`, prop: "bdType" },
         { label: `${this.$t("tx.baseInfo.functionName")}`, prop: "policyId" },
@@ -90,10 +92,12 @@ export default {
         },
         { label: `${this.$t("tx.baseInfo.timeStamp")}`, prop: "blockTime" },
         { label: `${this.$t("tx.baseInfo.status")}`, prop: "executeResult" },
-        { label: `${this.$t("tx.baseInfo.inputData")}`, prop: "actionDatas" }
+        { label: `${this.$t("tx.baseInfo.inputData")}`, prop: "actionDatas" },
+        { label: `${this.$t("tx.baseInfo.credentialsInformation")}`, prop: "bizModel" }
       ],
       BasicInfo: {},
-      inputData: []
+      inputData: [],
+      bizModelObj: {}
     };
   },
   computed: {
@@ -146,6 +150,12 @@ export default {
               this.BasicInfo.executeResult = `${this.$t("common.success")}`;
             } else {
               this.BasicInfo.executeResult = `${this.$t("common.failed")}`;
+            }
+            if (res.data.data.bizModel) {
+              this.bizModelObj = JSON.parse(res.data.data.bizModel);
+              for(let i in this.bizModelObj) {
+                this.bizModelObj[i] = JSON.parse(this.bizModelObj[i]);
+              }
             }
             this.inputData = JSON.parse(res.data.data.actionDatas);
             this.inputData.forEach(el => {
@@ -225,7 +235,7 @@ export default {
   display: flex;
   align-items: center;
   .action-data {
-    height: 450px;
+    max-height: 300px;
     overflow: auto;
     width: 74%;
     display: inline-block;
@@ -278,6 +288,7 @@ export default {
       line-height: 22px;
       margin-left: -23px;
       min-height: 100%;
+      background-color: transparent;
     }
   }
 }

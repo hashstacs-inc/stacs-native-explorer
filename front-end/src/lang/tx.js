@@ -17,6 +17,7 @@ export default {
                 timeStamp: 'Time Stamp +UTC',
                 status: 'Status',
                 inputData: 'Input Data',
+                credentialsInformation: 'Credentials Information'
             }
         }
 	},
@@ -35,6 +36,7 @@ export default {
                 timeStamp: 'Time Stamp +UTC',
                 status: 'Status',
                 inputData: 'Input Data',
+                credentialsInformation: 'Credentials Information'
             }
         }
 	}
