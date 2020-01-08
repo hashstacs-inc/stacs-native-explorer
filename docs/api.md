@@ -1,162 +1,156 @@
-## 接口规范
+## The interface specification
 
-### 路由
+### routing
 
 **baseURL：**`/explorer`
 
-### 请求头规范
+### Request header specification
 
-*   `GET`：**无额外参数**
-*   `POST`:`Content-Type: application/json`返回值规范
+*   `GET`：**No additional parameters**
+*   `POST`:`Content-Type: application/json`Return value specification
 
-### 响应规范
+### In response to the specification
 
-| 名称     | 类型     | 描述                                     |
+| Name     | Type     | Description                                     |
 | -------- | -------- | ---------------------------------------- |
-| respCode | `string` | 响应码，`000000`表示成功，其余均表示异常 |
-| msg      | `string` | 操作执行返回的消息                       |
-| data     |          | 具体参考接口列表 & 返回参数类型          |
+| respCode | `string` | Response code, '000000' means success |
+| msg      | `string` | The message returned by the operation execution                      |
+| data     |          | Specific reference interface list          |
 
-#### 分页规范：Page<?>
+#### Paging specification：Page<?>
 
->   `?`对应 list 中的类型
-
-| 名称     | 类型      | 描述                 |
+| Name     | Type      | Description                 |
 | -------- | --------- | -------------------- |
 | pageNum  | `int`     |                      |
 | pageSize | `int`     |                      |
 | total    | `int`     |                      |
-| list     | `list<?>` | 参考具体参数返回类型 |
+| list     | `list<?>` | Refer to specific parameters to return Type |
 
-## 接口列表
+## The interface list
 
-查询修改为 get
-
-### 交易列表查询
+### Transaction list query
 
 `GET`: `/tx/list`
 
-**请求参数**
+**Request parameters**
 
-| 名称        | 类型     | 长度 | 是否必填 | 描述                                                   |
+| Name        | Type     | Max Length | Required | Description                                                   |
 | ----------- | -------- | ---- | -------- | ------------------------------------------------------ |
-| blockHeight | `long`   |      | N        | 区块高度                                               |
-| sender      | `string` | 32   | N        | 发送交易的节点名称(非地址)                             |
-| pageNum     | `int`    |      | Y        | 页码                                                   |
-| pageSize    | `int`    |      | Y        | 分页条数                                               |
-| order       | `string` |      | N        | 1. `desc`：倒序 <br />2. `asc`：顺序<br />默认：`desc` |
-| submitter   | `string` | 40   | N        | 交易提交者地址                                         |
+| blockHeight | `long`   |      | N        | Block height                                            |
+| sender      | `string` | 32   | N        | Node Name(not address) for sending transactions                        |
+| pageNum     | `int`    |      | Y        | PageNo                                                   |
+| pageSize    | `int`    |      | Y        | PageSize                                               |
+| order       | `string` |      | N        | 1. `desc`：Desc <br />2. `asc`：Asc<br />Default：`desc` |
+| submitter   | `string` | 40   | N        | submitter address                                         |
 
-**响应结果:** ` Page<TransactionVO>`
+**Response:** ` Page<TransactionVO>`
 
-### 交易详情查询
+### Enquiry for transaction details
 
 `GET`:`/tx/detail`
 
-| 名称 | 类型     | 长度 | 是否必填 | 描述    |
+| Name | Type     | Max Length | Required | Description    |
 | ---- | -------- | ---- | -------- | ------- |
-| txId | `string` | 64   | Y        | 交易 id |
+| txId | `string` | 64   | Y        | Transaction id |
 
-**响应结果:** ` TransactionVO`
+**Response:** ` TransactionVO`
 
-### 区块详情查询
+### Block details enquiry
 
 `GET`:`/block/detail`
 
-| 名称   | 类型   | 长度 | 是否必填 | 描述     |
+| Name   | Type   | Max Length | Required | Description     |
 | ------ | ------ | ---- | -------- | -------- |
-| height | `long` |      | Y        | 区块高度 |
+| height | `long` |      | Y        | Block height|
 
-**响应结果:** ` BlockVO`
+**Response:** ` BlockVO`
 
-### 区块列表查询
+### Block list query
 
 `GET`: `/block/list`
 
-**请求参数**
+**Request parameters**
 
-| 名称      | 类型     | 长度 | 是否必填 | 描述     |
+| Name      | Type     | Max Length | Required | Description     |
 | --------- | -------- | ---- | -------- | -------- |
-| height    | `long`   |      | N        | 区块高度 |
-| blockHash | `string` | 64   | N        | 区块 Has |
+| height    | `long`   |      | N        | Block height |
+| blockHash | `string` | 64   | N        | Block  Has |
 | pageNum   | `int`    |      | Y        |          |
 | pageSize  | `int`    |      | Y        |          |
 
-**响应结果**：`Page<BlockVO>`
+**Response**：`Page<BlockVO>`
 
-### 合约列表列表
+### Contract list
 
 `GET`:`/contract/list`
 
-> 查询币种列表时：byType="assets"
+> Query the currency list：byType="assets"
 
-| 名称   | 类型     | 长度 | 是否必填 | 描述                                    |
+| Name   | Type     | Max Length | Required | Description                                    |
 | ------ | -------- | ---- | -------- | --------------------------------------- |
-| bdType | `string` | 32   | N        | bdType（过滤 system）：contract、assets |
+| bdType | `string` | 32   | N        | bdType（filter system）：contract、assets |
 
-**响应结果：**`List<ContractVO>`
+**Response：**`List<ContractVO>`
 
-### 余额查询
+### The balance of the query
 
 `GET`:`/identity/balance`
 
-| 名称        | 类型     | 长度 | 是否必填 | 描述                       |
+| Name        | Type     | Max Length | Required | Description                       |
 | ----------- | -------- | ---- | -------- | -------------------------- |
-| contract    | `string` | 64   | Y        | 合约地址                   |
-| identity    | `string` | 40   | Y        | 用户地址（对应 submitter） |
-| blockHeight | `long`   |      | N        | 区块高度                   |
+| contract    | `string` | 64   | Y        | Contract address           |
+| identity    | `string` | 40   | Y        | user address               |
+| blockHeight | `long`   |      | N        | block height               |
 
-**响应类型：**`string`
+**Response Type：**`string`
 
-响应示例：`"9600"`
+Response：`"9600"`
 
-## 返回参数类型
+## Return parameter Type
 
 ### TransactionVO
 
-| 名称              | 类型       | 描述                                  | 列表查询是否提供 |
+| Name              | Type       | Description                                  |  |
 | ----------------- | ---------- | ------------------------------------- | ---------------- |
-| txId              | `string`   | 交易 Id                               |      TX ID    Y        |
+| txId              | `string`   | Transaction Id                               |      TX ID    Y        |
 | bizModel          | `object`   |                                       |                |
 | policyId          | `string`   |                                       |         Function Name  Y        |
-| version           | `string`   | 交易版本号                            |               |
-| blockHeight       | `long`     | 交易所在区块高度                      |        Y          |
-| sender            | `string`   | 交易发送的节点名称                    |                 |
-| actionDatas       | `string`   | 交易包含的 action list                |        Y         |
-| executeResult     | `string`   | 交易执行结果，`0`：fail，`1`：success |       Status  Y           |
-| errorCode         | `string`   | 错误代码                              | Y |
-| errorMessage      | `string`   | 错误信息                              |        失败错误信息          |
-| txType            | `string`   | 交易类型                              |          Y        |
-| contractState     | `object`   | 合约状态                              |               |
+| version           | `string`   | version                            |               |
+| blockHeight       | `long`     | block height                      |        Y          |
+| sender            | `string`   | name of sender                    |                 |
+| actionDatas       | `string`   | action list                |        Y         |
+| executeResult     | `string`   | `0`：fail，`1`：success |       Status  Y           |
+| errorCode         | `string`   | error code                              | Y |
+| errorMessage      | `string`   | error message                              |        失败错误信息          |
+| contractState     | `object`   | status of contract                              |               |
 | bdCode            | `string`   |                                       |                  |
-| submitter         | `string`   | 交易发起者                            |  Operation Address  Y       |
-| submitterSign     | `string`   | 交易发起者的签名值                    |                  |
+| submitter         | `string`   | user address                            |  Operation Address  Y       |
+| submitterSign     | `string`   | signature                    |                  |
 | lockTime          | `dataTime` |                                       |                  |
-| sendTime          | `dataTime` | 交易创建时间                          |                  |
-| singDatas         | `string`   | 签名信息                              |                  |
+| sendTime          | `dataTime` | create time                          |                  |
+| singDatas         | `string`   | signature of domain                              |                  |
 | policyVersion     | `int`      |                                       |                  |
 | dealCount         | `int`      |                                       |                  |
-| maxAllowFee       | `string`   | 最大允许手续费                        |           Y       |
-| feeAmount         | `string`   | 实际手续费                            |       Transaction Fee   Y       |
-| feePaymentAddress | `string`   | 手续费转入地址                        |                  |
-| feeCurrency       | `string`   | 手续费货币                            |      币种    Y       |
+| maxAllowFee       | `string`   | fee max allow                        |           Y       |
+| feeAmount         | `string`   | fee amount                            |       Transaction Fee   Y       |
+| feeCurrency       | `string`   | fee name                            |          Y       |
 | receiptData       | `string`   |                                       |                  |
-| blockTime | `long` | 区块生成时间 | Y |
+| blockTime | `long` | time of block of created | Y |
 | bdName | `string` | | Y |
 | bdType | `string` | | Y |
 
 ### BlockVO
 
-| 名称              | 类型         | 描述                    | 列表查询是否提供 |
+| Name              | Type         | Description                    |  |
 | ----------------- | ------------ | ----------------------- | ---------------- |
-| height            | `long`       | 区块高度                |         Y         |
+| height            | `long`       | block height               |         Y         |
 | blockHash         | `string`     |                         |          Y        |
-| previousHash      | `string`     | 上一个区块 hash         |            Y      |
-| txNum             | `int`        | 交易数量                |        Txns Y      |
-| totalBlockSize    | `bigDecimal` | 区块总大小，单位 ：`kb` |           Y       |
-| totalTxNum        | `long`       | 累积交易数量            |           Y       |
-| blockTime         | `data`       | 区块生成时间            |        Y          |
-| version           | `string`     | 版本号                  |         Y         |
+| previousHash      | `string`     | last hash         |            Y      |
+| txNum             | `int`        | transaction number                |        Txns Y      |
+| totalBlockSize    | `bigDecimal` | size ：`kb` |           Y       |
+| totalTxNum        | `long`       | total number            |           Y       |
+| blockTime         | `data`       | time of block created            |        Y          |
+| version           | `string`     | version                  |         Y         |
 | txRootHash        | `string`     |                         |                  |
 | accountRootHash   | `string`     |                         |                  |
 | contractRootHash  | `string`     |                         |                  |
@@ -165,29 +159,25 @@
 | txReceiptRootHash | `string`     |                         |                  |
 | caRootHash        | `string`     |                         |                  |
 | stateRootHash     | `string`     |                         |                  |
-| maxHeight | `long` | 链上块当前最大高度 |  |
+| maxHeight | `long` | max height |  |
 
 ### ContractVO
 
-| 名称          | 类型     | 描述              | 列表查询是否提供 |
+| Name          | Type     | Description              |  |
 | ------------- | -------- | ----------------- | ---------------- |
-| address       | `string` | 合约地址          | Y                |
-| name          | `string` | 合约名称          | Y                |
-| symbol        | `string` | 合约代码          | Y                |
-| extension     | `string` | 扩展字段          | N                |
+| address       | `string` | address          | Y                |
+| name          | `string` | name of contract          | Y                |
+| symbol        | `string` | symbol          | Y                |
+| extension     | `string` | extension          | N                |
 | bdCode        | `string` |                   | Y                |
 | bdCodeVersion | `string` |                   | Y                |
 | status        | `string` |                   | Y                |
 | blockHeight   | `long`   |                   | N                |
-| txId          | `string` | 合约创建的交易 Id | N                |
+| txId          | `string` | transaction Id | N                |
 | actionIndex   | `int`    |                   | N                |
-| language      | `string` | 合约语言          | N                |
-| version       | `string` | 合约版本          | Y                |
-| code          | `string` | 合约源码          | N                |
-| createTime    | `long`   | 创建时间          | Y                |
+| language      | `string` | language          | N                |
+| version       | `string` | version          | Y                |
+| code          | `string` | source code          | N                |
+| createTime    | `long`   | create time          | Y                |
 
-1. submitter 地址查询、合约方法调用（余额查询(balanceOf)）
-2. 交易详情 & 列表
-3. 块高度：块详情（最大块高度）、块的交易列表
-4. bdName（不做） 条件查询
-5. 合约列表
+ 
