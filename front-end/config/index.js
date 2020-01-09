@@ -14,23 +14,27 @@ module.exports = {
       '/explorer': {
         // target: 'http://10.200.174.117:6004/',
         target: 'http://10.200.174.52:30010/',
+        // target: 'http://10.200.174.52:30055/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
         headers: {
           // Referer: 'http://10.200.174.117:6004/',
           Referer: 'http://10.200.174.52:30010/',
+          // Referer: 'http://10.200.174.52:30055/',
         }
       },
       '/api': {
         // target: 'http://10.200.174.117:6004/',
         target: 'http://10.200.174.52:30010/',
+        // target: 'http://10.200.174.52:30055/',
         changeOrigin: true,
         cookieDomainRewrite: '',
         secure: false,
         headers: {
           // Referer: 'http://10.200.174.117:6004/',
           Referer: 'http://10.200.174.52:30010/',
+          // Referer: 'http://10.200.174.52:30055/',
         },
         pathRewrite: {
           '^/api': ''

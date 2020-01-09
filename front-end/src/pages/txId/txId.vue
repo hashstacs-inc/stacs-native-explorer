@@ -12,10 +12,10 @@
               @click="toDetail(item.target,BasicInfo[item.prop])"
             >{{BasicInfo[item.prop]}}</a>
             <div v-else-if="item.prop === 'actionDatas'" class="action-data">
-              <json-viewer :value="inputData" :expand-depth=10></json-viewer>
+              <json-viewer :value="inputData" :expand-depth="10"></json-viewer>
             </div>
-            <div v-else-if="item.prop === 'bizModel' && BasicInfo[item.prop]" class="action-data biz-model-obj">
-              <json-viewer :value="bizModelObj" :expand-depth=10></json-viewer>
+            <div v-else-if="item.prop === 'bizModel'" class="action-data biz-model-obj">
+              <json-viewer :value="bizModelObj" :expand-depth="10"></json-viewer>
             </div>
             <div v-else-if="item.prop === 'executeResult'">
               <span>{{BasicInfo[item.prop]}}</span>
@@ -93,7 +93,7 @@ export default {
         { label: `${this.$t("tx.baseInfo.timeStamp")}`, prop: "blockTime" },
         { label: `${this.$t("tx.baseInfo.status")}`, prop: "executeResult" },
         { label: `${this.$t("tx.baseInfo.inputData")}`, prop: "actionDatas" },
-        { label: `${this.$t("tx.baseInfo.credentialsInformation")}`, prop: "bizModel" }
+        { label: `${this.$t("tx.baseInfo.credentialsInformation")}`, prop: "bizModel", isHide: true }
       ],
       BasicInfo: {},
       inputData: [],
@@ -151,11 +151,17 @@ export default {
             } else {
               this.BasicInfo.executeResult = `${this.$t("common.failed")}`;
             }
-            if (res.data.data.bizModel) {
+            if (res.data.data.bizModel && res.data.data.bizModel !== '{}') {
               this.bizModelObj = JSON.parse(res.data.data.bizModel);
               for(let i in this.bizModelObj) {
                 this.bizModelObj[i] = JSON.parse(this.bizModelObj[i]);
               }
+            } else {
+              this.BasicInfoLabel.forEach((v, k) => {
+                if (v.prop === 'bizModel') {
+                  this.BasicInfoLabel.splice(k, 1);
+                }
+              });
             }
             this.inputData = JSON.parse(res.data.data.actionDatas);
             this.inputData.forEach(el => {
