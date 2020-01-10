@@ -10,7 +10,7 @@ export default {
                 tx: 'TX#'
             },
             right:{
-                currentBlock: 'Current block',
+                currentBlock: 'Current Block',
                 blockInformation: 'Block Information',
                 blockSize: 'Block Size',
                 block: 'Block',
@@ -26,7 +26,7 @@ export default {
                 tx: 'TX#'
             },
             right:{
-                currentBlock: 'Current block',
+                currentBlock: 'Current Block',
                 blockInformation: 'Block Information',
                 blockSize: 'Block Size',
                 block: 'Block',
