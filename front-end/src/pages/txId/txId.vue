@@ -69,7 +69,9 @@ export default {
         { label: `${this.$t("tx.baseInfo.bdCode")}`, prop: "bdCode" },
         { label: `${this.$t("tx.baseInfo.bdName")}`, prop: "bdName" },
         { label: `${this.$t("tx.baseInfo.bdType")}`, prop: "bdType" },
-        { label: `${this.$t("tx.baseInfo.functionName")}`, prop: "policyId" },
+        { label: `${this.$t("tx.baseInfo.contractName")}`, prop: "contractName" },
+        { label: `${this.$t("tx.baseInfo.contractAddress")}`, prop: "contractAddress" },
+        { label: `${this.$t("tx.baseInfo.functionName")}`, prop: "functionName" },
         {
           label: `${this.$t("tx.baseInfo.operationAddress")}`,
           prop: "submitter",
@@ -159,6 +161,20 @@ export default {
             } else {
               this.BasicInfoLabel.forEach((v, k) => {
                 if (v.prop === 'bizModel') {
+                  this.BasicInfoLabel.splice(k, 1);
+                }
+              });
+            }
+            if (!res.data.data.contractName) {
+              this.BasicInfoLabel.forEach((v, k) => {
+                if (v.prop === 'contractName') {
+                  this.BasicInfoLabel.splice(k, 1);
+                }
+              });
+            }
+            if (!res.data.data.contractAddress) {
+              this.BasicInfoLabel.forEach((v, k) => {
+                if (v.prop === 'contractAddress') {
                   this.BasicInfoLabel.splice(k, 1);
                 }
               });
