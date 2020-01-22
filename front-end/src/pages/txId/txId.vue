@@ -182,7 +182,7 @@ export default {
             this.inputData = JSON.parse(res.data.data.actionDatas);
             this.inputData.forEach(el => {
               delete el.abi;
-              delete el.code;
+              // delete el.code;
             });
           }
           this.loading = false;
