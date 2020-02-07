@@ -6,16 +6,14 @@ import io.stacs.nav.drs.api.IQueryService;
 import io.stacs.nav.drs.api.model.RespData;
 import io.stacs.nav.drs.api.model.TransactionPO;
 import io.stacs.nav.drs.api.model.TransactionVO;
+import io.stacs.nav.drs.api.model.TxDetail;
 import io.stacs.nav.drs.api.model.query.QueryTxListVO;
 import io.stacs.nav.drs.api.model.query.QueryTxVO;
-import io.stacs.nav.drs.api.model.tx.CoreTransactionVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static io.stacs.nav.drs.api.model.RespData.success;
 
@@ -41,10 +39,13 @@ import static io.stacs.nav.drs.api.model.RespData.success;
         return success(queryService.queryTx(vo));
     }
 
-    @GetMapping("/detail") public RespData<TransactionVO> queryCoreTxById(@RequestParam String txId) {
+    @GetMapping("/detail") public RespData<TxDetail> queryCoreTxById(@RequestParam String txId) {
         QueryTxVO vo = new QueryTxVO();
         vo.setTxId(txId);
-        return success(queryService.queryTxById(vo));
+        TransactionVO transactionVO = queryService.queryTxById(vo);
+        TxDetail detail = (TxDetail)transactionVO;
+        detail.setPolicy(queryService.queryPolicy(transactionVO.getPolicyId()));
+        return success(detail);
     }
 
 }
