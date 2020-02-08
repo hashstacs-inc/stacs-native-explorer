@@ -2,6 +2,7 @@ package io.stacs.nav.dapp.explorer.controller;
 
 import com.alipay.sofa.ark.spi.service.ArkInject;
 import com.github.pagehelper.PageInfo;
+import io.stacs.nav.dapp.explorer.utils.BeanConvertor;
 import io.stacs.nav.drs.api.IQueryService;
 import io.stacs.nav.drs.api.model.RespData;
 import io.stacs.nav.drs.api.model.TransactionPO;
@@ -25,11 +26,10 @@ import static io.stacs.nav.drs.api.model.RespData.success;
 
     @ArkInject private IQueryService queryService;
 
-    @GetMapping("/list") public RespData<PageInfo<TransactionPO>> queryTx(@RequestParam(required = false) Long blockHeight,
-                                                                          @RequestParam(required = false) String txId,
-                                                                          @RequestParam(required = false) String submitter,
-                                                                          @RequestParam Integer pageNum,
-                                                                          @RequestParam Integer pageSize) {
+    @GetMapping("/list")
+    public RespData<PageInfo<TransactionPO>> queryTx(@RequestParam(required = false) Long blockHeight,
+        @RequestParam(required = false) String txId, @RequestParam(required = false) String submitter,
+        @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         QueryTxListVO vo = new QueryTxListVO();
         vo.setBlockHeight(blockHeight);
         vo.setSubmitter(submitter);
@@ -43,7 +43,11 @@ import static io.stacs.nav.drs.api.model.RespData.success;
         QueryTxVO vo = new QueryTxVO();
         vo.setTxId(txId);
         TransactionVO transactionVO = queryService.queryTxById(vo);
-        TxDetail detail = (TxDetail)transactionVO;
+        if (transactionVO == null) {
+            log.warn("query tx not exists,txId:{}", txId);
+            return success();
+        }
+        TxDetail detail = BeanConvertor.convertBean(transactionVO, TxDetail.class);
         detail.setPolicy(queryService.queryPolicy(transactionVO.getPolicyId()));
         return success(detail);
     }
