@@ -155,8 +155,14 @@ export default {
             }
             if (res.data.data.bizModel && res.data.data.bizModel !== '{}') {
               this.bizModelObj = JSON.parse(res.data.data.bizModel);
-              for(let i in this.bizModelObj) {
-                this.bizModelObj[i] = JSON.parse(this.bizModelObj[i]);
+              if (Object.prototype.toString.call(this.bizModelObj) === '[object Object]') {
+                for(let i in this.bizModelObj) {
+                  try {
+                    this.bizModelObj[i] = JSON.parse(this.bizModelObj[i]);
+                  } catch (error) {
+                    this.bizModelObj[i] = this.bizModelObj[i]
+                  }
+                }
               }
             } else {
               this.BasicInfoLabel.forEach((v, k) => {
